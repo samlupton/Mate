@@ -10,6 +10,11 @@ import Firebase
 
 @main
 struct MateApp: App {
+    
+    init() {
+            FirebaseApp.configure()
+        }
+    
     var body: some Scene {
         WindowGroup {
             WelcomeScreen()

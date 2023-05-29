@@ -1,11 +1,11 @@
+//////
+//////  AppDelegate.swift
+//////  Mate
+//////
+//////  Created by Samuel Lupton on 5/28/23.
+//////
 ////
-////  AppDelegate.swift
-////  Mate
 ////
-////  Created by Samuel Lupton on 5/28/23.
-////
-//
-//
 //import UIKit
 //import SwiftUI
 //import FirebaseCore
@@ -14,7 +14,8 @@
 //import FirebaseStorage
 //
 //
-//@UIApplicationMain
+////@UIApplicationMain
+////@main
 //class AppDelegate: NSObject, UIApplicationDelegate {
 //    func application(_ application: UIApplication,
 //                     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
