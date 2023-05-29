@@ -27,6 +27,7 @@
 		CF7D59142A23E0230023BF9B /* SDWebImageSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = CF7D59132A23E0230023BF9B /* SDWebImageSwiftUI */; };
 		CF7D59162A23E0AC0023BF9B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CF7D59152A23E0AC0023BF9B /* GoogleService-Info.plist */; };
 		CF7D59182A23E1920023BF9B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF7D59172A23E1920023BF9B /* AppDelegate.swift */; };
+		CF7D591A2A24FEBC0023BF9B /* AccountInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF7D59192A24FEBC0023BF9B /* AccountInfoView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -44,6 +45,7 @@
 		CF7D59022A23DF5B0023BF9B /* UserModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserModel.swift; sourceTree = "<group>"; };
 		CF7D59152A23E0AC0023BF9B /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		CF7D59172A23E1920023BF9B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		CF7D59192A24FEBC0023BF9B /* AccountInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountInfoView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -88,6 +90,7 @@
 				CF7D59172A23E1920023BF9B /* AppDelegate.swift */,
 				CF7D59022A23DF5B0023BF9B /* UserModel.swift */,
 				CF7D58F22A23DE4A0023BF9B /* ImagePicker.swift */,
+				CF7D59192A24FEBC0023BF9B /* AccountInfoView.swift */,
 				CF7D58F62A23DE970023BF9B /* SceneDelegate.swift */,
 				CF7D58E42A23DDA80023BF9B /* MateApp.swift */,
 				CF7D58FC2A23DF330023BF9B /* PostView.swift */,
@@ -201,6 +204,7 @@
 				CF7D58F52A23DE760023BF9B /* LoginView.swift in Sources */,
 				CF7D58FB2A23DEF10023BF9B /* ProfileView.swift in Sources */,
 				CF7D59032A23DF5B0023BF9B /* UserModel.swift in Sources */,
+				CF7D591A2A24FEBC0023BF9B /* AccountInfoView.swift in Sources */,
 				CF7D59182A23E1920023BF9B /* AppDelegate.swift in Sources */,
 				CF7D58E52A23DDA80023BF9B /* MateApp.swift in Sources */,
 			);

@@ -19,6 +19,7 @@ struct ProfileView: View {
     @State private var showSaveAlert: Bool = false
     @State private var username: String = ""
     @State private var showAlert = false
+    @State private var showAccountInfo = false
     @ObservedObject private var vm = MainViewModel()
 
     var body: some View {
@@ -29,9 +30,16 @@ struct ProfileView: View {
                     .font(.title)
                     .bold()
                 Spacer()
-                settingsButton
-                TextField("Type here", text: $username)
-                usernameButton
+                Button(action: {
+                    showAccountInfo = true
+                }) {
+                    Image(systemName: "gear")
+                        .font(.system(size:25))
+                        .foregroundColor(Color.black)
+                }
+                .sheet(isPresented: $showAccountInfo) {
+                    AccountInfoView(isLoggedIn: $isLoggedIn)
+                }
             }
             HStack(spacing: 16) {
                 VStack{
@@ -71,16 +79,7 @@ struct ProfileView: View {
             }
             .padding()
             Spacer()
-            Button(action: {
-                isLoggedIn = false
-            }) {
-                Text("Sign out")
-                    .font(.headline)
-                    .foregroundColor(.white)
-                    .padding()
-                    .background(Color.blue)
-                    .cornerRadius(10)
-            }.padding()
+            
         }
         .padding()
         .navigationBarHidden(true)
@@ -89,42 +88,6 @@ struct ProfileView: View {
                 .onDisappear {
                     showSaveAlert = true
                 }
-        }
-    }
-    
-    private var settingsButton: some View {
-        Button(action: {
-            showImagePicker = true
-        }) {
-            Image(systemName: "gear")
-                .font(.system(size:25))
-                .foregroundColor(Color.black)
-        }
-    }
-    
-    private var usernameButton: some View {
-        Button("Set Username") {
-            showAlert = true
-        }
-        .alert(isPresented: $showAlert) {
-            Alert(
-                title: Text("Set Username"),
-                message: nil,
-                primaryButton: .default(Text("Save"), action: {
-                    guard let uid = FirebaseManager.shared.auth.currentUser?.uid else {
-                        return
-                    }
-                    let userData = ["username": username]
-                    FirebaseManager.shared.firestore.collection("Users").document(uid).setData(userData, merge: true) { err in
-                        if let err = err {
-                            print(err)
-                            return
-                        }
-                        print("Username saved successfully.")
-                    }
-                }),
-                secondaryButton: .cancel()
-            )
         }
     }
     
@@ -174,11 +137,11 @@ struct ProfileView: View {
     }
 }
 
-//struct ProfileView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        @State var isLoggedIn: Bool = true
-//        ProfileView(isLoggedIn: $isLoggedIn)
-//    }
-//}
+struct ProfileView_Previews: PreviewProvider {
+    static var previews: some View {
+        @State var isLoggedIn: Bool = true
+        ProfileView(isLoggedIn: $isLoggedIn)
+    }
+}
 
 
