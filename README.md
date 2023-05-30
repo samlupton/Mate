@@ -8,7 +8,7 @@
 
 ## Video Walkthrough
 
-<img src="Kapture 2023-05-20 at 18.51.26.gif" width=200><br>
+<img src="Kapture 2023-05-29 at 20.05.12.gif" width=200><br>
 
 ## License
 
