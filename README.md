@@ -10,6 +10,8 @@
 
 <img src="Kapture 2023-05-29 at 20.05.12.gif" width=200><br>
 
+The user ID stored in Firebase is a lengthy combination of integers and letters, serving as a key to access various information about other users, including profile pictures and usernames.
+
 ## License
 
     Copyright [2023] [Samuel Evans-Lupton]
