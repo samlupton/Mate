@@ -62,7 +62,7 @@ struct WelcomeScreen: View {
                                 Spacer()
                             }
                             HStack {
-                                Text("Worm")
+                                Text("Mate.")
                                     .font(.largeTitle)
                                     .fontWeight(.bold)
                                     .foregroundColor(.white)
@@ -77,7 +77,7 @@ struct WelcomeScreen: View {
                             .foregroundColor(.black)
                             .padding()
                             .frame(maxWidth: .infinity)
-                            .background(Color.gray)
+                            .background(Color.white)
                             .cornerRadius(30)
                     }
                     
@@ -87,7 +87,7 @@ struct WelcomeScreen: View {
                             .foregroundColor(.black)
                             .padding()
                             .frame(maxWidth: .infinity)
-                            .background(Color.gray)
+                            .background(Color.white)
                             .cornerRadius(30)
                     }
                     Spacer()
@@ -115,7 +115,7 @@ struct SignInView: View {
     var body: some View {
         ZStack {
             LinearGradient(
-                gradient: Gradient(colors: [.blue, .purple]),
+                gradient: Gradient(colors: [.black, .gray]),
                 startPoint: .topLeading,
                 endPoint: .bottomTrailing
             )
@@ -198,7 +198,7 @@ struct SignUpView: View {
     var body: some View {
         ZStack {
             LinearGradient(
-                gradient: Gradient(colors: [.blue, .purple]),
+                gradient: Gradient(colors: [.black, .gray]),
                 startPoint: .topLeading,
                 endPoint: .bottomTrailing
             )

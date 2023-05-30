@@ -29,6 +29,7 @@ struct ProfileView: View {
                 Text("\(vm.user?.username ?? "User")")
                     .font(.title)
                     .bold()
+                    .textCase(.lowercase)
                 Spacer()
                 Button(action: {
                     showAccountInfo = true
@@ -69,74 +70,11 @@ struct ProfileView: View {
                 }
                 .padding()
             }
-//            .alert(isPresented: $showSaveAlert) {
-//                Alert(
-//                    title: Text("Save Image"),
-//                    message: Text("Do you want to save the selected image?"),
-//                    primaryButton: .default(Text("Save")) {
-//                        self.persistImageToStorage()
-//                    },
-//                    secondaryButton: .cancel(Text("Cancel"))
-//                )
-//            }
-////            .padding()
             Spacer()
-            
         }
         .padding()
         .navigationBarHidden(true)
-//        .fullScreenCover(isPresented: $showImagePicker) {
-//            ImagePicker(selectedImage: $selectedImage)
-//                .onDisappear {
-//                    showSaveAlert = true
-//                }
-//        }
     }
-    
-//    private func persistImageToStorage() {
-//        guard let uid = FirebaseManager.shared.auth.currentUser?.uid else {
-//            return
-//            
-//        }
-//        let ref = FirebaseManager.shared.storage.reference(withPath: uid)
-//        guard let imageData = self.selectedImage?.jpegData(compressionQuality: 1.0)
-//        else {return}
-//        ref.putData(imageData, metadata: nil) { metadata, err in
-//            if let err = err {
-//                print(err)
-//                return
-//            }
-//            ref.downloadURL { url, err in
-//                if let err = err {
-//                    print(err)
-//                    return
-//                }
-//                print("Success")
-//                self.storeUserInformation(profileImage: url!)
-//            }
-//        }
-//    }
-    
-//    private func storeUserInformation(profileImage: URL) {
-//        
-//        guard let uid = FirebaseManager.shared.auth.currentUser?.uid else {
-//            return
-//        }
-//        guard let email = FirebaseManager.shared.auth.currentUser?.email else {
-//            return
-//        }
-//        //        guard let username = FirebaseManager.shared.auth.currentUser?.username else {
-//        //                return
-//        //            }
-//        let userData = ["email": email, "uid": uid, "profileImageURL": profileImage.absoluteString]
-//        FirebaseManager.shared.firestore.collection("Users").document(uid).setData(userData, merge: true) { err in
-//            if let err = err {
-//                print(err)
-//                return
-//            }
-//            print("success")
-//        }
-//    }
 }
 
 struct ProfileView_Previews: PreviewProvider {

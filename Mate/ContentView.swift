@@ -26,6 +26,10 @@ struct ContentView: View {
                     .tabItem {
                         Label("Feed", systemImage: "globe.asia.australia")
                     }
+                SearchView()
+                    .tabItem {
+                        Label("Feed", systemImage: "magnifyingglass")
+                    }
                 PostView()
                     .tabItem {
                         Label("Post", systemImage: "plus.app")
