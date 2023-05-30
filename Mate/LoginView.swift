@@ -42,7 +42,7 @@ struct WelcomeScreen: View {
         NavigationView {
             ZStack {
                 LinearGradient(
-                    gradient: Gradient(colors: [.black, .gray]),
+                    gradient: Gradient(colors: [.gray, .black]),
                     startPoint: .topLeading,
                     endPoint: .bottomTrailing
                 )
@@ -115,7 +115,7 @@ struct SignInView: View {
     var body: some View {
         ZStack {
             LinearGradient(
-                gradient: Gradient(colors: [.black, .gray]),
+                gradient: Gradient(colors: [.gray, .black]),
                 startPoint: .topLeading,
                 endPoint: .bottomTrailing
             )
@@ -198,7 +198,7 @@ struct SignUpView: View {
     var body: some View {
         ZStack {
             LinearGradient(
-                gradient: Gradient(colors: [.black, .gray]),
+                gradient: Gradient(colors: [.gray, .black]),
                 startPoint: .topLeading,
                 endPoint: .bottomTrailing
             )
@@ -221,12 +221,6 @@ struct SignUpView: View {
                             .foregroundColor(Color.black)
                         TextField("Email", text: $email).accentColor(Color.black)
                     }.padding()
-                    HStack {
-                        Image(systemName: "person")
-                            .foregroundColor(Color.black)
-                        TextField("Username", text: $username).accentColor(Color.black)
-                    }
-                    .padding()
                     HStack {
                         Image(systemName: "lock")
                             .foregroundColor(Color.black)

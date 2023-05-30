@@ -29,6 +29,7 @@
 		CF7D59182A23E1920023BF9B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF7D59172A23E1920023BF9B /* AppDelegate.swift */; };
 		CF7D591A2A24FEBC0023BF9B /* AccountInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF7D59192A24FEBC0023BF9B /* AccountInfoView.swift */; };
 		CF7D591C2A257EE90023BF9B /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF7D591B2A257EE90023BF9B /* SearchView.swift */; };
+		CF7D591E2A26503B0023BF9B /* OtherUserProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF7D591D2A26503B0023BF9B /* OtherUserProfileView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -48,6 +49,7 @@
 		CF7D59172A23E1920023BF9B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CF7D59192A24FEBC0023BF9B /* AccountInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountInfoView.swift; sourceTree = "<group>"; };
 		CF7D591B2A257EE90023BF9B /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
+		CF7D591D2A26503B0023BF9B /* OtherUserProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OtherUserProfileView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -94,6 +96,7 @@
 				CF7D58F22A23DE4A0023BF9B /* ImagePicker.swift */,
 				CF7D59192A24FEBC0023BF9B /* AccountInfoView.swift */,
 				CF7D58F62A23DE970023BF9B /* SceneDelegate.swift */,
+				CF7D591D2A26503B0023BF9B /* OtherUserProfileView.swift */,
 				CF7D591B2A257EE90023BF9B /* SearchView.swift */,
 				CF7D58E42A23DDA80023BF9B /* MateApp.swift */,
 				CF7D58FC2A23DF330023BF9B /* PostView.swift */,
@@ -202,6 +205,7 @@
 				CF7D58F72A23DE970023BF9B /* SceneDelegate.swift in Sources */,
 				CF7D58FF2A23DF410023BF9B /* FeedView.swift in Sources */,
 				CF7D58F32A23DE4A0023BF9B /* ImagePicker.swift in Sources */,
+				CF7D591E2A26503B0023BF9B /* OtherUserProfileView.swift in Sources */,
 				CF7D58FD2A23DF330023BF9B /* PostView.swift in Sources */,
 				CF7D591C2A257EE90023BF9B /* SearchView.swift in Sources */,
 				CF7D58E72A23DDA80023BF9B /* ContentView.swift in Sources */,

@@ -23,7 +23,6 @@ struct ProfileView: View {
     @ObservedObject private var vm = MainViewModel()
 
     var body: some View {
-        
         VStack {
             HStack {
                 Text("\(vm.user?.username ?? "User")")

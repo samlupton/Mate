@@ -19,7 +19,6 @@ struct AccountInfoView: View {
 
     
     var body: some View {
-        
         VStack {
             settingsButton
             TextField("Type here", text: $username)
@@ -35,7 +34,7 @@ struct AccountInfoView: View {
                     .cornerRadius(10)
             }.padding()
             Spacer()
-        }
+        }.navigationBarHidden(true)
         .padding()
         .fullScreenCover(isPresented: $showImagePicker) {
             ImagePicker(selectedImage: $selectedImage)
