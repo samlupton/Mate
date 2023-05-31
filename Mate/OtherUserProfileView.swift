@@ -12,7 +12,9 @@ struct OtherUserProfileView: View {
     @Environment(\.presentationMode) var presentationMode
     var username: String
     var profileImage: String
-    
+    @State var newFollower: String = ""
+
+
     var body: some View {
         VStack {
             HStack (spacing: 16) {
@@ -24,10 +26,6 @@ struct OtherUserProfileView: View {
                         .font(.headline)
                 }.padding()
                 VStack {
-                    //                Text("Profile of \(username)")
-                    //                    .navigationBarTitle(Text(username.lowercased()), displayMode: .inline).textCase(.lowercase)
-                    //                    .navigationBarItems(leading: backButton)
-                    //                    .accentColor(.black)
                     WebImage(url: URL(string: profileImage))
                         .resizable()
                         .frame(width: 82, height: 84)
@@ -47,6 +45,18 @@ struct OtherUserProfileView: View {
                 }
                 .padding()
             }
+            Button {
+                updateFollowingStatus()
+            } label: {
+                HStack {
+                    Image(systemName: "checkmark.circle")
+                } .frame(maxWidth: .infinity)
+
+            }
+            .padding()
+            .buttonStyle(.bordered)
+            .tint(.black)
+            .frame(width: .infinity)
             Spacer()
         }
         .navigationBarTitle(Text(username.lowercased()), displayMode: .inline)
@@ -55,13 +65,52 @@ struct OtherUserProfileView: View {
         .accentColor(.black)
         .navigationBarBackButtonHidden(true)
     }
-    
+
     private var backButton: some View {
         Button(action: {
             presentationMode.wrappedValue.dismiss()
         }) {
             Image(systemName: "chevron.left")
                 .imageScale(.large)
+        }
+    }
+    
+    private func updateFollowingStatus() {
+        let db = Firestore.firestore()
+        
+        guard let uid = FirebaseManager.shared.auth.currentUser?.uid else {
+            return
+        }
+        
+        let followerRef = db.collection("Users").document(uid).collection("Following")
+        
+        // Query to check if the follower already exists
+        followerRef.whereField("Following", isEqualTo: username).getDocuments { (querySnapshot, error) in
+            if let error = error {
+                print("Error querying documents: \(error)")
+                return
+            }
+            
+            if let documents = querySnapshot?.documents, !documents.isEmpty {
+                for document in documents {
+                    document.reference.delete { error in
+                        if let error = error {
+                            print("Error removing document: \(error)")
+                        } else {
+                            print("User unfollowed successfully!")
+                        }
+                    }
+                }
+            } else {
+                let userData = ["Following": username]
+                followerRef.addDocument(data: userData) { error in
+                    if let error = error {
+                        print("Error adding document: \(error)")
+                    } else {
+                        print("User followed successfully!")
+                    }
+                }
+            }
         }
     }
 }

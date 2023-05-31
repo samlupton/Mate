@@ -82,10 +82,6 @@ struct SearchView: View {
                 }
             }
     }
-    
-    private func detailedUserSearch () {
-        
-    }
 }
 
 struct SearchView_Previews: PreviewProvider {

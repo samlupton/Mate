@@ -21,6 +21,8 @@ struct ProfileView: View {
     @State private var showAlert = false
     @State private var showAccountInfo = false
     @ObservedObject private var vm = MainViewModel()
+    @State private var showingFollowersView = false
+
 
     var body: some View {
         VStack {
@@ -42,12 +44,18 @@ struct ProfileView: View {
                 }
             }
             HStack(spacing: 16) {
-                VStack{
-                    Text("Followers")
-                        .font(.caption)
-                        .foregroundColor(.gray)
-                    Text("10k")
-                        .font(.headline)
+                Button(action: {
+                    showingFollowersView = true
+                }) {
+                    VStack {
+                        Text("Followers")
+                            .font(.caption)
+                            .foregroundColor(.gray)
+                        Text("10k")
+                            .font(.headline)
+                    }
+                }.sheet(isPresented: $showingFollowersView) {
+                    FollowingListView()
                 }
                 .padding()
                 WebImage(url: URL(string: vm.user?.profileImageUrl  ?? ""))
