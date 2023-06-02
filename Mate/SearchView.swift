@@ -11,7 +11,7 @@ import SDWebImageSwiftUI
 
 struct SearchView: View {
     @State private var searchText = ""
-    @State private var searchResults: [(username: String, profileImage: String)] = []
+    @State private var searchResults: [(username: String, profileImage: String, uid: String)] = []
     
     var body: some View {
         VStack {
@@ -34,7 +34,7 @@ struct SearchView: View {
             }
             List {
                 ForEach(searchResults, id: \.username) { result in
-                    NavigationLink(destination: OtherUserProfileView(username: result.username, profileImage: result.profileImage)) {
+                    NavigationLink(destination: OtherUserProfileView(username: result.username, profileImage: result.profileImage, uid: result.uid)) {
                         HStack {
                             WebImage(url: URL(string: result.profileImage))
                                 .placeholder(Image(systemName: "person.circle"))
@@ -74,11 +74,12 @@ struct SearchView: View {
                 
                 self.searchResults = documents.compactMap { document in
                     guard let username = document.data()["username"] as? String,
+                          let uid = document.data()["uid"] as? String,
                           let profileImage = document.data()["profileImageURL"] as? String else {
                         return nil
                     }
-                    
-                    return (username: username, profileImage: profileImage)
+                    print(uid)
+                    return (username: username, profileImage: profileImage, uid: uid)
                 }
             }
     }

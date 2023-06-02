@@ -13,8 +13,11 @@ struct OtherUserProfileView: View {
     var username: String
     var profileImage: String
     @State var newFollower: String = ""
-
-
+    @State var uid: String
+    @State private var searchOtherUserUID: [(String)] = []
+    
+    
+    
     var body: some View {
         VStack {
             HStack (spacing: 16) {
@@ -51,12 +54,11 @@ struct OtherUserProfileView: View {
                 HStack {
                     Image(systemName: "checkmark.circle")
                 } .frame(maxWidth: .infinity)
-
+                
             }
             .padding()
             .buttonStyle(.bordered)
             .tint(.black)
-            .frame(width: .infinity)
             Spacer()
         }
         .navigationBarTitle(Text(username.lowercased()), displayMode: .inline)
@@ -65,7 +67,7 @@ struct OtherUserProfileView: View {
         .accentColor(.black)
         .navigationBarBackButtonHidden(true)
     }
-
+    
     private var backButton: some View {
         Button(action: {
             presentationMode.wrappedValue.dismiss()
@@ -85,42 +87,69 @@ struct OtherUserProfileView: View {
         let followerRef = db.collection("Users").document(uid).collection("Following")
         
         // Query to check if the follower already exists
-        followerRef.whereField("Following", isEqualTo: username).getDocuments { (querySnapshot, error) in
-            if let error = error {
-                print("Error querying documents: \(error)")
-                return
-            }
-            
-            if let documents = querySnapshot?.documents, !documents.isEmpty {
-                for document in documents {
-                    document.reference.delete { error in
+        followerRef.whereField("Following", isEqualTo: username)
+            .getDocuments { (querySnapshot, error) in
+                if let error = error {
+                    print("Error querying documents: \(error)")
+                    return
+                }
+                
+                if let documents = querySnapshot?.documents, !documents.isEmpty {
+                    for document in documents {
+                        document.reference.delete { error in
+                            if let error = error {
+                                print("Error removing document: \(error)")
+                            } else {
+                                print("User unfollowed successfully!")
+                            }
+                        }
+                    }
+                } else {
+                    let userData = ["Following": username, "uid": getOtherUsersUID()]
+                    followerRef.addDocument(data: userData) { error in
                         if let error = error {
-                            print("Error removing document: \(error)")
+                            print("Error adding document: \(error)")
                         } else {
-                            print("User unfollowed successfully!")
+                            print("User followed successfully!")
                         }
                     }
                 }
-            } else {
-                let userData = ["Following": username]
-                followerRef.addDocument(data: userData) { error in
-                    if let error = error {
-                        print("Error adding document: \(error)")
-                    } else {
-                        print("User followed successfully!")
+            }
+    }
+    
+    private func getOtherUsersUID() -> String {
+        
+        let usersRef = Firestore.firestore().collection("Users")
+        
+        usersRef.whereField("username", isEqualTo: username)
+            .getDocuments { snapshot, error in
+                if let error = error {
+                    print("Error searching for users: \(error.localizedDescription)")
+                    return
+                }
+                
+                guard let documents = snapshot?.documents else {
+                    print("No user documents found.")
+                    return
+                }
+                
+                self.searchOtherUserUID = documents.compactMap { document in
+                    guard  let uid = document.data()["uid"] as? String else {
+                        return ""
                     }
+                    return uid
                 }
             }
-        }
+        return uid
     }
 }
-
 
 struct OtherUserProfileView_Previews: PreviewProvider {
     static var previews: some View {
         @State var username: String = ""
         @State var profileImage: String = ""
+        @State var uid: String = ""
 
-        OtherUserProfileView(username: username, profileImage: profileImage)
+        OtherUserProfileView(username: username, profileImage: profileImage, uid: uid)
     }
 }
