@@ -12,7 +12,7 @@ import FirebaseStorage
 import SDWebImageSwiftUI
 
 struct ProfileView: View {
-
+    
     @State private var selectedImage: UIImage? = nil
     @State private var showImagePicker: Bool = false
     @State private var showSaveAlert: Bool = false
@@ -21,15 +21,16 @@ struct ProfileView: View {
     @State private var showAccountInfo = false
     @State private var showingFollowersView = false
     @State private var usernames: [String] = []
-    @State private var otherUserInfo: [(username: String, profileImage: String)] = []
+    @State private var otherUserInfo: [(username: String, profileImage: String, uid: String)] = []
     @State private var profileImage: String = ""
-    @State private var uid: String = ""
+    @State var gotonextpage: Bool = false
+    @State private var selectedUser: (username: String, profileImage: String, uid: String)? = nil 
 
     
     @Binding var isLoggedIn: Bool
     
     @ObservedObject private var vm = MainViewModel()
-
+    
     var body: some View {
         VStack {
             HStack {
@@ -55,49 +56,44 @@ struct ProfileView: View {
                     }
                     showingFollowersView = true
                 }) {
-                    VStack {
-                        Text("Following")
-                            .font(.caption)
-                            .foregroundColor(.gray)
-                        Text("5k")
-                            .font(.headline)
-                    }
-                }.sheet(isPresented: $showingFollowersView) {
-                    List(otherUserInfo, id: \.username) { userInfo in
-                        //                            HStack {
-                        //                                WebImage(url: URL(string: userInfo.profileImage))
-                        //                                    .resizable()
-                        //                                    .frame(width: 50, height: 50)
-                        //                                    .clipShape(Circle())
-                        //                                    .foregroundColor(Color.black)
-                        //                                    .clipped()
-                        ////                                    .overlay(Circle().stroke(Color.black, lineWidth: 2))
-                        //                                    .padding()
-                        //                                    .foregroundColor(Color.black)
-                        //                                Text(userInfo.username)
-                        //                                    .foregroundColor(.black)
-                        //                            }.frame(height: 65)
-                        NavigationLink(destination: OtherUserProfileView(username: userInfo.username, profileImage: userInfo.profileImage, uid: uid)) {
-                            HStack {
-                                WebImage(url: URL(string: userInfo.profileImage))
-                                    .placeholder(Image(systemName: "person.circle"))
-                                    .resizable()
-                                    .frame(width: 40, height: 40)
-                                    .clipShape(Circle())
-                                    .foregroundColor(Color.black)
-                                    .foregroundColor(Color.black)
-
-                                Text(userInfo.username)
-                                    .textCase(.lowercase)
-                            }
-                        }
-                    }
-                    .onAppear {
-                        ProfileView(isLoggedIn: $isLoggedIn).fetchAllFollowingUsernamesInfo { usernames in
-                            self.usernames = usernames
+                    HStack {
+                        VStack {
+                            Text("Following")
+                                .font(.caption)
+                                .foregroundColor(.black)
+                            Text("5k")
+                                .font(.headline)
+                                .foregroundColor(.black)
                         }
                     }
                 }
+                .sheet(isPresented: $showingFollowersView) {
+                    NavigationView {
+                        List(otherUserInfo, id: \.username) { userInfo in
+                            Button(action: {
+                                selectedUser = userInfo
+                                gotonextpage = true
+                            }) {
+                                HStack {
+                                    WebImage(url: URL(string: userInfo.profileImage))
+                                        .placeholder(Image(systemName: "person.circle"))
+                                        .resizable()
+                                        .frame(width: 40, height: 40)
+                                        .clipShape(Circle())
+                                        .foregroundColor(Color.black)
+                                    Text(userInfo.username)
+                                        .textCase(.lowercase)
+                                }
+                            }
+                        }
+                        .background(
+                            NavigationLink(destination: OtherUserProfileView(username: selectedUser?.username ?? "",
+                                                                             profileImage: selectedUser?.profileImage ?? "",
+                                                                             uid: selectedUser?.uid ?? ""),
+                                           isActive: $gotonextpage) { EmptyView() }
+                        ).foregroundColor(Color.black)
+                    }
+            }
                 .padding()
                 WebImage(url: URL(string: vm.user?.profileImageUrl  ?? ""))
                     .resizable()
@@ -141,58 +137,83 @@ struct ProfileView: View {
             }
             
             var usernames: [String] = []
-            var updatedOtherUserInfo: [(username: String, profileImage: String)] = []
+            var updatedOtherUserInfo: [(username: String, profileImage: String, uid: String)] = []
             
             let group = DispatchGroup()
-                       
-                       for document in documents {
-                           let uid = document.data()["uid"] as? String ?? ""
-                           
-                           group.enter()
-                           
-                           searchOtherUsersProfileImageAndUsername(uid: uid) { fetchedUsername, fetchedProfileImage in
-                               updatedOtherUserInfo.append((username: fetchedUsername, profileImage: fetchedProfileImage))
-                               usernames.append(username)
-                               group.leave()
-                           }
-                       }
-                       
+            
+            for document in documents {
+                let uid = document.data()["uid"] as? String ?? ""
+                
+                group.enter()
+                
+                searchOtherUsersProfileImageAndUsername(uid: uid) { fetchedUsername, fetchedProfileImage, fetchuid in
+                    updatedOtherUserInfo.append((username: fetchedUsername, profileImage: fetchedProfileImage, uid: fetchuid))
+                    usernames.append(username)
+                    group.leave()
+                }
+            }
+            
             group.notify(queue: .main) {
-                        self.otherUserInfo = updatedOtherUserInfo // Assign the updated array to the original property
-                        completion(usernames)
-                    }
+                self.otherUserInfo = updatedOtherUserInfo // Assign the updated array to the original property
+                completion(usernames)
+            }
         }
     }
-
-    private func searchOtherUsersProfileImageAndUsername(uid: String, completion: @escaping (String, String) -> Void) {
+    
+    private func searchOtherUsersProfileImageAndUsername(uid: String, completion: @escaping (String, String, String) -> Void) {
         let usersRef = Firestore.firestore().collection("Users")
         print("the uid is: " + uid)
         usersRef.whereField("uid", isEqualTo: uid).getDocuments { snapshot, error in
             if let error = error {
                 print("Error searching for users: \(error.localizedDescription)")
-                completion("", "")
+                completion("", "", "")
                 return
             }
-
+            
             guard let documents = snapshot?.documents else {
                 print("No user documents found.")
-                completion("", "")
+                completion("", "", "")
                 return
             }
-
+            
             if let document = documents.first,
                let username = document.data()["username"] as? String,
+               let uid = document.data()["uid"] as? String,
                let profileImage = document.data()["profileImageURL"] as? String {
                 
                 print(username + " or " + profileImage)
-                completion(username, profileImage)
+                completion(username, profileImage, uid)
             } else {
-                completion("", "")
-               
+                completion("", "", "")
             }
         }
     }
 }
+
+struct FollowingListView: View {
+    var otherUserInfo: [(username: String, profileImage: String, uid: String)]
+    @State var gotonextpage: Bool
+    var body: some View {
+        VStack {
+            List(otherUserInfo, id: \.username) { userInfo in
+                NavigationLink(destination: OtherUserProfileView(username: userInfo.username, profileImage: userInfo.profileImage, uid: userInfo.uid), isActive: $gotonextpage) {
+                    HStack {
+                        WebImage(url: URL(string: userInfo.profileImage))
+                            .placeholder(Image(systemName: "person.circle"))
+                            .resizable()
+                            .frame(width: 40, height: 40)
+                            .clipShape(Circle())
+                            .foregroundColor(Color.black)
+                        Text(userInfo.username)
+                            .textCase(.lowercase)
+                    }
+                }
+            }
+        }
+        .padding()
+    }
+}
+
 
 struct ProfileView_Previews: PreviewProvider {
     static var previews: some View {

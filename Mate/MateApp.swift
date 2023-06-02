@@ -12,8 +12,8 @@ import Firebase
 struct MateApp: App {
     
     init() {
-            FirebaseApp.configure()
-        }
+        FirebaseApp.configure()
+    }
     
     var body: some Scene {
         WindowGroup {
