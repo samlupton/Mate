@@ -152,6 +152,10 @@ struct ProfileView: View {
                 Spacer()
                 
             }
+            .background(
+                RoundedRectangle(cornerRadius: 15) 
+                    .foregroundColor(Color("AccentColor").opacity(0.5))
+            )
             Spacer()
         }
         .padding()

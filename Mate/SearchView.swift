@@ -14,43 +14,46 @@ struct SearchView: View {
     @State private var searchResults: [(username: String, profileImage: String, uid: String)] = []
     
     var body: some View {
-        VStack {
-            HStack {
-                TextField("Search users", text: $searchText)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
+        NavigationView {
+            VStack {
+                if searchText.isEmpty {
+                    ZStack{
+                       
+                        RoundedRectangle(cornerRadius: 30)
+                            .stroke(Color.gray, lineWidth: 0)
+                            .opacity(0.5).background(Color("AccentColor"))
+                        Text("HEY")
+                    }
+                    .cornerRadius(30)
+                    .frame(height: 150)
+                    .edgesIgnoringSafeArea(.all)
                     .padding()
-                
-                Button(action: {
-                    searchUsers()
-                }) {
-                    Image(systemName: "magnifyingglass")
-                        .font(.body)
-                        .frame(width: 2, height: 2)
-                        .foregroundColor(.white)
-                        .padding()
-                        .background(Color.gray)
-                        .cornerRadius(30)
-                }.padding()
-            }
-            List {
-                ForEach(searchResults, id: \.username) { result in
-                    NavigationLink(destination: OtherUserProfileView(username: result.username, profileImage: result.profileImage, uid: result.uid)) {
-                        HStack {
-                            WebImage(url: URL(string: result.profileImage))
-                                .placeholder(Image(systemName: "person.circle"))
-                                .resizable()
-                                .frame(width: 40, height: 40)
-                                .clipShape(Circle())
-                                .foregroundColor(Color.black)
-                                .foregroundColor(Color.black)
-                            
-                            Text(result.username)
-                                .textCase(.lowercase)
+                    
+                } else {
+                    List {
+                        ForEach(searchResults, id: \.username) { result in
+                            NavigationLink(destination: OtherUserProfileView(username: result.username, profileImage: result.profileImage, uid: result.uid)) {
+                                HStack {
+                                    WebImage(url: URL(string: result.profileImage))
+                                        .placeholder(Image(systemName: "person.circle"))
+                                        .resizable()
+                                        .frame(width: 40, height: 40)
+                                        .clipShape(Circle())
+                                        .foregroundColor(Color.black)
+                                    
+                                    Text(result.username)
+                                        .textCase(.lowercase)
+                                }
+                            }
                         }
                     }
                 }
-            }
-        }.navigationBarHidden(true)
+            }.searchable(text: $searchText)
+                .onChange(of: searchText) { newValue in
+                    searchUsers()
+                }
+        }
+        
     }
     
     private func searchUsers() {
