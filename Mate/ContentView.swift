@@ -28,7 +28,7 @@ struct ContentView: View {
                     }
                 SearchView()
                     .tabItem {
-                        Label("Feed", systemImage: "magnifyingglass")
+                        Label("Search", systemImage: "magnifyingglass")
                     }
                 PostView()
                     .tabItem {
@@ -36,7 +36,7 @@ struct ContentView: View {
                     }
                 LocalSellerView()
                     .tabItem {
-                        Label("Local", systemImage: "antenna.radiowaves.left.and.right")
+                        Label("Referral", systemImage: "dollarsign.circle")
                     }
                 ProfileView(isLoggedIn: $isLoggedIn)
                     .tabItem {

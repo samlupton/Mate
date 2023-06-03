@@ -16,8 +16,6 @@ struct OtherUserProfileView: View {
     @State var uid: String
     @State private var searchOtherUserUID: [(String)] = []
     
-    
-    
     var body: some View {
         VStack {
             HStack (spacing: 16) {
@@ -49,6 +47,7 @@ struct OtherUserProfileView: View {
                 .padding()
             }
             Button {
+                updateFollowerStatus()
                 updateFollowingStatus()
             } label: {
                 HStack {
@@ -87,7 +86,7 @@ struct OtherUserProfileView: View {
         let followerRef = db.collection("Users").document(uid).collection("Following")
         
         // Query to check if the follower already exists
-        followerRef.whereField("Following", isEqualTo: username)
+        followerRef.whereField("uid", isEqualTo: getOtherUsersUID())
             .getDocuments { (querySnapshot, error) in
                 if let error = error {
                     print("Error querying documents: \(error)")
@@ -105,7 +104,47 @@ struct OtherUserProfileView: View {
                         }
                     }
                 } else {
-                    let userData = ["Following": username, "uid": getOtherUsersUID()]
+                    let userData = ["uid": getOtherUsersUID()]
+                    followerRef.addDocument(data: userData) { error in
+                        if let error = error {
+                            print("Error adding document: \(error)")
+                        } else {
+                            print("User followed successfully!")
+                        }
+                    }
+                }
+            }
+    }
+    
+    private func updateFollowerStatus() {
+        let db = Firestore.firestore()
+        
+        guard let uid = FirebaseManager.shared.auth.currentUser?.uid else {
+            return
+        }
+        
+        let followerRef = db.collection("Users").document(getOtherUsersUID()).collection("Followers")
+        
+        // Query to check if the follower already exists
+        followerRef.whereField("uid", isEqualTo: uid)
+            .getDocuments { (querySnapshot, error) in
+                if let error = error {
+                    print("Error querying documents: \(error)")
+                    return
+                }
+                
+                if let documents = querySnapshot?.documents, !documents.isEmpty {
+                    for document in documents {
+                        document.reference.delete { error in
+                            if let error = error {
+                                print("Error removing document: \(error)")
+                            } else {
+                                print("User unfollowed successfully!")
+                            }
+                        }
+                    }
+                } else {
+                    let userData = ["uid": uid]
                     followerRef.addDocument(data: userData) { error in
                         if let error = error {
                             print("Error adding document: \(error)")
