@@ -63,10 +63,7 @@ struct ProfileView: View {
                 .sheet(isPresented: $showingFolloweringView) {
                     NavigationView {
                         List(otherUserInfo, id: \.username) { userInfo in
-                            Button(action: {
-                                selectedUser = userInfo
-                                gotonextpage = true
-                            }) {
+                            NavigationLink(destination: OtherUserProfileView(username: userInfo.username, profileImage: userInfo.profileImage, uid: userInfo.uid)) {
                                 HStack {
                                     WebImage(url: URL(string: userInfo.profileImage))
                                         .placeholder(Image(systemName: "person.circle"))
@@ -74,20 +71,16 @@ struct ProfileView: View {
                                         .frame(width: 40, height: 40)
                                         .clipShape(Circle())
                                         .foregroundColor(Color.black)
+                                    
                                     Text(userInfo.username)
                                         .textCase(.lowercase)
                                 }
                             }
                         }
                         .background(
-                            NavigationLink(
-                                destination:
-                                    OtherUserProfileView(
-                                        username: selectedUser?.username ?? "",
-                                        profileImage: selectedUser?.profileImage ?? "",
-                                        uid: selectedUser?.uid ?? ""),
-                                isActive: $gotonextpage) { EmptyView() }
-                        ).foregroundColor(Color.black)
+                            NavigationLink(destination: EmptyView(), isActive: $gotonextpage) { EmptyView() }
+                        )
+                        .foregroundColor(Color.black)
                     }
                 }
                 Spacer()
@@ -154,7 +147,7 @@ struct ProfileView: View {
             }
             .background(
                 RoundedRectangle(cornerRadius: 15) 
-                    .foregroundColor(Color("AccentColor").opacity(0.5))
+                    .foregroundColor(Color("primarycolor").opacity(1.0))
             )
             Spacer()
         }
