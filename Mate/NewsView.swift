@@ -122,7 +122,7 @@ struct NewsView: View {
                     Text("Loading...")
                 }
             }
-            .padding()
+            .padding(.horizontal)
         }
         .onAppear {
             viewModel.fetchNewsData()

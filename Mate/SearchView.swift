@@ -39,8 +39,7 @@ struct SearchView: View {
                     }
                 }
             }
-            .searchable(text: $searchText)
-                .onChange(of: searchText) { newValue in
+                .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always)) .onChange(of: searchText) { newValue in
                     searchUsers()
                 }
         }
