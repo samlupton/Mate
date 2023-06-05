@@ -14,15 +14,20 @@ struct AccountInfoView: View {
     @State private var showImagePicker: Bool = false
     @State private var showSaveAlert: Bool = false
     @State private var username: String = ""
+    @State private var bio: String = ""
     @State private var showAlert = false
+    @State private var showBioAlert = false
     @Binding var isLoggedIn: Bool
 
     
     var body: some View {
         VStack {
             settingsButton
-            TextField("Type here", text: $username)
+            TextField("Set Username", text: $username)
+            TextField("Set Bio", text: $bio)
+
             usernameButton
+            bioButton
             Button(action: {
                 isLoggedIn = false
             }) {
@@ -89,6 +94,32 @@ struct AccountInfoView: View {
         }
     }
     
+    private var bioButton: some View {
+        Button("Set Personal Bio") {
+            showBioAlert = true
+        }
+        .alert(isPresented: $showBioAlert) {
+            Alert(
+                title: Text("Set Bio"),
+                message: nil,
+                primaryButton: .default(Text("Save"), action: {
+                    guard let uid = FirebaseManager.shared.auth.currentUser?.uid else {
+                        return
+                    }
+                    let userData = ["bio": bio]
+                    FirebaseManager.shared.firestore.collection("Users").document(uid).setData(userData, merge: true) { err in
+                        if let err = err {
+                            print(err)
+                            return
+                        }
+                        print("Username saved successfully.")
+                    }
+                }),
+                secondaryButton: .cancel()
+            )
+        }
+    }
+    
     private func persistImageToStorage() {
         guard let uid = FirebaseManager.shared.auth.currentUser?.uid else {
             return
@@ -132,5 +163,12 @@ struct AccountInfoView: View {
             }
             print("success")
         }
+    }
+}
+
+struct AccountInfoView_Previews: PreviewProvider {
+    static var previews: some View {
+        @State var isLoggedIn: Bool = true
+        AccountInfoView(isLoggedIn: $isLoggedIn)
     }
 }

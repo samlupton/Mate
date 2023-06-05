@@ -20,7 +20,7 @@ import FirebaseStorage
 import SDWebImageSwiftUI
 
 struct User {
-    let uid, email, username, profileImageUrl: String
+    let uid, email, username, profileImageUrl, bio: String
 }
 
 class MainViewModel: ObservableObject {
@@ -48,7 +48,8 @@ class MainViewModel: ObservableObject {
             let email = data["email"] as? String ?? ""
             let username = data["username"] as? String ?? ""
             let profileImageUrl = data["profileImageURL"] as? String ?? ""
-            self.user = User(uid: uid, email: email, username: username, profileImageUrl: profileImageUrl)
+            let bio = data["bio"] as? String ?? ""
+            self.user = User(uid: uid, email: email, username: username, profileImageUrl: profileImageUrl, bio: bio)
             
         }
     }

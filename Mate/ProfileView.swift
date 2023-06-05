@@ -34,7 +34,7 @@ struct ProfileView: View {
                 Button(action: {
                     showAccountInfo = true
                 }) {
-                    Image(systemName: "gear")
+                    Image(systemName: "line.3.horizontal")
                         .font(.system(size:25))
                         .foregroundColor(Color.black)
                 }
@@ -60,7 +60,7 @@ struct ProfileView: View {
                         }
                     }
                 }
-                .sheet(isPresented: $showingFolloweringView) {
+                .fullScreenCover(isPresented: $showingFolloweringView) {
                     NavigationView {
                         List(otherUserInfo, id: \.username) { userInfo in
                             NavigationLink(destination: OtherUserProfileView(username: userInfo.username, profileImage: userInfo.profileImage, uid: userInfo.uid)) {
@@ -77,11 +77,16 @@ struct ProfileView: View {
                                 }
                             }
                         }
-                        .background(
-                            NavigationLink(destination: EmptyView(), isActive: $gotonextpage) { EmptyView() }
-                        )
                         .foregroundColor(Color.black)
+                        .navigationBarItems(leading: Button(action: {
+                                    showingFolloweringView = false
+                                }) {
+                                    Image(systemName: "chevron.left")
+                                        .foregroundColor(Color.black)
+                                })
+                        .navigationTitle(Text("Following"))
                     }
+
                 }
                 Spacer()
                 
@@ -130,6 +135,7 @@ struct ProfileView: View {
                                 }
                             }
                         }
+                        .navigationTitle(Text("Followers"))
                         .background(
                             NavigationLink(
                                 destination:
@@ -138,7 +144,8 @@ struct ProfileView: View {
                                         profileImage: selectedUser?.profileImage ?? "",
                                         uid: selectedUser?.uid ?? ""),
                                 isActive: $gotonextpage) { EmptyView() }
-                        ).foregroundColor(Color.black)
+                        )
+                        .foregroundColor(Color.black)
                     }
                 }
                 
@@ -149,6 +156,14 @@ struct ProfileView: View {
                 RoundedRectangle(cornerRadius: 15) 
                     .foregroundColor(Color("primarycolor").opacity(1.0))
             )
+            
+            HStack{
+                Text("\(vm.user?.bio ?? "bio")")
+                    .font(.body)
+                    .bold()
+                    .textCase(.lowercase)
+                Spacer()
+            }.padding()
             Spacer()
         }
         .padding()
