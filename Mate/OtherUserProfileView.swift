@@ -19,13 +19,16 @@ struct OtherUserProfileView: View {
     var body: some View {
         VStack {
             HStack (spacing: 16) {
+                Spacer()
                 VStack{
                     Text("Followers")
                         .font(.caption)
                         .foregroundColor(.gray)
                     Text("10k")
                         .font(.headline)
-                }.padding()
+                }
+//                .padding()
+                Spacer()
                 VStack {
                     WebImage(url: URL(string: profileImage))
                         .resizable()
@@ -37,6 +40,7 @@ struct OtherUserProfileView: View {
                         .padding()
                         .foregroundColor(Color.black)
                 }
+                Spacer()
                 VStack {
                     Text("Following")
                         .font(.caption)
@@ -44,8 +48,14 @@ struct OtherUserProfileView: View {
                     Text("5k")
                         .font(.headline)
                 }
-                .padding()
+//                .padding()
+                Spacer()
             }
+            .background(
+                RoundedRectangle(cornerRadius: 15)
+                    .foregroundColor(Color("primarycolor").opacity(0.25))
+            )
+            .padding(.horizontal)
             Button {
                 updateFollowerStatus()
                 updateFollowingStatus()
@@ -55,11 +65,12 @@ struct OtherUserProfileView: View {
                 } .frame(maxWidth: .infinity)
                 
             }
-            .padding()
+            .padding(.horizontal)
             .buttonStyle(.bordered)
             .tint(.black)
             Spacer()
         }
+        
         .navigationBarTitle(Text(username.lowercased()), displayMode: .inline)
         .textCase(.lowercase)
         .navigationBarItems(leading: backButton)

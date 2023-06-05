@@ -20,8 +20,6 @@ struct AccountInfoView: View {
     @Binding var isLoggedIn: Bool
     let characterLimit = 50
 
-
-    
     var body: some View {
         VStack {
             settingsButton

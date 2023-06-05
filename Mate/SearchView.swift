@@ -17,18 +17,8 @@ struct SearchView: View {
         NavigationView {
             VStack {
                 if searchText.isEmpty {
-                    ZStack{
-                       
-                        RoundedRectangle(cornerRadius: 30)
-                            .stroke(Color.gray, lineWidth: 0)
-                            .opacity(0.5).background(Color("AccentColor"))
-                        Text("HEY")
-                    }
-                    .cornerRadius(30)
-                    .frame(height: 150)
-                    .edgesIgnoringSafeArea(.all)
-                    .padding()
-                    
+                        NewsView()
+                    .padding(.top, 5)
                 } else {
                     List {
                         ForEach(searchResults, id: \.username) { result in
@@ -48,12 +38,12 @@ struct SearchView: View {
                         }
                     }
                 }
-            }.searchable(text: $searchText)
+            }
+            .searchable(text: $searchText)
                 .onChange(of: searchText) { newValue in
                     searchUsers()
                 }
         }
-        
     }
     
     private func searchUsers() {
