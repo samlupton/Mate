@@ -148,15 +148,12 @@ struct ProfileView: View {
                         .foregroundColor(Color.black)
                     }
                 }
-                
                 Spacer()
-                
             }
             .background(
                 RoundedRectangle(cornerRadius: 15) 
-                    .foregroundColor(Color("primarycolor").opacity(1.0))
+                    .foregroundColor(Color("primarycolor").opacity(0.25))
             )
-            
             HStack{
                 Text("\(vm.user?.bio ?? "bio")")
                     .font(.body)

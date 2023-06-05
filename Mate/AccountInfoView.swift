@@ -18,6 +18,8 @@ struct AccountInfoView: View {
     @State private var showAlert = false
     @State private var showBioAlert = false
     @Binding var isLoggedIn: Bool
+    let characterLimit = 50
+
 
     
     var body: some View {
@@ -69,8 +71,16 @@ struct AccountInfoView: View {
     }
     
     private var usernameButton: some View {
-        Button("Set Username") {
+        
+        Button(action: {
             showAlert = true
+        }) {
+            Text("Set Username")
+                .font(.headline)
+                .foregroundColor(.white)
+                .padding()
+                .background(Color.blue)
+                .cornerRadius(10)
         }
         .alert(isPresented: $showAlert) {
             Alert(
@@ -95,8 +105,21 @@ struct AccountInfoView: View {
     }
     
     private var bioButton: some View {
-        Button("Set Personal Bio") {
+        Button(action: {
             showBioAlert = true
+        }) {
+            Text("Set Bio")
+                .font(.headline)
+                .foregroundColor(.white)
+                .padding()
+                .background(Color.blue)
+                .cornerRadius(10)
+                .onChange(of: bio) { newValue in
+                    if newValue.count > characterLimit {
+                        bio = String(newValue.prefix(characterLimit))
+                    }
+                }
+            
         }
         .alert(isPresented: $showBioAlert) {
             Alert(
