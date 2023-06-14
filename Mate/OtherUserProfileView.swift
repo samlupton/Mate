@@ -20,7 +20,8 @@ struct OtherUserProfileView: View {
     @State private var otherUserInfo: [(username: String, profileImage: String, uid: String)] = []
     @State private var selectedUser: (username: String, profileImage: String, uid: String)? = nil
     @State private var gotonextpage = false
-
+    @State private var numFollowers: Int = 0
+    @State private var numFollowing: Int = 0
 
     var body: some View {
         VStack {
@@ -35,7 +36,7 @@ struct OtherUserProfileView: View {
                             Text("Following")
                                 .font(.caption)
                                 .foregroundColor(.black)
-                            Text("10k")
+                            Text("\(numFollowing)")
                                 .font(.headline)
                                 .foregroundColor(.black)
                         }
@@ -89,7 +90,7 @@ struct OtherUserProfileView: View {
                             Text("Followers")
                                 .font(.caption)
                                 .foregroundColor(.black)
-                            Text("5k")
+                            Text("\(numFollowers)")
                                 .font(.headline)
                                 .foregroundColor(.black)
                         }
@@ -142,6 +143,9 @@ struct OtherUserProfileView: View {
             .buttonStyle(.bordered)
             .tint(.black)
             Spacer()
+        }.onAppear {
+            fetchNumFollowers()
+            fetchNumFollowing()
         }
 
         .navigationBarTitle(Text(username.lowercased()), displayMode: .inline)
@@ -363,6 +367,58 @@ struct OtherUserProfileView: View {
                 }
             }
         return uid
+    }
+    
+    func fetchNumFollowers() {
+        
+        let db = Firestore.firestore()
+        let followingCollection = db.collection("Users").document(getOtherUsersUID()).collection("Followers")
+        
+        followingCollection.getDocuments { (snapshot, error) in
+            if let error = error {
+                print("Error fetching followers: \(error.localizedDescription)")
+                return
+            }
+            
+            guard let snapshot = snapshot else {
+                print("Snapshot is nil")
+                return
+            }
+            
+            let count = snapshot.documents.count
+            print("Number of followers: \(count)")
+            
+            // Update the state variable on the main queue
+            DispatchQueue.main.async {
+                self.numFollowers = count
+            }
+        }
+    }
+    
+    func fetchNumFollowing() {
+        
+        let db = Firestore.firestore()
+        let followingCollection = db.collection("Users").document(getOtherUsersUID()).collection("Following")
+        
+        followingCollection.getDocuments { (snapshot, error) in
+            if let error = error {
+                print("Error fetching followers: \(error.localizedDescription)")
+                return
+            }
+            
+            guard let snapshot = snapshot else {
+                print("Snapshot is nil")
+                return
+            }
+            
+            let count = snapshot.documents.count
+            print("Number of followers: \(count)")
+            
+            // Update the state variable on the main queue
+            DispatchQueue.main.async {
+                self.numFollowing = count
+            }
+        }
     }
 }
 

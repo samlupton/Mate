@@ -28,18 +28,6 @@ struct AccountInfoView: View {
             
             usernameButton
             bioButton
-            
-//            NavigationLink(destination: WelcomeScreen()) {
-//                Text("Sign In")
-//                    .font(.headline)
-//                    .foregroundColor(.black)
-//                    .padding()
-//                    .frame(maxWidth: .infinity)
-//                    .background(Color.white)
-//                    .cornerRadius(30)
-//            }.simultaneousGesture(TapGesture().onEnded{
-//                isLoggedIn = false
-//            })
             Button(action: {
                 isLoggedIn = false
             }) {
