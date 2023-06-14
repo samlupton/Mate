@@ -44,7 +44,7 @@ struct ContentView: View {
                     }
             }.accentColor(Color.gray).background(Color.white).opacity(1)
         } else {
-            WelcomeScreen()
+            WelcomeScreen().navigationBarBackButtonHidden()
         }
     }
 }

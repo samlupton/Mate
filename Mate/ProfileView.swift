@@ -17,6 +17,8 @@ struct ProfileView: View {
     @State private var showingFollowersView = false
     @State private var showingFolloweringView = false
     @State private var gotonextpage = false
+    @State private var numFollowers: Int = 0
+    @State private var numFollowing: Int = 0
     @State private var selectedUser: (username: String, profileImage: String, uid: String)? = nil
     @State private var otherUserInfo: [(username: String, profileImage: String, uid: String)] = []
     
@@ -54,7 +56,7 @@ struct ProfileView: View {
                             Text("Following")
                                 .font(.caption)
                                 .foregroundColor(.black)
-                            Text("5k")
+                            Text("\(numFollowing)")
                                 .font(.headline)
                                 .foregroundColor(.black)
                         }
@@ -111,12 +113,13 @@ struct ProfileView: View {
                             Text("Followers")
                                 .font(.caption)
                                 .foregroundColor(.black)
-                            Text("5k")
+                            Text("\(numFollowers)")
                                 .font(.headline)
                                 .foregroundColor(.black)
                         }
                     }
-                } .sheet(isPresented: $showingFollowersView) {
+                }
+                .sheet(isPresented: $showingFollowersView) {
                     NavigationView {
                         List(otherUserInfo, id: \.username) { userInfo in
                             Button(action: {
@@ -163,9 +166,72 @@ struct ProfileView: View {
             }.padding()
             Spacer()
         }
+        .onAppear {
+            fetchNumFollowers()
+            fetchNumFollowing()
+        }
         .padding()
         .navigationBarHidden(true)
     }
+    
+    func fetchNumFollowers() {
+        guard let currentUserID = FirebaseManager.shared.auth.currentUser?.uid else {
+            return
+        }
+        
+        let db = Firestore.firestore()
+        let followingCollection = db.collection("Users").document(currentUserID).collection("Followers")
+        
+        followingCollection.getDocuments { (snapshot, error) in
+            if let error = error {
+                print("Error fetching followers: \(error.localizedDescription)")
+                return
+            }
+            
+            guard let snapshot = snapshot else {
+                print("Snapshot is nil")
+                return
+            }
+            
+            let count = snapshot.documents.count
+            print("Number of followers: \(count)")
+            
+            // Update the state variable on the main queue
+            DispatchQueue.main.async {
+                self.numFollowers = count
+            }
+        }
+    }
+    
+    func fetchNumFollowing() {
+        guard let currentUserID = FirebaseManager.shared.auth.currentUser?.uid else {
+            return
+        }
+        
+        let db = Firestore.firestore()
+        let followingCollection = db.collection("Users").document(currentUserID).collection("Following")
+        
+        followingCollection.getDocuments { (snapshot, error) in
+            if let error = error {
+                print("Error fetching followers: \(error.localizedDescription)")
+                return
+            }
+            
+            guard let snapshot = snapshot else {
+                print("Snapshot is nil")
+                return
+            }
+            
+            let count = snapshot.documents.count
+            print("Number of followers: \(count)")
+            
+            // Update the state variable on the main queue
+            DispatchQueue.main.async {
+                self.numFollowing = count
+            }
+        }
+    }
+
     
     // fetchAllFollowingUsernamesInfo gets all the user ID's from the documents inside
     // Collection: 'Users' -> Collection: 'Following' -> Field: 'uid'

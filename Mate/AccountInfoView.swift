@@ -19,15 +19,27 @@ struct AccountInfoView: View {
     @State private var showBioAlert = false
     @Binding var isLoggedIn: Bool
     let characterLimit = 50
-
+    
     var body: some View {
         VStack {
             settingsButton
             TextField("Set Username", text: $username)
             TextField("Set Bio", text: $bio)
-
+            
             usernameButton
             bioButton
+            
+//            NavigationLink(destination: WelcomeScreen()) {
+//                Text("Sign In")
+//                    .font(.headline)
+//                    .foregroundColor(.black)
+//                    .padding()
+//                    .frame(maxWidth: .infinity)
+//                    .background(Color.white)
+//                    .cornerRadius(30)
+//            }.simultaneousGesture(TapGesture().onEnded{
+//                isLoggedIn = false
+//            })
             Button(action: {
                 isLoggedIn = false
             }) {
@@ -40,13 +52,14 @@ struct AccountInfoView: View {
             }.padding()
             Spacer()
         }.navigationBarHidden(true)
-        .padding()
-        .fullScreenCover(isPresented: $showImagePicker) {
-            ImagePicker(selectedImage: $selectedImage)
-                .onDisappear {
-                    showSaveAlert = true
-                }
-        }
+            .padding()
+            .fullScreenCover(isPresented: $showImagePicker) {
+                ImagePicker(selectedImage: $selectedImage)
+                    .onDisappear {
+                        showSaveAlert = true
+                    }
+            }
+        
     }
     
     private var settingsButton: some View {

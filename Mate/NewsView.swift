@@ -30,7 +30,7 @@ struct ArticleImage: Codable {
 }
 
 class NewsViewModel: ObservableObject {
-    @Published var newsData: NewsResponse?
+    @Published var newsData: NewsResponse? 
     
     func fetchNewsData() {
         guard let url = URL(string: "https://site.api.espn.com/apis/site/v2/sports/football/college-football/news") else {
