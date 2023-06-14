@@ -62,7 +62,7 @@ struct WelcomeScreen: View {
                                 Spacer()
                             }
                             HStack {
-                                Text("Mate.")
+                                Text("My App.")
                                     .font(.largeTitle)
                                     .fontWeight(.bold)
                                     .foregroundColor(.white)
