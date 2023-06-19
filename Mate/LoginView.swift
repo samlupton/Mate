@@ -36,7 +36,7 @@ struct WelcomeScreen: View {
     @State private var username: String = ""
     @State private var password: String = ""
     @State private var confirmPassword: String = ""
-    @State var isLoggedIn: Bool = false
+    @State private var isLoggedIn: Bool = false
     
     var body: some View {
         NavigationView {
@@ -47,11 +47,8 @@ struct WelcomeScreen: View {
                     endPoint: .bottomTrailing
                 )
                 .ignoresSafeArea()
-                
                 VStack(spacing: 16) {
-                    
                     Spacer()
-                    
                     HStack {
                         VStack {
                             HStack {
@@ -289,7 +286,6 @@ struct SignUpView: View {
                 print("User was logged in.")
                 isLoggedIn = true
             }
-            
         }
     }
 }

@@ -365,7 +365,7 @@ struct OtherUserProfileView: View {
                     }
                     return uid
                 }
-            }
+            } 
         return uid
     }
     

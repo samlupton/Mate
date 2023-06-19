@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CF2F53FD2A3BB75600C41E95 /* UserProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF2F53FC2A3BB75600C41E95 /* UserProfile.swift */; };
 		CF7D58E52A23DDA80023BF9B /* MateApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF7D58E42A23DDA80023BF9B /* MateApp.swift */; };
 		CF7D58E72A23DDA80023BF9B /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF7D58E62A23DDA80023BF9B /* ContentView.swift */; };
 		CF7D58E92A23DDA80023BF9B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CF7D58E82A23DDA80023BF9B /* Assets.xcassets */; };
@@ -34,6 +35,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		CF2F53FC2A3BB75600C41E95 /* UserProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfile.swift; sourceTree = "<group>"; };
 		CF7D58E12A23DDA80023BF9B /* Mate.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Mate.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CF7D58E42A23DDA80023BF9B /* MateApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MateApp.swift; sourceTree = "<group>"; };
 		CF7D58E62A23DDA80023BF9B /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -97,6 +99,7 @@
 				CF7D59022A23DF5B0023BF9B /* UserModel.swift */,
 				CFC964972A2E5AF80081F880 /* NewsView.swift */,
 				CF7D58F22A23DE4A0023BF9B /* ImagePicker.swift */,
+				CF2F53FC2A3BB75600C41E95 /* UserProfile.swift */,
 				CF7D59192A24FEBC0023BF9B /* AccountInfoView.swift */,
 				CF7D58F62A23DE970023BF9B /* SceneDelegate.swift */,
 				CF7D591D2A26503B0023BF9B /* OtherUserProfileView.swift */,
@@ -207,6 +210,7 @@
 			files = (
 				CF7D58F72A23DE970023BF9B /* SceneDelegate.swift in Sources */,
 				CF7D58FF2A23DF410023BF9B /* FeedView.swift in Sources */,
+				CF2F53FD2A3BB75600C41E95 /* UserProfile.swift in Sources */,
 				CF7D58F32A23DE4A0023BF9B /* ImagePicker.swift in Sources */,
 				CFC964982A2E5AF80081F880 /* NewsView.swift in Sources */,
 				CF7D591E2A26503B0023BF9B /* OtherUserProfileView.swift in Sources */,

@@ -60,13 +60,3 @@ struct ContentView_Previews: PreviewProvider {
         ContentView()
     }
 }
-
-struct Book : Identifiable {
-
-    var id : String
-    var title : String
-    var authors : String
-    var desc : String
-    var imurl : String
-    var url : String
-}
