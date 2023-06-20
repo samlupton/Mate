@@ -10,6 +10,7 @@ import Firebase
 import FirebaseAuth
 import FirebaseStorage
 import SDWebImageSwiftUI
+import FirebaseFirestore
 
 struct ProfileView: View {
     
@@ -55,7 +56,8 @@ struct ProfileView: View {
                     .clipShape(Circle())
                     .foregroundColor(Color.black)
                     .clipped()
-                    .background(Color.gray)                    .clipShape(Circle())
+                    .background(Color.gray)
+                    .clipShape(Circle())
                 
                 
                 Spacer()
@@ -74,15 +76,14 @@ struct ProfileView: View {
                         }
                     }
                     Spacer()
-                    
+                   
                     Button(action: {
                         fetchAllFollowersUsernamesInfo { usernames in }
-                        showingFollowersView = true
+                        showingFolloweringView = true
                     }) {
                         HStack {
                             VStack {
                                 Text("Followers")
-                                    .lineLimit(1)
                                     .font(.caption)
                                     .foregroundColor(.black)
                                 Text("\(numFollowers)")
@@ -91,7 +92,7 @@ struct ProfileView: View {
                             }
                         }
                     }
-                    .fullScreenCover(isPresented: $showingFollowersView) {
+                    .sheet(isPresented: $showingFollowersView) {
                         NavigationView {
                             List(otherUserInfo, id: \.username) { userInfo in
                                 Button(action: {
@@ -110,6 +111,7 @@ struct ProfileView: View {
                                     }
                                 }
                             }
+                            .navigationTitle(Text("Followers"))
                             .background(
                                 NavigationLink(
                                     destination:
@@ -120,18 +122,9 @@ struct ProfileView: View {
                                     isActive: $gotonextpage) { EmptyView() }
                             )
                             .foregroundColor(Color.black)
-                            .navigationBarItems(leading: Button(action: {
-                                showingFollowersView = false
-                            }) {
-                                Image(systemName: "chevron.left")
-                                    .foregroundColor(Color.black)
-                            })
-                            .navigationTitle(Text("Followers"))
                         }
                     }
-                    
                     Spacer()
-                    
                     Button(action: {
                         fetchAllFollowingUsernamesInfo { usernames in }
                         showingFolloweringView = true
@@ -165,6 +158,15 @@ struct ProfileView: View {
                                     }
                                 }
                             }
+                            .background(
+                                NavigationLink(
+                                    destination:
+                                        OtherUserProfileView(
+                                            username: selectedUser?.username ?? "",
+                                            profileImage: selectedUser?.profileImage ?? "",
+                                            uid: selectedUser?.uid ?? ""),
+                                    isActive: $gotonextpage) { EmptyView() }
+                            )
                             .foregroundColor(Color.black)
                             .navigationBarItems(leading: Button(action: {
                                 showingFolloweringView = false

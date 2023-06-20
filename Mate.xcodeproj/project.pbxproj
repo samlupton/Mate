@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		CF2F53FD2A3BB75600C41E95 /* UserProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF2F53FC2A3BB75600C41E95 /* UserProfile.swift */; };
+		CF4051CE2A41450900030143 /* SearchUserHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF4051CD2A41450900030143 /* SearchUserHelper.swift */; };
 		CF7D58E52A23DDA80023BF9B /* MateApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF7D58E42A23DDA80023BF9B /* MateApp.swift */; };
 		CF7D58E72A23DDA80023BF9B /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF7D58E62A23DDA80023BF9B /* ContentView.swift */; };
 		CF7D58E92A23DDA80023BF9B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CF7D58E82A23DDA80023BF9B /* Assets.xcassets */; };
@@ -36,6 +37,7 @@
 
 /* Begin PBXFileReference section */
 		CF2F53FC2A3BB75600C41E95 /* UserProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfile.swift; sourceTree = "<group>"; };
+		CF4051CD2A41450900030143 /* SearchUserHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchUserHelper.swift; sourceTree = "<group>"; };
 		CF7D58E12A23DDA80023BF9B /* Mate.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Mate.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CF7D58E42A23DDA80023BF9B /* MateApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MateApp.swift; sourceTree = "<group>"; };
 		CF7D58E62A23DDA80023BF9B /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -74,6 +76,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		CF4051CC2A4144D700030143 /* Helper Classes */ = {
+			isa = PBXGroup;
+			children = (
+				CF4051CD2A41450900030143 /* SearchUserHelper.swift */,
+			);
+			path = "Helper Classes";
+			sourceTree = "<group>";
+		};
 		CF7D58D82A23DDA80023BF9B = {
 			isa = PBXGroup;
 			children = (
@@ -103,6 +113,7 @@
 				CF7D59192A24FEBC0023BF9B /* AccountInfoView.swift */,
 				CF7D58F62A23DE970023BF9B /* SceneDelegate.swift */,
 				CF7D591D2A26503B0023BF9B /* OtherUserProfileView.swift */,
+				CF4051CC2A4144D700030143 /* Helper Classes */,
 				CF7D591B2A257EE90023BF9B /* SearchView.swift */,
 				CF7D58E42A23DDA80023BF9B /* MateApp.swift */,
 				CF7D58FC2A23DF330023BF9B /* PostView.swift */,
@@ -214,6 +225,7 @@
 				CF7D58F32A23DE4A0023BF9B /* ImagePicker.swift in Sources */,
 				CFC964982A2E5AF80081F880 /* NewsView.swift in Sources */,
 				CF7D591E2A26503B0023BF9B /* OtherUserProfileView.swift in Sources */,
+				CF4051CE2A41450900030143 /* SearchUserHelper.swift in Sources */,
 				CF7D58FD2A23DF330023BF9B /* PostView.swift in Sources */,
 				CF7D591C2A257EE90023BF9B /* SearchView.swift in Sources */,
 				CF7D58E72A23DDA80023BF9B /* ContentView.swift in Sources */,
