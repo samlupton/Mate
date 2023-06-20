@@ -56,135 +56,138 @@ struct ProfileView: View {
                     .foregroundColor(Color.black)
                     .clipped()
                     .background(Color.gray)                    .clipShape(Circle())
-
+                
                 
                 Spacer()
-                
                 HStack {
-                    VStack {
-                        Text("Winnings")
-                            .font(.caption)
-                            .foregroundColor(.black)
-                            .lineLimit(1)
-                        Text("$\(numFollowers)")
-                            .font(.headline)
-                            .foregroundColor(.black)
-                    }
-                }
-                Spacer()
-                
-                Button(action: {
-                    fetchAllFollowersUsernamesInfo { usernames in }
-                    showingFollowersView = true
-                }) {
+                    Spacer()
+                    
                     HStack {
                         VStack {
-                            Text("Followers")
-                                .lineLimit(1)
+                            Text("Winnings")
                                 .font(.caption)
                                 .foregroundColor(.black)
-                            Text("\(numFollowers)")
+                                .lineLimit(1)
+                            Text("$\(numFollowers)")
                                 .font(.headline)
                                 .foregroundColor(.black)
                         }
                     }
-                }
-                .fullScreenCover(isPresented: $showingFollowersView) {
-                    NavigationView {
-                        List(otherUserInfo, id: \.username) { userInfo in
-                            Button(action: {
-                                selectedUser = userInfo
-                                gotonextpage = true
+                    Spacer()
+                    
+                    Button(action: {
+                        fetchAllFollowersUsernamesInfo { usernames in }
+                        showingFollowersView = true
+                    }) {
+                        HStack {
+                            VStack {
+                                Text("Followers")
+                                    .lineLimit(1)
+                                    .font(.caption)
+                                    .foregroundColor(.black)
+                                Text("\(numFollowers)")
+                                    .font(.headline)
+                                    .foregroundColor(.black)
+                            }
+                        }
+                    }
+                    .fullScreenCover(isPresented: $showingFollowersView) {
+                        NavigationView {
+                            List(otherUserInfo, id: \.username) { userInfo in
+                                Button(action: {
+                                    selectedUser = userInfo
+                                    gotonextpage = true
+                                }) {
+                                    HStack {
+                                        WebImage(url: URL(string: userInfo.profileImage))
+                                            .placeholder(Image(systemName: "person.circle"))
+                                            .resizable()
+                                            .frame(width: 40, height: 40)
+                                            .clipShape(Circle())
+                                            .foregroundColor(Color.black)
+                                        Text(userInfo.username)
+                                            .textCase(.lowercase)
+                                    }
+                                }
+                            }
+                            .background(
+                                NavigationLink(
+                                    destination:
+                                        OtherUserProfileView(
+                                            username: selectedUser?.username ?? "",
+                                            profileImage: selectedUser?.profileImage ?? "",
+                                            uid: selectedUser?.uid ?? ""),
+                                    isActive: $gotonextpage) { EmptyView() }
+                            )
+                            .foregroundColor(Color.black)
+                            .navigationBarItems(leading: Button(action: {
+                                showingFollowersView = false
                             }) {
-                                HStack {
-                                    WebImage(url: URL(string: userInfo.profileImage))
-                                        .placeholder(Image(systemName: "person.circle"))
-                                        .resizable()
-                                        .frame(width: 40, height: 40)
-                                        .clipShape(Circle())
-                                        .foregroundColor(Color.black)
-                                    Text(userInfo.username)
-                                        .textCase(.lowercase)
-                                }
+                                Image(systemName: "chevron.left")
+                                    .foregroundColor(Color.black)
+                            })
+                            .navigationTitle(Text("Followers"))
+                        }
+                    }
+                    
+                    Spacer()
+                    
+                    Button(action: {
+                        fetchAllFollowingUsernamesInfo { usernames in }
+                        showingFolloweringView = true
+                    }) {
+                        HStack {
+                            VStack {
+                                Text("Following")
+                                    .font(.caption)
+                                    .lineLimit(1)
+                                    .foregroundColor(.black)
+                                Text("\(numFollowing)")
+                                    .font(.headline)
+                                    .foregroundColor(.black)
                             }
                         }
-                        .background(
-                            NavigationLink(
-                                destination:
-                                    OtherUserProfileView(
-                                        username: selectedUser?.username ?? "",
-                                        profileImage: selectedUser?.profileImage ?? "",
-                                        uid: selectedUser?.uid ?? ""),
-                                isActive: $gotonextpage) { EmptyView() }
-                        )
-                        .foregroundColor(Color.black)
-                        .navigationBarItems(leading: Button(action: {
-                                    showingFollowersView = false
-                                }) {
-                                    Image(systemName: "chevron.left")
-                                        .foregroundColor(Color.black)
-                                })
-                        .navigationTitle(Text("Followers"))
                     }
-                }
-                
-                Spacer()
-                
-                Button(action: {
-                    fetchAllFollowingUsernamesInfo { usernames in }
-                    showingFolloweringView = true
-                }) {
-                    HStack {
-                        VStack {
-                            Text("Following")
-                                .font(.caption)
-                                .lineLimit(1)
-                                .foregroundColor(.black)
-                            Text("\(numFollowing)")
-                                .font(.headline)
-                                .foregroundColor(.black)
-                        }
-                    }
-                }
-                .fullScreenCover(isPresented: $showingFolloweringView) {
-                    NavigationView {
-                        List(otherUserInfo, id: \.username) { userInfo in
-                            NavigationLink(destination: OtherUserProfileView(username: userInfo.username, profileImage: userInfo.profileImage, uid: userInfo.uid)) {
-                                HStack {
-                                    WebImage(url: URL(string: userInfo.profileImage))
-                                        .placeholder(Image(systemName: "person.circle"))
-                                        .resizable()
-                                        .frame(width: 40, height: 40)
-                                        .clipShape(Circle())
-                                        .foregroundColor(Color.black)
-                                    
-                                    Text(userInfo.username)
-                                        .textCase(.lowercase)
+                    .fullScreenCover(isPresented: $showingFolloweringView) {
+                        NavigationView {
+                            List(otherUserInfo, id: \.username) { userInfo in
+                                NavigationLink(destination: OtherUserProfileView(username: userInfo.username, profileImage: userInfo.profileImage, uid: userInfo.uid)) {
+                                    HStack {
+                                        WebImage(url: URL(string: userInfo.profileImage))
+                                            .placeholder(Image(systemName: "person.circle"))
+                                            .resizable()
+                                            .frame(width: 40, height: 40)
+                                            .clipShape(Circle())
+                                            .foregroundColor(Color.black)
+                                        
+                                        Text(userInfo.username)
+                                            .textCase(.lowercase)
+                                    }
                                 }
                             }
+                            .foregroundColor(Color.black)
+                            .navigationBarItems(leading: Button(action: {
+                                showingFolloweringView = false
+                            }) {
+                                Image(systemName: "chevron.left")
+                                    .foregroundColor(Color.black)
+                            })
+                            .navigationTitle(Text("Following"))
                         }
-                        .foregroundColor(Color.black)
-                        .navigationBarItems(leading: Button(action: {
-                                    showingFolloweringView = false
-                                }) {
-                                    Image(systemName: "chevron.left")
-                                        .foregroundColor(Color.black)
-                                })
-                        .navigationTitle(Text("Following"))
+                        
                     }
-
+                    Spacer()
                 }
                 
                 Spacer()
                 
             }
             HStack{
-                Text("\(vm.user?.bio ?? "bio")")
+                Text("\(vm.user?.bio ?? "This is a bio that can only be 50 letters in lenght")")
                     .font(.body)
-                    .bold()
                     .textCase(.lowercase)
                 Spacer()
-            }.padding()
+            }
             Spacer()
         }
         .onAppear {
@@ -252,7 +255,7 @@ struct ProfileView: View {
             }
         }
     }
-
+    
     
     // fetchAllFollowingUsernamesInfo gets all the user ID's from the documents inside
     // Collection: 'Users' -> Collection: 'Following' -> Field: 'uid'

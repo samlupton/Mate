@@ -36,63 +36,72 @@ struct WelcomeScreen: View {
     @State private var username: String = ""
     @State private var password: String = ""
     @State private var confirmPassword: String = ""
-    @State private var isLoggedIn: Bool = false
+    @State private var isLoggedIn: Bool = UserDefaults.standard.bool(forKey: "isLoggedIn")
     
     var body: some View {
         NavigationView {
-            ZStack {
-                LinearGradient(
-                    gradient: Gradient(colors: [.gray, .black]),
-                    startPoint: .topLeading,
-                    endPoint: .bottomTrailing
-                )
-                .ignoresSafeArea()
-                VStack(spacing: 16) {
-                    Spacer()
-                    HStack {
-                        VStack {
-                            HStack {
-                                Text("Welcome to")
-                                    .font(.largeTitle)
-                                    .fontWeight(.bold)
-                                    .foregroundColor(.white)
-                                Spacer()
-                            }
-                            HStack {
-                                Text("My App.")
-                                    .font(.largeTitle)
-                                    .fontWeight(.bold)
-                                    .foregroundColor(.white)
-                                Spacer()
-                            }
-                        }
-                    }
-                    Spacer()
-                    NavigationLink(destination: SignInView(email: $email, password: $password, username: $username, confirmPassword: $confirmPassword, isLoggedIn: $isLoggedIn)) {
-                        Text("Sign In")
-                            .font(.headline)
-                            .foregroundColor(.black)
-                            .padding()
-                            .frame(maxWidth: .infinity)
-                            .background(Color.white)
-                            .cornerRadius(30)
-                    }
-                    
-                    NavigationLink(destination: SignUpView(email: $email, password: $password, username: $username, comfirmPassword: $confirmPassword, isLoggedIn: $isLoggedIn)) {
-                        Text("Sign Up")
-                            .font(.headline)
-                            .foregroundColor(.black)
-                            .padding()
-                            .frame(maxWidth: .infinity)
-                            .background(Color.white)
-                            .cornerRadius(30)
-                    }
-                    Spacer()
+            Group {
+                if isLoggedIn {
+                    ContentView()
                 }
-                .padding()
+                else {
+                    ZStack {
+                        LinearGradient(
+                            gradient: Gradient(colors: [.gray, .black]),
+                            startPoint: .topLeading,
+                            endPoint: .bottomTrailing
+                        )
+                        .ignoresSafeArea()
+                        VStack(spacing: 16) {
+                            Spacer()
+                            HStack {
+                                VStack {
+                                    HStack {
+                                        Text("Welcome to")
+                                            .font(.largeTitle)
+                                            .fontWeight(.bold)
+                                            .foregroundColor(.white)
+                                        Spacer()
+                                    }
+                                    HStack {
+                                        Text("My App.")
+                                            .font(.largeTitle)
+                                            .fontWeight(.bold)
+                                            .foregroundColor(.white)
+                                        Spacer()
+                                    }
+                                }
+                            }
+                            Spacer()
+                            NavigationLink(destination: SignInView(email: $email, password: $password, username: $username, confirmPassword: $confirmPassword, isLoggedIn: $isLoggedIn)) {
+                                Text("Sign In")
+                                    .font(.headline)
+                                    .foregroundColor(.black)
+                                    .padding()
+                                    .frame(maxWidth: .infinity)
+                                    .background(Color.white)
+                                    .cornerRadius(30)
+                            }
+                            
+                            NavigationLink(destination: SignUpView(email: $email, password: $password, username: $username, comfirmPassword: $confirmPassword, isLoggedIn: $isLoggedIn)) {
+                                Text("Sign Up")
+                                    .font(.headline)
+                                    .foregroundColor(.black)
+                                    .padding()
+                                    .frame(maxWidth: .infinity)
+                                    .background(Color.white)
+                                    .cornerRadius(30)
+                            }
+                            Spacer()
+                        }
+                        .padding()
+                    }
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .edgesIgnoringSafeArea(.all)
+                }
             }
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .edgesIgnoringSafeArea(.all)
+        }.onAppear() {
+            UserDefaults.standard.bool(forKey: "isLoggedIn")
         }
         .accentColor(.white)
     }
@@ -178,8 +187,12 @@ struct SignInView: View {
                 alertMessage = error.localizedDescription
             } else {
                 isLoggedIn = true
+                persistLogin()
             }
         }
+    }
+    func persistLogin() {
+        UserDefaults.standard.set(self.isLoggedIn, forKey: "isLoggedIn")
     }
 }
 
@@ -284,11 +297,18 @@ struct SignUpView: View {
                 alertMessage = error.localizedDescription
             } else {
                 print("User was logged in.")
+                persistLogin()
                 isLoggedIn = true
             }
         }
     }
+    
+    func persistLogin() {
+        UserDefaults.standard.set(self.isLoggedIn, forKey: "isLoggedIn")
+    }
 }
+
+
 
 struct WelcomeScreen_Previews: PreviewProvider {
     static var previews: some View {

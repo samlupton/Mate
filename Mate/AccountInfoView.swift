@@ -28,8 +28,10 @@ struct AccountInfoView: View {
             
             usernameButton
             bioButton
+            
             Button(action: {
                 isLoggedIn = false
+                persistLogin()
             }) {
                 Text("Sign out")
                     .font(.headline)
@@ -48,6 +50,9 @@ struct AccountInfoView: View {
                     }
             }
         
+    }
+    func persistLogin() {
+        UserDefaults.standard.set(self.isLoggedIn, forKey: "isLoggedIn")
     }
     
     private var settingsButton: some View {

@@ -17,35 +17,42 @@ struct ContentView: View {
     @State private var email: String = ""
     @State private var password: String = ""
     @State private var confirmPassword: String = ""
-    @State private var isLoggedIn: Bool = true
+    @State private var isLoggedIn: Bool = UserDefaults.standard.bool(forKey: "isLoggedIn")
 
     var body: some View {
-        if isLoggedIn {
-            TabView {
-                FeedView()
-                    .tabItem {
-                        Label("Feed", systemImage: "globe.asia.australia")
-                    }
-                SearchView()
-                    .tabItem {
-                        Label("Search", systemImage: "magnifyingglass")
-                    }
-                PostView()
-                    .tabItem {
-                        Label("Post", systemImage: "plus.app")
-                    }
-                LocalSellerView()
-                    .tabItem {
-                        Label("Referral", systemImage: "dollarsign.circle")
-                    }
-                ProfileView(isLoggedIn: $isLoggedIn)
-                    .tabItem {
-                        Label("Profile", systemImage: "person.circle")
-                    }
-            }.accentColor(Color.gray).background(Color.white).opacity(1)
-        } else {
-            WelcomeScreen().navigationBarBackButtonHidden()
-        }
+        VStack {
+            if isLoggedIn {
+                TabView {
+                    FeedView()
+                        .tabItem {
+                            Label("Feed", systemImage: "globe.asia.australia")
+                        }
+                    SearchView()
+                        .tabItem {
+                            Label("Search", systemImage: "magnifyingglass")
+                        }
+                    PostView()
+                        .tabItem {
+                            Label("Post", systemImage: "plus.app")
+                        }
+                    LocalSellerView()
+                        .tabItem {
+                            Label("Referral", systemImage: "dollarsign.circle")
+                        }
+                    ProfileView(isLoggedIn: $isLoggedIn)
+                        .tabItem {
+                            Label("Profile", systemImage: "person.circle")
+                        }
+                }.accentColor(Color.gray).background(Color.white).opacity(1)
+            } else {
+                WelcomeScreen().navigationBarBackButtonHidden()
+            }
+        }.onAppear(perform: {
+            getData()
+        })
+    }
+    func getData() {
+        isLoggedIn =  UserDefaults.standard.bool(forKey: "isLoggedIn")
     }
 }
 
