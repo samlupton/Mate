@@ -6,6 +6,7 @@
 //
 import Firebase
 import SwiftUI
+import FirebaseFirestore
 import SDWebImageSwiftUI
 
 struct OtherUserProfileView: View {
@@ -365,9 +366,36 @@ struct OtherUserProfileView: View {
                     }
                     return uid
                 }
-            } 
+            }
         return uid
     }
+    
+//    func getOtherUsersUID(completion: @escaping (String?) -> Void) {
+//        let usersRef = Firestore.firestore().collection("Users")
+//        
+//        usersRef.whereField("username", isEqualTo: username)
+//            .getDocuments { snapshot, error in
+//                if let error = error {
+//                    print("Error searching for users: \(error.localizedDescription)")
+//                    completion(nil)
+//                    return
+//                }
+//                
+//                guard let documents = snapshot?.documents else {
+//                    print("No user documents found.")
+//                    completion(nil)
+//                    return
+//                }
+//                
+//                if let document = documents.first, let uid = document.data()["uid"] as? String {
+//                    completion(uid)
+//                } else {
+//                    completion(nil)
+//                }
+//            }
+//    }
+
+    
     
     func fetchNumFollowers() {
         

@@ -37,7 +37,7 @@ struct ContentView: View {
                         }
                     LocalSellerView()
                         .tabItem {
-                            Label("Referral", systemImage: "dollarsign.circle")
+                            Label("Money", systemImage: "dollarsign.circle")
                         }
                     ProfileView(isLoggedIn: $isLoggedIn)
                         .tabItem {

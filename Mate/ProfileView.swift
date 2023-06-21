@@ -18,6 +18,9 @@ struct ProfileView: View {
     @State private var showingFollowersView = false
     @State private var showingFolloweringView = false
     @State private var gotonextpage = false
+    @State private var openBetsTabisSelected = true
+    @State private var highlightsTabisSelected = false
+    @State private var badgesTabisSelected = false
     @State private var numFollowers: Int = 0
     @State private var numFollowing: Int = 0
     @State private var selectedUser: (username: String, profileImage: String, uid: String)? = nil
@@ -76,7 +79,7 @@ struct ProfileView: View {
                         }
                     }
                     Spacer()
-                   
+                    
                     Button(action: {
                         fetchAllFollowersUsernamesInfo { usernames in }
                         showingFolloweringView = true
@@ -184,12 +187,103 @@ struct ProfileView: View {
                 Spacer()
                 
             }
-            HStack{
-                Text("\(vm.user?.bio ?? "This is a bio that can only be 50 letters in lenght")")
-                    .font(.body)
-                    .textCase(.lowercase)
+            HStack {
+                VStack {
+                    HStack {
+                        Text("John Doe")
+                            .bold()
+                            .padding(.bottom, 0.5)
+                        Spacer()
+                    }
+                    HStack {
+                        Text("\(vm.user?.bio ?? "This is a bio that can only be 50 letters in length")")
+                            .font(.body)
+                        Spacer()
+                    }
+                    
+                }
                 Spacer()
+                Button(action: {
+                }) {
+                    Image(systemName: "text.bubble")
+                        .font(.system(size:25))
+                }
+                Spacer()
+                
             }
+//            HStack {
+//                Text("John Doe")
+//                    .bold()
+//                    .padding(.bottom, 1)
+//                Spacer()
+//            }
+//            HStack{
+//                Text("\(vm.user?.bio ?? "This is a bio that can only be 50 letters in length")")
+//                    .font(.body)
+//                Spacer()
+//                Button(action: {
+//                }) {
+//                    Image(systemName: "text.bubble")
+//                        .font(.system(size:25))
+//                }
+//            }
+            HStack {
+                Button(action: {
+                    withAnimation {
+                        openBetsTabisSelected = true
+                        highlightsTabisSelected = false
+                        badgesTabisSelected = false
+                    }
+                }) {
+                    Text("Open Bets")                        .font(.system(size:18))
+                        .foregroundColor(Color.black)
+                        .underline(openBetsTabisSelected)
+                    
+                }.padding()
+                    .background(
+                        RoundedRectangle(cornerRadius: 10)
+                            .fill(Color.blue.opacity(0.0))
+                    )
+                Spacer()
+                Button(action: {
+                    withAnimation {
+                        openBetsTabisSelected = false
+                        highlightsTabisSelected = true
+                        badgesTabisSelected = false
+                        
+                    }
+                }) {
+                    Text("Highlights")                        .font(.system(size:18))
+                        .foregroundColor(Color.black)
+                        .underline(highlightsTabisSelected)
+                }.padding()
+                    .background(
+                        RoundedRectangle(cornerRadius: 10)
+                            .fill(Color.blue.opacity(0.0))
+                    )
+                Spacer()
+                Button(action: {
+                    withAnimation {
+                        openBetsTabisSelected = false
+                        highlightsTabisSelected = false
+                        badgesTabisSelected = true
+                    }
+                }) {
+                    Text("Badges")                        .font(.system(size:18))
+                        .foregroundColor(Color.black)
+                        .underline(badgesTabisSelected)
+                    
+                }.padding()
+                    .background(
+                        RoundedRectangle(cornerRadius: 10)
+                            .fill(Color.blue.opacity(0.0))
+                    )
+            }
+            .padding(.horizontal, 0)
+            //            .background(
+            //                RoundedRectangle(cornerRadius: 10)
+            //                    .fill(Color.blue.opacity(0.25))
+            //            )
             Spacer()
         }
         .onAppear {
@@ -199,6 +293,8 @@ struct ProfileView: View {
         .padding()
         .navigationBarHidden(true)
     }
+    
+    
     
     func fetchNumFollowers() {
         guard let currentUserID = FirebaseManager.shared.auth.currentUser?.uid else {
@@ -377,5 +473,29 @@ struct ProfileView_Previews: PreviewProvider {
     static var previews: some View {
         @State var isLoggedIn: Bool = true
         ProfileView(isLoggedIn: $isLoggedIn)
+    }
+}
+
+
+extension Text {
+    func underline(_ active: Bool) -> some View {
+        self.modifier(UnderlineModifier(active: active))
+    }
+}
+
+struct UnderlineModifier: ViewModifier {
+    let active: Bool
+    
+    func body(content: Content) -> some View {
+        content
+            .overlay(
+                Rectangle()
+                    .frame(height: active ? 1 : 0)
+                    .foregroundColor(.black)
+                    .animation(.default)
+                    .opacity(active ? 1 : 0)
+                    .animation(.default)
+                    .offset(y: active ? 15 : 0)
+            )
     }
 }
