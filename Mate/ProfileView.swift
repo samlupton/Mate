@@ -316,7 +316,6 @@ struct ProfileView: View {
             }
             
             let count = snapshot.documents.count
-            print("Number of followers: \(count)")
             
             // Update the state variable on the main queue
             DispatchQueue.main.async {
@@ -460,7 +459,6 @@ struct ProfileView: View {
                let uid = document.data()["uid"] as? String,
                let profileImage = document.data()["profileImageURL"] as? String {
                 
-                print(username + " or " + profileImage)
                 completion(username, profileImage, uid)
             } else {
                 completion("", "", "")
