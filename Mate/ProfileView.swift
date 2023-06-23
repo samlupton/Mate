@@ -48,10 +48,10 @@ struct ProfileView: View {
                     AccountInfoView(isLoggedIn: $isLoggedIn)
                 }
             }
+            .padding(.horizontal)
+
             
             HStack {
-                
-                
                 WebImage(url: URL(string: vm.user?.profileImageUrl  ?? ""))
                     .placeholder(Image(systemName: "person.circle"))
                     .resizable()
@@ -181,12 +181,13 @@ struct ProfileView: View {
                         }
                         
                     }
-                    Spacer()
                 }
                 
                 Spacer()
                 
             }
+            .padding(.horizontal)
+
             HStack {
                 VStack {
                     HStack {
@@ -202,31 +203,19 @@ struct ProfileView: View {
                     }
                     
                 }
-                Spacer()
+
                 Button(action: {
                 }) {
                     Image(systemName: "text.bubble")
                         .font(.system(size:25))
                 }
+                .padding(.horizontal, 0)
+
                 Spacer()
                 
             }
-//            HStack {
-//                Text("John Doe")
-//                    .bold()
-//                    .padding(.bottom, 1)
-//                Spacer()
-//            }
-//            HStack{
-//                Text("\(vm.user?.bio ?? "This is a bio that can only be 50 letters in length")")
-//                    .font(.body)
-//                Spacer()
-//                Button(action: {
-//                }) {
-//                    Image(systemName: "text.bubble")
-//                        .font(.system(size:25))
-//                }
-//            }
+            .padding(.horizontal)
+
             HStack {
                 Button(action: {
                     withAnimation {
@@ -235,7 +224,8 @@ struct ProfileView: View {
                         badgesTabisSelected = false
                     }
                 }) {
-                    Text("Open Bets")                        .font(.system(size:18))
+                    Text("Open Bets")
+                        .font(.system(size:18))
                         .foregroundColor(Color.black)
                         .underline(openBetsTabisSelected)
                     
@@ -253,7 +243,8 @@ struct ProfileView: View {
                         
                     }
                 }) {
-                    Text("Highlights")                        .font(.system(size:18))
+                    Text("Highlights")
+                        .font(.system(size:18))
                         .foregroundColor(Color.black)
                         .underline(highlightsTabisSelected)
                 }.padding()
@@ -269,7 +260,8 @@ struct ProfileView: View {
                         badgesTabisSelected = true
                     }
                 }) {
-                    Text("Badges")                        .font(.system(size:18))
+                    Text("Badges")
+                        .font(.system(size:18))
                         .foregroundColor(Color.black)
                         .underline(badgesTabisSelected)
                     
@@ -280,17 +272,12 @@ struct ProfileView: View {
                     )
             }
             .padding(.horizontal, 0)
-            //            .background(
-            //                RoundedRectangle(cornerRadius: 10)
-            //                    .fill(Color.blue.opacity(0.25))
-            //            )
             Spacer()
         }
         .onAppear {
             fetchNumFollowers()
             fetchNumFollowing()
         }
-        .padding()
         .navigationBarHidden(true)
     }
     

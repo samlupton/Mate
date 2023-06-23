@@ -212,12 +212,14 @@ class OtherUser {
         }
     }
     
-    private func updateFollowingStatus() {
+    func updateFollowingStatus() {
         let db = Firestore.firestore()
         
         guard let uid = FirebaseManager.shared.auth.currentUser?.uid else {
             return
         }
+        print(uid)
+
         
         let followingRef = db.collection("Users").document(uid).collection("Following")
         
@@ -236,6 +238,8 @@ class OtherUser {
                                 print("Error removing document: \(error)")
                             } else {
                                 print("User unfollowed successfully!")
+
+                            
                             }
                         }
                     }
@@ -252,12 +256,14 @@ class OtherUser {
             }
     }
     
-    private func updateFollowerStatus() {
+    func updateFollowerStatus() {
         let db = Firestore.firestore()
         
         guard let uid = FirebaseManager.shared.auth.currentUser?.uid else {
             return
         }
+        print(uid)
+
         
         let followersRef = db.collection("Users").document(uid).collection("Followers")
         
@@ -276,6 +282,7 @@ class OtherUser {
                                 print("Error removing document: \(error)")
                             } else {
                                 print("User unfollowed successfully!")
+
                             }
                         }
                     }
@@ -286,6 +293,7 @@ class OtherUser {
                             print("Error adding document: \(error)")
                         } else {
                             print("User followed successfully!")
+
                         }
                     }
                 }

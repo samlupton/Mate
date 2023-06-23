@@ -4,53 +4,46 @@
 //
 //  Created by Samuel Lupton on 5/30/23.
 //
+
 import Firebase
 import SwiftUI
 import FirebaseFirestore
 import SDWebImageSwiftUI
 
 struct OtherUserProfileView: View {
-    
     @Environment(\.presentationMode) var presentationMode
-    @State private var newFollower: String = ""
+    var username: String
+    var profileImage: String
+    @State var uid: String
     @State private var searchOtherUserUID: [(String)] = []
     @State private var showingFollowersView = false
     @State private var showingFollowingView = false
-    @State private var otherUserInfo: [(username: String, profileImage: String, uid: String)] = []
-    @State private var selectedUser: (username: String, profileImage: String, uid: String)? = nil
-//    @State private var gotonextpage = false
     @State private var numFollowers: Int = 0
     @State private var numFollowing: Int = 0
-    let username: String
-    let profileImage: String
-    let uid: String
-    let userHelper: OtherUser
+    @State private var otherUserInfo: [(username: String, profileImage: String, uid: String)] = []
+    @State private var selectedUser: (username: String, profileImage: String, uid: String)? = nil
+    @State private var gotonextpage = false
+    @State private var openBetsTabisSelected = true
+    @State private var highlightsTabisSelected = false
+    @State private var badgesTabisSelected = false
     
-    init(username: String, profileImage: String, uid: String) {
-        self.username = username
-        self.profileImage = profileImage
-        self.uid = uid
-        self.userHelper = OtherUser(uid: uid) // Initialize userHelper in the init method
-    }
     
     var body: some View {
         VStack {
             HStack {
                 WebImage(url: URL(string: profileImage))
+                    .placeholder(Image(systemName: "person.circle"))
                     .resizable()
                     .frame(width: 82, height: 84)
                     .clipShape(Circle())
                     .foregroundColor(Color.black)
                     .clipped()
-                    .overlay(Circle().stroke(Color.black, lineWidth: 2))
-                    .padding()
-                    .foregroundColor(Color.black)
-                
-                
+                    .background(Color.gray)
+                    .clipShape(Circle())
+                    .padding(.horizontal)
                 Spacer()
                 HStack {
                     Spacer()
-                    
                     HStack {
                         VStack {
                             Text("Winnings")
@@ -63,97 +56,118 @@ struct OtherUserProfileView: View {
                         }
                     }
                     Spacer()
-                    
                     Button(action: {
-                                        fetchAllFollowersUsernamesInfo { usernames in }
-                                        showingFollowingView = true
-                                    }) {
-                                        HStack {
-                                            VStack {
-                                                Text("Followers")
-                                                    .font(.caption)
-                                                    .foregroundColor(.black)
-                                                Text("\(numFollowers)")
-                                                    .font(.headline)
-                                                    .foregroundColor(.black)
-                                            }
-                                        }
-                                    }
-                                    .fullScreenCover(isPresented: $showingFollowersView) {
-                                        NavigationView {
-                                            List(otherUserInfo, id: \.username) { userInfo in
-                                                NavigationLink(destination: OtherUserProfileView(username: userInfo.username, profileImage: userInfo.profileImage, uid: userInfo.uid)) {
-                                                    HStack {
-                                                        WebImage(url: URL(string: userInfo.profileImage))
-                                                            .placeholder(Image(systemName: "person.circle"))
-                                                            .resizable()
-                                                            .frame(width: 40, height: 40)
-                                                            .clipShape(Circle())
-                                                            .foregroundColor(Color.black)
-                    
-                                                        Text(userInfo.username)
-                                                            .textCase(.lowercase)
-                                                    }
-                                                }
-                                            }
+                        fetchAllFollowersUsernamesInfo { usernames in }
+                        showingFollowingView = true
+                    }) {
+                        HStack {
+                            VStack {
+                                Text("Followers")
+                                    .font(.caption)
+                                    .foregroundColor(.black)
+                                Text("\(numFollowers)")
+                                    .font(.headline)
+                                    .foregroundColor(.black)
+                            }
+                        }
+                    }
+                    .fullScreenCover(isPresented: $showingFollowersView) {
+                        NavigationView {
+                            List(otherUserInfo, id: \.username) { userInfo in
+                                NavigationLink(destination: OtherUserProfileView(username: userInfo.username, profileImage: userInfo.profileImage, uid: userInfo.uid)) {
+                                    HStack {
+                                        WebImage(url: URL(string: userInfo.profileImage))
+                                            .placeholder(Image(systemName: "person.circle"))
+                                            .resizable()
+                                            .frame(width: 40, height: 40)
+                                            .clipShape(Circle())
                                             .foregroundColor(Color.black)
-                                            .navigationBarItems(leading: Button(action: {
-                                                showingFollowersView = false
-                                            }) {
-                                                Image(systemName: "chevron.left")
-                                                    .foregroundColor(Color.black)
-                                            })
-                                            .navigationTitle(Text("Following"))
-                                        }
+                                        
+                                        Text(userInfo.username)
+                                            .textCase(.lowercase)
                                     }
+                                }
+                            }
+                            .foregroundColor(Color.black)
+                            .navigationBarItems(leading: Button(action: {
+                                showingFollowersView = false
+                            }) {
+                                Image(systemName: "chevron.left")
+                                    .foregroundColor(Color.black)
+                            })
+                            .navigationTitle(Text("Following"))
+                        }
+                    }
                     Spacer()
                     Button(action: {
-                                        fetchAllFollowingUsernamesInfo { usernames in }
-                                        showingFollowersView = true
-                                    }) {
-                                        HStack {
-                                            VStack {
-                                                Text("Following")
-                                                    .font(.caption)
-                                                    .foregroundColor(.black)
-                                                Text("\(numFollowing)")
-                                                    .font(.headline)
-                                                    .foregroundColor(.black)
-                                            }
-                                        }
-                                    }.fullScreenCover(isPresented: $showingFollowingView) {
-                                        NavigationView {
-                                            List(otherUserInfo, id: \.username) { userInfo in
-                                                NavigationLink(destination: OtherUserProfileView(username: userInfo.username, profileImage: userInfo.profileImage, uid: userInfo.uid)) {
-                                                    HStack {
-                                                        WebImage(url: URL(string: userInfo.profileImage))
-                                                            .placeholder(Image(systemName: "person.circle"))
-                                                            .resizable()
-                                                            .frame(width: 40, height: 40)
-                                                            .clipShape(Circle())
-                                                            .foregroundColor(Color.black)
-                    
-                                                        Text(userInfo.username)
-                                                            .textCase(.lowercase)
-                                                    }
-                                                }
-                                            }
+                        fetchAllFollowingUsernamesInfo { usernames in }
+                        showingFollowersView = true
+                    }) {
+                        HStack {
+                            VStack {
+                                Text("Following")
+                                    .font(.caption)
+                                    .foregroundColor(.black)
+                                Text("\(numFollowing)")
+                                    .font(.headline)
+                                    .foregroundColor(.black)
+                            }
+                        }
+                    }.fullScreenCover(isPresented: $showingFollowingView) {
+                        NavigationView {
+                            List(otherUserInfo, id: \.username) { userInfo in
+                                NavigationLink(destination: OtherUserProfileView(username: userInfo.username, profileImage: userInfo.profileImage, uid: userInfo.uid)) {
+                                    HStack {
+                                        WebImage(url: URL(string: userInfo.profileImage))
+                                            .placeholder(Image(systemName: "person.circle"))
+                                            .resizable()
+                                            .frame(width: 40, height: 40)
+                                            .clipShape(Circle())
                                             .foregroundColor(Color.black)
-                                            .navigationBarItems(leading: Button(action: {
-                                                showingFollowingView = false
-                                            }) {
-                                                Image(systemName: "chevron.left")
-                                                    .foregroundColor(Color.black)
-                                            })
-                                            .navigationTitle(Text("Following"))
-                                        }
+                                        
+                                        Text(userInfo.username)
+                                            .textCase(.lowercase)
                                     }
+                                }
+                            }
+                            .foregroundColor(Color.black)
+                            .navigationBarItems(leading: Button(action: {
+                                showingFollowingView = false
+                            }) {
+                                Image(systemName: "chevron.left")
+                                    .foregroundColor(Color.black)
+                            })
+                            .navigationTitle(Text("Following"))
+                        }
+                    }
                     Spacer()
                 }
-                
                 Spacer()
-                
             }
+            HStack {
+                VStack {
+                    HStack {
+                        Text("John Doe")
+                            .bold()
+                            .padding(.bottom, 0.5)
+                        Spacer()
+                    }
+                    HStack {
+                        Text("This is a bio that can only be 50 letters in length")
+                            .font(.body)
+                        Spacer()
+                    }
+                    
+                }
+                Spacer()
+                Button(action: {
+                }) {
+                    Image(systemName: "text.bubble")
+                        .font(.system(size:25))
+                }
+                Spacer()
+            }.padding(.horizontal)
+            
             Button {
                 updateFollowerStatus()
                 updateFollowingStatus()
@@ -166,43 +180,79 @@ struct OtherUserProfileView: View {
             .padding(.horizontal)
             .buttonStyle(.bordered)
             .tint(.black)
+            HStack {
+                Button(action: {
+                    withAnimation {
+                        openBetsTabisSelected = true
+                        highlightsTabisSelected = false
+                        badgesTabisSelected = false
+                    }
+                }) {
+                    Text("Open Bets")
+                        .font(.system(size:18))
+                        .foregroundColor(Color.black)
+                        .underline(openBetsTabisSelected)
+                    
+                }.padding()
+                    .background(
+                        RoundedRectangle(cornerRadius: 10)
+                            .fill(Color.blue.opacity(0.0))
+                    )
+                Spacer()
+                Button(action: {
+                    withAnimation {
+                        openBetsTabisSelected = false
+                        highlightsTabisSelected = true
+                        badgesTabisSelected = false
+                        
+                    }
+                }) {
+                    Text("Highlights")
+                        .font(.system(size:18))
+                        .foregroundColor(Color.black)
+                        .underline(highlightsTabisSelected)
+                }.padding()
+                    .background(
+                        RoundedRectangle(cornerRadius: 10)
+                            .fill(Color.blue.opacity(0.0))
+                    )
+                Spacer()
+                Button(action: {
+                    withAnimation {
+                        openBetsTabisSelected = false
+                        highlightsTabisSelected = false
+                        badgesTabisSelected = true
+                    }
+                }) {
+                    Text("Badges")
+                        .font(.system(size:18))
+                        .foregroundColor(Color.black)
+                        .underline(badgesTabisSelected)
+                    
+                }.padding()
+                    .background(
+                        RoundedRectangle(cornerRadius: 10)
+                            .fill(Color.blue.opacity(0.0))
+                    )
+            }
+            .padding(.horizontal, 0)
             Spacer()
         }.onAppear {
-            userHelper.fetchNumFollowers { count in
-                numFollowers = count
-                // Handle the fetched count
-                print("Number of followers: \(count)")
-            }
-            userHelper.fetchNumFollowing { count in
-                numFollowing = count
-                // Handle the fetched count
-                print("Number of following: \(count)")
-            }
-            OtherUser.getOtherUsersUID(username: username) { uid in
-                // Handle the UID result here
-                if let uid = uid {
-                    // UID is available
-                    print("UID: \(uid)")
-                    print("Username: \(username)")
-                } else {
-                    // UID is nil
-                    print("UID not found.")
-                    print("No username")
-                    
-                }
-            }
+            fetchNumFollowers()
+            fetchNumFollowing()
+            
         }
         .navigationBarTitle(Text(username.lowercased()), displayMode: .inline)
-        .textCase(.lowercase)
         .navigationBarItems(leading: backButton)
         .accentColor(.black)
         .navigationBarBackButtonHidden(true)
     }
     
+    
     func fetchAllFollowingUsernamesInfo(completion: @escaping ([String]) -> Void) {
         
         let db = Firestore.firestore()
-        let followingCollection = db.collection("Users").document(uid).collection("Following")
+        let followingCollection = db.collection("Users").document(getOtherUsersUID()).collection("Following")
         
         followingCollection.getDocuments { snapshot, error in
             guard let documents = snapshot?.documents else {
@@ -237,7 +287,7 @@ struct OtherUserProfileView: View {
     func fetchAllFollowersUsernamesInfo(completion: @escaping ([String]) -> Void) {
         
         let db = Firestore.firestore()
-        let followingCollection = db.collection("Users").document(uid).collection("Followers")
+        let followingCollection = db.collection("Users").document(getOtherUsersUID()).collection("Followers")
         
         followingCollection.getDocuments { snapshot, error in
             guard let documents = snapshot?.documents else {
@@ -270,7 +320,6 @@ struct OtherUserProfileView: View {
     }
     
     private func searchOtherUsersProfileImagesAndUsernames(uid: String, completion: @escaping (String, String, String) -> Void) {
-    
         let usersRef = Firestore.firestore().collection("Users")
         
         usersRef.whereField("uid", isEqualTo: uid).getDocuments { snapshot, error in
@@ -291,9 +340,71 @@ struct OtherUserProfileView: View {
                let uid = document.data()["uid"] as? String,
                let profileImage = document.data()["profileImageURL"] as? String {
                 
+                print(username + " or " + profileImage)
                 completion(username, profileImage, uid)
             } else {
                 completion("", "", "")
+            }
+        }
+    }
+    
+    private var backButton: some View {
+        Button(action: {
+            presentationMode.wrappedValue.dismiss()
+        }) {
+            Image(systemName: "chevron.left")
+                .imageScale(.large)
+        }
+    }
+    
+    func fetchNumFollowers() {
+        
+        let db = Firestore.firestore()
+        let followingCollection = db.collection("Users").document(getOtherUsersUID()).collection("Followers")
+        
+        followingCollection.getDocuments { (snapshot, error) in
+            if let error = error {
+                print("Error fetching followers: \(error.localizedDescription)")
+                return
+            }
+            
+            guard let snapshot = snapshot else {
+                print("Snapshot is nil")
+                return
+            }
+            
+            let count = snapshot.documents.count
+            print("Number of followers: \(count)")
+            
+            // Update the state variable on the main queue
+            DispatchQueue.main.async {
+                self.numFollowers = count
+            }
+        }
+    }
+    
+    func fetchNumFollowing() {
+        
+        let db = Firestore.firestore()
+        let followingCollection = db.collection("Users").document(getOtherUsersUID()).collection("Following")
+        
+        followingCollection.getDocuments { (snapshot, error) in
+            if let error = error {
+                print("Error fetching followers: \(error.localizedDescription)")
+                return
+            }
+            
+            guard let snapshot = snapshot else {
+                print("Snapshot is nil")
+                return
+            }
+            
+            let count = snapshot.documents.count
+            print("Number of followers: \(count)")
+            
+            // Update the state variable on the main queue
+            DispatchQueue.main.async {
+                self.numFollowing = count
             }
         }
     }
@@ -305,10 +416,10 @@ struct OtherUserProfileView: View {
             return
         }
         
-        let followingRef = db.collection("Users").document(uid).collection("Following")
+        let followerRef = db.collection("Users").document(uid).collection("Following")
         
-        // Query to check if the user is already being followed
-        followingRef.whereField("uid", isEqualTo: uid)
+        // Query to check if the follower already exists
+        followerRef.whereField("uid", isEqualTo: getOtherUsersUID())
             .getDocuments { (querySnapshot, error) in
                 if let error = error {
                     print("Error querying documents: \(error)")
@@ -326,8 +437,8 @@ struct OtherUserProfileView: View {
                         }
                     }
                 } else {
-                    let userData = ["uid": uid]
-                    followingRef.addDocument(data: userData) { error in
+                    let userData = ["uid": getOtherUsersUID()]
+                    followerRef.addDocument(data: userData) { error in
                         if let error = error {
                             print("Error adding document: \(error)")
                         } else {
@@ -345,10 +456,10 @@ struct OtherUserProfileView: View {
             return
         }
         
-        let followersRef = db.collection("Users").document(uid).collection("Followers")
+        let followerRef = db.collection("Users").document(getOtherUsersUID()).collection("Followers")
         
-        // Query to check if the user is already being followed
-        followersRef.whereField("uid", isEqualTo: uid)
+        // Query to check if the follower already exists
+        followerRef.whereField("uid", isEqualTo: uid)
             .getDocuments { (querySnapshot, error) in
                 if let error = error {
                     print("Error querying documents: \(error)")
@@ -367,7 +478,7 @@ struct OtherUserProfileView: View {
                     }
                 } else {
                     let userData = ["uid": uid]
-                    followersRef.addDocument(data: userData) { error in
+                    followerRef.addDocument(data: userData) { error in
                         if let error = error {
                             print("Error adding document: \(error)")
                         } else {
@@ -378,19 +489,35 @@ struct OtherUserProfileView: View {
             }
     }
     
-    private var backButton: some View {
-        Button(action: {
-            presentationMode.wrappedValue.dismiss()
-        }) {
-            Image(systemName: "chevron.left")
-                .imageScale(.large)
-        }
+    private func getOtherUsersUID() -> String {
+        
+        let usersRef = Firestore.firestore().collection("Users")
+        
+        usersRef.whereField("username", isEqualTo: username)
+            .getDocuments { snapshot, error in
+                if let error = error {
+                    print("Error searching for users: \(error.localizedDescription)")
+                    return
+                }
+                
+                guard let documents = snapshot?.documents else {
+                    print("No user documents found.")
+                    return
+                }
+                
+                self.searchOtherUserUID = documents.compactMap { document in
+                    guard  let uid = document.data()["uid"] as? String else {
+                        return ""
+                    }
+                    return uid
+                }
+            }
+        return uid
     }
 }
 
 struct OtherUserProfileView_Previews: PreviewProvider {
     static var previews: some View {
-        OtherUserProfileView(username: "John", profileImage: "profile.png", uid: "exampleUID")
+        OtherUserProfileView(username: "John", profileImage: "Image", uid: "my_uid")
     }
 }
-
