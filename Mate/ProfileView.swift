@@ -121,7 +121,7 @@ struct ProfileView: View {
                                         OtherUserProfileView(
                                             username: selectedUser?.username ?? "",
                                             profileImage: selectedUser?.profileImage ?? "",
-                                            uid: selectedUser?.uid ?? ""),
+                                            uid: selectedUser?.uid ?? "", bio: ""),
                                     isActive: $gotonextpage) { EmptyView() }
                             )
                             .foregroundColor(Color.black)
@@ -147,7 +147,7 @@ struct ProfileView: View {
                     .fullScreenCover(isPresented: $showingFolloweringView) {
                         NavigationView {
                             List(otherUserInfo, id: \.username) { userInfo in
-                                NavigationLink(destination: OtherUserProfileView(username: userInfo.username, profileImage: userInfo.profileImage, uid: userInfo.uid)) {
+                                NavigationLink(destination: OtherUserProfileView(username: userInfo.username, profileImage: userInfo.profileImage, uid: userInfo.uid, bio: "")) {
                                     HStack {
                                         WebImage(url: URL(string: userInfo.profileImage))
                                             .placeholder(Image(systemName: "person.circle"))
@@ -167,7 +167,7 @@ struct ProfileView: View {
                                         OtherUserProfileView(
                                             username: selectedUser?.username ?? "",
                                             profileImage: selectedUser?.profileImage ?? "",
-                                            uid: selectedUser?.uid ?? ""),
+                                            uid: selectedUser?.uid ?? "", bio: ""),
                                     isActive: $gotonextpage) { EmptyView() }
                             )
                             .foregroundColor(Color.black)
@@ -181,6 +181,7 @@ struct ProfileView: View {
                         }
                         
                     }
+//                    Spacer()
                 }
                 
                 Spacer()

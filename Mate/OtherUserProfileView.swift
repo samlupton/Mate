@@ -15,6 +15,7 @@ struct OtherUserProfileView: View {
     var username: String
     var profileImage: String
     @State var uid: String
+    @State var bio: String
     @State private var searchOtherUserUID: [(String)] = []
     @State private var showingFollowersView = false
     @State private var showingFollowingView = false
@@ -22,7 +23,7 @@ struct OtherUserProfileView: View {
     @State private var numFollowing: Int = 0
     @State private var otherUserInfo: [(username: String, profileImage: String, uid: String)] = []
     @State private var selectedUser: (username: String, profileImage: String, uid: String)? = nil
-    @State private var gotonextpage = false
+//    @State private var gotonextpage = false
     @State private var openBetsTabisSelected = true
     @State private var highlightsTabisSelected = false
     @State private var badgesTabisSelected = false
@@ -74,7 +75,7 @@ struct OtherUserProfileView: View {
                     .fullScreenCover(isPresented: $showingFollowersView) {
                         NavigationView {
                             List(otherUserInfo, id: \.username) { userInfo in
-                                NavigationLink(destination: OtherUserProfileView(username: userInfo.username, profileImage: userInfo.profileImage, uid: userInfo.uid)) {
+                                NavigationLink(destination: OtherUserProfileView(username: userInfo.username, profileImage: userInfo.profileImage, uid: userInfo.uid, bio:"")) {
                                     HStack {
                                         WebImage(url: URL(string: userInfo.profileImage))
                                             .placeholder(Image(systemName: "person.circle"))
@@ -116,7 +117,7 @@ struct OtherUserProfileView: View {
                     }.fullScreenCover(isPresented: $showingFollowingView) {
                         NavigationView {
                             List(otherUserInfo, id: \.username) { userInfo in
-                                NavigationLink(destination: OtherUserProfileView(username: userInfo.username, profileImage: userInfo.profileImage, uid: userInfo.uid)) {
+                                NavigationLink(destination: OtherUserProfileView(username: userInfo.username, profileImage: userInfo.profileImage, uid: userInfo.uid, bio: "")) {
                                     HStack {
                                         WebImage(url: URL(string: userInfo.profileImage))
                                             .placeholder(Image(systemName: "person.circle"))
@@ -153,7 +154,7 @@ struct OtherUserProfileView: View {
                         Spacer()
                     }
                     HStack {
-                        Text("This is a bio that can only be 50 letters in length")
+                        Text("\(bio)")
                             .font(.body)
                         Spacer()
                     }
@@ -240,7 +241,7 @@ struct OtherUserProfileView: View {
         }.onAppear {
             fetchNumFollowers()
             fetchNumFollowing()
-            
+            fetchBio()
         }
         .navigationBarTitle(Text(username.lowercased()), displayMode: .inline)
         .navigationBarItems(leading: backButton)
@@ -449,6 +450,8 @@ struct OtherUserProfileView: View {
             }
     }
     
+    
+    
     private func updateFollowerStatus() {
         let db = Firestore.firestore()
         
@@ -488,6 +491,7 @@ struct OtherUserProfileView: View {
                 }
             }
     }
+
     
     private func getOtherUsersUID() -> String {
         
@@ -514,10 +518,40 @@ struct OtherUserProfileView: View {
             }
         return uid
     }
+    
+   
+    func fetchBio() {
+        let db = Firestore.firestore()
+        let usersCollection = db.collection("Users")
+        
+        usersCollection.whereField("username", isEqualTo: username)
+            .getDocuments { snapshot, error in
+                if let error = error {
+                    print("Error searching for users: \(error.localizedDescription)")
+                    return
+                }
+                
+                guard let documents = snapshot?.documents else {
+                    print("No user documents found.")
+                    return
+                }
+                
+                if let bio = documents.first?.data()["bio"] as? String {
+                    DispatchQueue.main.async {
+                        self.bio = bio
+                    }
+                } else {
+                    print("No bio found for the user.")
+                }
+            }
+    }
+
+
+    
 }
 
 struct OtherUserProfileView_Previews: PreviewProvider {
     static var previews: some View {
-        OtherUserProfileView(username: "John", profileImage: "Image", uid: "my_uid")
+        OtherUserProfileView(username: "John", profileImage: "Image", uid: "my_uid", bio: "bio")
     }
 }

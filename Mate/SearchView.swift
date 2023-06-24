@@ -24,7 +24,7 @@ struct SearchView: View {
                 } else {
                     List {
                         ForEach(searchResults, id: \.username) { result in
-                            NavigationLink(destination: OtherUserProfileView(username: result.username, profileImage: result.profileImage, uid: result.uid)) {
+                            NavigationLink(destination: OtherUserProfileView(username: result.username, profileImage: result.profileImage, uid: result.uid, bio: "")) {
                                 HStack {
                                     WebImage(url: URL(string: result.profileImage))
                                         .placeholder(Image(systemName: "person.circle"))
