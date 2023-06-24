@@ -28,7 +28,7 @@ struct ProfileView: View {
     @State private var otherUserInfo: [(username: String, profileImage: String, uid: String)] = []
     
     @Binding var isLoggedIn: Bool
-    @ObservedObject private var vm = MainViewModel()
+    @ObservedObject private var vm = UserViewModel()
     
     var body: some View {
         VStack {
@@ -51,8 +51,8 @@ struct ProfileView: View {
             }
             .padding(.horizontal)
 
-            
             HStack {
+//                Spacer()
                 WebImage(url: URL(string: vm.user?.profileImageUrl  ?? ""))
                     .placeholder(Image(systemName: "person.circle"))
                     .resizable()
@@ -64,7 +64,7 @@ struct ProfileView: View {
                     .clipShape(Circle())
                 
                 
-                Spacer()
+//                Spacer()
                 HStack {
                     Spacer()
                     
@@ -217,6 +217,8 @@ struct ProfileView: View {
                 
             }
             .padding(.horizontal)
+            
+            Divider().padding(.horizontal) // Horizontal divider line
 
             HStack {
                 Button(action: {
@@ -228,10 +230,11 @@ struct ProfileView: View {
                 }) {
                     Text("Open Bets")
                         .font(.system(size:18))
+                        .bold()
                         .foregroundColor(Color.black)
                         .underline(openBetsTabisSelected)
                     
-                }.padding()
+                }
                     .background(
                         RoundedRectangle(cornerRadius: 10)
                             .fill(Color.blue.opacity(0.0))
@@ -247,9 +250,10 @@ struct ProfileView: View {
                 }) {
                     Text("Highlights")
                         .font(.system(size:18))
+                        .bold()
                         .foregroundColor(Color.black)
                         .underline(highlightsTabisSelected)
-                }.padding()
+                }
                     .background(
                         RoundedRectangle(cornerRadius: 10)
                             .fill(Color.blue.opacity(0.0))
@@ -264,16 +268,18 @@ struct ProfileView: View {
                 }) {
                     Text("Badges")
                         .font(.system(size:18))
+                        .bold()
                         .foregroundColor(Color.black)
                         .underline(badgesTabisSelected)
                     
-                }.padding()
+                }
                     .background(
                         RoundedRectangle(cornerRadius: 10)
                             .fill(Color.blue.opacity(0.0))
                     )
-            }
-            .padding(.horizontal, 0)
+            }.padding(.horizontal)
+                .padding(.vertical, 1)
+
             Spacer()
         }
         .onAppear {

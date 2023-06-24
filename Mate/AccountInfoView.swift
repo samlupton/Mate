@@ -16,6 +16,7 @@ struct AccountInfoView: View {
     @State private var username: String = ""
     @State private var name: String = ""
     @State private var bio: String = ""
+    @State private var imagePlaceHolder: String = ""
     @State private var showAlert = false
     @State private var showBioAlert = false
     @State private var showNameAlert = false
@@ -23,49 +24,98 @@ struct AccountInfoView: View {
     let characterLimit = 50
     
     var body: some View {
-        VStack {
-            settingsButton
-            TextField("Set Username", text: $username)
-            TextField("Set Bio", text: $bio)
-            TextField("Set Name", text: $name)
-
-            
-            usernameButton
-            bioButton
-            nameButton
-            
-            Button(action: {
-                isLoggedIn = false
-                persistLogin()
-            }) {
-                Text("Sign out")
-                    .font(.headline)
-                    .foregroundColor(.white)
-                    .padding()
-                    .background(Color.blue)
-                    .cornerRadius(10)
-            }.padding()
-            Spacer()
-        }.navigationBarHidden(true)
-            .padding()
-            .fullScreenCover(isPresented: $showImagePicker) {
-                ImagePicker(selectedImage: $selectedImage)
-                    .onDisappear {
-                        showSaveAlert = true
+        NavigationView {
+            List {
+                Section {
+                    Button(action: {
+                        showImagePicker = true
+                    }) {
+                        HStack {
+                            Image(systemName: "camera")
+                                .foregroundColor(Color.black)
+                            TextField("Select Profile Image", text: $imagePlaceHolder)
+                                .disabled(true)
+                                .foregroundColor(.secondary)
+                            Spacer()
+                            imagePickerButton
+                        }
+                    }.alert(isPresented: $showSaveAlert) {
+                        Alert(
+                            title: Text("Save Image"),
+                            message: Text("Do you want to save the selected image?"),
+                            primaryButton: .default(Text("Save")) {
+                                self.persistImageToStorage()
+                            },
+                            secondaryButton: .cancel(Text("Cancel"))
+                        )
                     }
-            }
-        
+                    
+                    Button(action: {
+                    }) {
+                        HStack {
+                            Image(systemName: "person")
+                                .foregroundColor(Color.black)
+                            TextField("Set Username", text: $username)
+                                .foregroundColor(Color.black)
+                            Spacer()
+                            usernameButton
+                        }
+                    }
+                    
+                    Button(action: {
+                    }) {
+                        HStack {
+                            Image(systemName: "character.cursor.ibeam")
+                                .foregroundColor(Color.black)
+                            TextField("Set Bio", text: $bio)
+                                .foregroundColor(Color.black)
+                            Spacer()
+                            bioButton
+                        }
+                    }
+                    
+                    Button(action: {
+                    }) {
+                        HStack {
+                            Image(systemName: "textformat.alt")
+                                .foregroundColor(Color.black)
+                            TextField("Set Name", text: $name)                                    .foregroundColor(Color.black)
+                            Spacer()
+                            nameButton
+                        }
+                    }
+                }
+                Section {
+                    Button(action: {
+                        isLoggedIn = false
+                        persistLogin()
+                    }) {
+                        HStack {
+                            Text("Log Out")
+                                .foregroundColor(Color.red)
+                        }
+                    }
+                }
+            }.navigationBarTitle("Settings")
+        }
+        .fullScreenCover(isPresented: $showImagePicker) {
+            ImagePicker(selectedImage: $selectedImage)
+                .onDisappear {
+                    showSaveAlert = true
+                }
+        }
     }
+    
     func persistLogin() {
         UserDefaults.standard.set(self.isLoggedIn, forKey: "isLoggedIn")
     }
     
-    private var settingsButton: some View {
+    private var imagePickerButton: some View {
         Button(action: {
             showImagePicker = true
         }) {
-            Image(systemName: "gear")
-                .font(.system(size:25))
+            Image(systemName: "checkmark.circle.fill")
+                .font(.body)
                 .foregroundColor(Color.black)
         }.alert(isPresented: $showSaveAlert) {
             Alert(
@@ -80,16 +130,12 @@ struct AccountInfoView: View {
     }
     
     private var usernameButton: some View {
-        
         Button(action: {
             showAlert = true
         }) {
-            Text("Set Username")
-                .font(.headline)
-                .foregroundColor(.white)
-                .padding()
-                .background(Color.blue)
-                .cornerRadius(10)
+            Image(systemName: "checkmark.circle.fill")
+                .font(.body)
+                .foregroundColor(.black)
         }
         .alert(isPresented: $showAlert) {
             Alert(
@@ -114,16 +160,12 @@ struct AccountInfoView: View {
     }
     
     private var nameButton: some View {
-        
         Button(action: {
             showNameAlert = true
         }) {
-            Text("Set Name")
-                .font(.headline)
-                .foregroundColor(.white)
-                .padding()
-                .background(Color.blue)
-                .cornerRadius(10)
+            Image(systemName: "checkmark.circle.fill")
+                .font(.body)
+                .foregroundColor(Color.black)
         }
         .alert(isPresented: $showNameAlert) {
             Alert(
@@ -151,18 +193,14 @@ struct AccountInfoView: View {
         Button(action: {
             showBioAlert = true
         }) {
-            Text("Set Bio")
-                .font(.headline)
-                .foregroundColor(.white)
-                .padding()
-                .background(Color.blue)
-                .cornerRadius(10)
+            Image(systemName: "checkmark.circle.fill")
+                .font(.body)
+                .foregroundColor(Color.black)
                 .onChange(of: bio) { newValue in
                     if newValue.count > characterLimit {
                         bio = String(newValue.prefix(characterLimit))
                     }
                 }
-            
         }
         .alert(isPresented: $showBioAlert) {
             Alert(
@@ -189,7 +227,6 @@ struct AccountInfoView: View {
     private func persistImageToStorage() {
         guard let uid = FirebaseManager.shared.auth.currentUser?.uid else {
             return
-            
         }
         let ref = FirebaseManager.shared.storage.reference(withPath: uid)
         guard let imageData = self.selectedImage?.jpegData(compressionQuality: 1.0)
@@ -218,9 +255,6 @@ struct AccountInfoView: View {
         guard let email = FirebaseManager.shared.auth.currentUser?.email else {
             return
         }
-        //        guard let username = FirebaseManager.shared.auth.currentUser?.username else {
-        //                return
-        //            }
         let userData = ["email": email, "uid": uid, "profileImageURL": profileImage.absoluteString]
         FirebaseManager.shared.firestore.collection("Users").document(uid).setData(userData, merge: true) { err in
             if let err = err {

@@ -23,7 +23,7 @@ struct User {
     let uid, email, username, profileImageUrl, bio: String
 }
 
-class MainViewModel: ObservableObject {
+class UserViewModel: ObservableObject {
     
     @Published var user: User?
     

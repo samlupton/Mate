@@ -182,6 +182,9 @@ struct OtherUserProfileView: View {
             .padding(.horizontal)
             .buttonStyle(.bordered)
             .tint(.black)
+            
+            Divider().padding(.horizontal) // Horizontal divider line
+
             HStack {
                 Button(action: {
                     withAnimation {
