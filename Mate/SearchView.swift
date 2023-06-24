@@ -49,6 +49,7 @@ struct SearchView: View {
         }
     }
 
+    
     private func searchUsers() {
         guard !searchText.isEmpty else {
             return
@@ -56,7 +57,11 @@ struct SearchView: View {
 
         let usersRef = Firestore.firestore().collection("Users")
 
-        usersRef.whereField("username", isEqualTo: searchText)
+        let startText = searchText
+        let endText = searchText + "\u{f8ff}" // Unicode character that represents the highest possible character
+
+        usersRef.whereField("username", isGreaterThanOrEqualTo: startText)
+            .whereField("username", isLessThan: endText)
             .getDocuments { snapshot, error in
                 if let error = error {
                     print("Error searching for users: \(error.localizedDescription)")
@@ -79,6 +84,10 @@ struct SearchView: View {
                 }
             }
     }
+
+    
+    
+
 }
 
 struct SearchView_Previews: PreviewProvider {

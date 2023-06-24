@@ -22,6 +22,7 @@ struct ProfileView: View {
     @State private var highlightsTabisSelected = false
     @State private var badgesTabisSelected = false
     @State private var numFollowers: Int = 0
+    @State private var name: String = ""
     @State private var numFollowing: Int = 0
     @State private var selectedUser: (username: String, profileImage: String, uid: String)? = nil
     @State private var otherUserInfo: [(username: String, profileImage: String, uid: String)] = []
@@ -192,7 +193,7 @@ struct ProfileView: View {
             HStack {
                 VStack {
                     HStack {
-                        Text("John Doe")
+                        Text("\(name)")
                             .bold()
                             .padding(.bottom, 0.5)
                         Spacer()
@@ -278,9 +279,41 @@ struct ProfileView: View {
         .onAppear {
             fetchNumFollowers()
             fetchNumFollowing()
+            fetchName()
+
         }
         .navigationBarHidden(true)
     }
+    
+    func fetchName() {
+        guard let uid = FirebaseManager.shared.auth.currentUser?.uid else {
+            return
+        }
+        
+        let userRef = FirebaseManager.shared.firestore.collection("Users").document(uid)
+        
+        userRef.getDocument { document, error in
+            if let error = error {
+                print("Error fetching user document: \(error.localizedDescription)")
+                return
+            }
+            
+            guard let document = document, document.exists else {
+                print("User document does not exist.")
+                return
+            }
+            
+            guard let name = document.data()?["name"] as? String else {
+                print("Name not found in user document.")
+                return
+            }
+            
+            DispatchQueue.main.async {
+                self.name = name
+            }
+        }
+    }
+
     
     
     

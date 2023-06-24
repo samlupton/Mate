@@ -14,9 +14,11 @@ struct AccountInfoView: View {
     @State private var showImagePicker: Bool = false
     @State private var showSaveAlert: Bool = false
     @State private var username: String = ""
+    @State private var name: String = ""
     @State private var bio: String = ""
     @State private var showAlert = false
     @State private var showBioAlert = false
+    @State private var showNameAlert = false
     @Binding var isLoggedIn: Bool
     let characterLimit = 50
     
@@ -25,9 +27,12 @@ struct AccountInfoView: View {
             settingsButton
             TextField("Set Username", text: $username)
             TextField("Set Bio", text: $bio)
+            TextField("Set Name", text: $name)
+
             
             usernameButton
             bioButton
+            nameButton
             
             Button(action: {
                 isLoggedIn = false
@@ -101,6 +106,40 @@ struct AccountInfoView: View {
                             return
                         }
                         print("Username saved successfully.")
+                    }
+                }),
+                secondaryButton: .cancel()
+            )
+        }
+    }
+    
+    private var nameButton: some View {
+        
+        Button(action: {
+            showNameAlert = true
+        }) {
+            Text("Set Name")
+                .font(.headline)
+                .foregroundColor(.white)
+                .padding()
+                .background(Color.blue)
+                .cornerRadius(10)
+        }
+        .alert(isPresented: $showNameAlert) {
+            Alert(
+                title: Text("Set Name"),
+                message: nil,
+                primaryButton: .default(Text("Save"), action: {
+                    guard let uid = FirebaseManager.shared.auth.currentUser?.uid else {
+                        return
+                    }
+                    let userData = ["name": name]
+                    FirebaseManager.shared.firestore.collection("Users").document(uid).setData(userData, merge: true) { err in
+                        if let err = err {
+                            print(err)
+                            return
+                        }
+                        print("Name saved successfully.")
                     }
                 }),
                 secondaryButton: .cancel()

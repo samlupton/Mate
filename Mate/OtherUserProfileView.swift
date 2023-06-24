@@ -20,6 +20,7 @@ struct OtherUserProfileView: View {
     @State private var showingFollowersView = false
     @State private var showingFollowingView = false
     @State private var numFollowers: Int = 0
+    @State private var name: String = ""
     @State private var numFollowing: Int = 0
     @State private var otherUserInfo: [(username: String, profileImage: String, uid: String)] = []
     @State private var selectedUser: (username: String, profileImage: String, uid: String)? = nil
@@ -148,7 +149,7 @@ struct OtherUserProfileView: View {
             HStack {
                 VStack {
                     HStack {
-                        Text("John Doe")
+                        Text("\(name)")
                             .bold()
                             .padding(.bottom, 0.5)
                         Spacer()
@@ -242,6 +243,7 @@ struct OtherUserProfileView: View {
             fetchNumFollowers()
             fetchNumFollowing()
             fetchBio()
+            fetchName()
         }
         .navigationBarTitle(Text(username.lowercased()), displayMode: .inline)
         .navigationBarItems(leading: backButton)
@@ -545,6 +547,33 @@ struct OtherUserProfileView: View {
                 }
             }
     }
+    func fetchName() {
+        let db = Firestore.firestore()
+        let usersCollection = db.collection("Users")
+        
+        usersCollection.whereField("username", isEqualTo: username)
+            .getDocuments { snapshot, error in
+                if let error = error {
+                    print("Error searching for users: \(error.localizedDescription)")
+                    return
+                }
+                
+                guard let documents = snapshot?.documents else {
+                    print("No user documents found.")
+                    return
+                }
+                
+                if let name = documents.first?.data()["name"] as? String {
+                    DispatchQueue.main.async {
+                        self.name = name
+                        print("name: ", name)
+                    }
+                } else {
+                    print("No bio found for the user.")
+                }
+            }
+    }
+
 
 
     
