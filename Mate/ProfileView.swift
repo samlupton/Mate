@@ -21,371 +21,275 @@ struct ProfileView: View {
     @State private var openBetsTabisSelected = true
     @State private var highlightsTabisSelected = false
     @State private var badgesTabisSelected = false
-    @State private var numFollowers: Int = 0
-    @State private var name: String = ""
-    @State private var numFollowing: Int = 0
     @State private var selectedUser: (username: String, profileImage: String, uid: String)? = nil
     @State private var otherUserInfo: [(username: String, profileImage: String, uid: String)] = []
-    
     @Binding var isLoggedIn: Bool
     @ObservedObject private var vm = UserViewModel()
     
     var body: some View {
-        VStack {
-            HStack {
-                Text("\(vm.user?.username ?? "User")")
-                    .font(.title)
-                    .bold()
-                    .textCase(.lowercase)
-                Spacer()
-                Button(action: {
-                    showAccountInfo = true
-                }) {
-                    Image(systemName: "line.3.horizontal")
-                        .font(.system(size:25))
-                        .foregroundColor(Color.black)
-                }
-                .sheet(isPresented: $showAccountInfo) {
-                    AccountInfoView(isLoggedIn: $isLoggedIn)
-                }
-            }
-            .padding(.horizontal)
-
-            HStack {
-//                Spacer()
-                WebImage(url: URL(string: vm.user?.profileImageUrl  ?? ""))
-                    .placeholder(Image(systemName: "person.circle"))
-                    .resizable()
-                    .frame(width: 82, height: 84)
-                    .clipShape(Circle())
-                    .foregroundColor(Color.black)
-                    .clipped()
-                    .background(Color.gray)
-                    .clipShape(Circle())
-                
-                
-//                Spacer()
+        NavigationView {
+            VStack {
                 HStack {
+                    Text("\(vm.user?.username ?? "User")")
+                        .font(.title)
+                        .bold()
+                        .textCase(.lowercase)
                     Spacer()
-                    
-                    HStack {
-                        VStack {
-                            Text("Winnings")
-                                .font(.caption)
-                                .foregroundColor(.black)
-                                .lineLimit(1)
-                            Text("$\(numFollowers)")
-                                .font(.headline)
-                                .foregroundColor(.black)
-                        }
-                    }
-                    Spacer()
-                    
                     Button(action: {
-                        fetchAllFollowersUsernamesInfo { usernames in }
-                        showingFolloweringView = true
+                        showAccountInfo = true
                     }) {
-                        HStack {
-                            VStack {
-                                Text("Followers")
-                                    .font(.caption)
-                                    .foregroundColor(.black)
-                                Text("\(numFollowers)")
-                                    .font(.headline)
-                                    .foregroundColor(.black)
-                            }
-                        }
-                    }
-                    .sheet(isPresented: $showingFollowersView) {
-                        NavigationView {
-                            List(otherUserInfo, id: \.username) { userInfo in
-                                Button(action: {
-                                    selectedUser = userInfo
-                                    gotonextpage = true
-                                }) {
-                                    HStack {
-                                        WebImage(url: URL(string: userInfo.profileImage))
-                                            .placeholder(Image(systemName: "person.circle"))
-                                            .resizable()
-                                            .frame(width: 40, height: 40)
-                                            .clipShape(Circle())
-                                            .foregroundColor(Color.black)
-                                        Text(userInfo.username)
-                                            .textCase(.lowercase)
-                                    }
-                                }
-                            }
-                            .navigationTitle(Text("Followers"))
-                            .background(
-                                NavigationLink(
-                                    destination:
-                                        OtherUserProfileView(
-                                            username: selectedUser?.username ?? "",
-                                            profileImage: selectedUser?.profileImage ?? "",
-                                            uid: selectedUser?.uid ?? "", bio: ""),
-                                    isActive: $gotonextpage) { EmptyView() }
-                            )
+                        Image(systemName: "line.3.horizontal")
+                            .font(.system(size:25))
                             .foregroundColor(Color.black)
-                        }
                     }
-                    Spacer()
-                    Button(action: {
-                        fetchAllFollowingUsernamesInfo { usernames in }
-                        showingFolloweringView = true
-                    }) {
+                    .sheet(isPresented: $showAccountInfo) {
+                        AccountInfoView(isLoggedIn: $isLoggedIn)
+                    }
+                }
+                .padding(.horizontal)
+                HStack {
+                    WebImage(url: URL(string: vm.user?.profileImageUrl  ?? ""))
+                        .placeholder(Image(systemName: "person.circle"))
+                        .resizable()
+                        .frame(width: 82, height: 84)
+                        .clipShape(Circle())
+                        .foregroundColor(Color.black)
+                        .clipped()
+                        .background(Color.gray)
+                        .clipShape(Circle())
+                    HStack {
+                        Spacer()
                         HStack {
                             VStack {
-                                Text("Following")
+                                Text("Winnings")
                                     .font(.caption)
+                                    .foregroundColor(.black)
                                     .lineLimit(1)
-                                    .foregroundColor(.black)
-                                Text("\(numFollowing)")
+                                Text("$137")
                                     .font(.headline)
                                     .foregroundColor(.black)
                             }
                         }
-                    }
-                    .fullScreenCover(isPresented: $showingFolloweringView) {
-                        NavigationView {
-                            List(otherUserInfo, id: \.username) { userInfo in
-                                NavigationLink(destination: OtherUserProfileView(username: userInfo.username, profileImage: userInfo.profileImage, uid: userInfo.uid, bio: "")) {
-                                    HStack {
-                                        WebImage(url: URL(string: userInfo.profileImage))
-                                            .placeholder(Image(systemName: "person.circle"))
-                                            .resizable()
-                                            .frame(width: 40, height: 40)
-                                            .clipShape(Circle())
-                                            .foregroundColor(Color.black)
-                                        
-                                        Text(userInfo.username)
-                                            .textCase(.lowercase)
-                                    }
+                        Spacer()
+                        Button(action: {
+                            fetchFollowers { usernames in }
+                            showingFolloweringView = true
+                        }) {
+                            HStack {
+                                VStack {
+                                    Text("Followers")
+                                        .font(.caption)
+                                        .foregroundColor(.black)
+                                    Text("\(vm.numFollowers)")
+                                        .font(.headline)
+                                        .foregroundColor(.black)
                                 }
                             }
-                            .background(
-                                NavigationLink(
-                                    destination:
-                                        OtherUserProfileView(
-                                            username: selectedUser?.username ?? "",
-                                            profileImage: selectedUser?.profileImage ?? "",
-                                            uid: selectedUser?.uid ?? "", bio: ""),
-                                    isActive: $gotonextpage) { EmptyView() }
-                            )
-                            .foregroundColor(Color.black)
-                            .navigationBarItems(leading: Button(action: {
-                                showingFolloweringView = false
-                            }) {
-                                Image(systemName: "chevron.left")
-                                    .foregroundColor(Color.black)
-                            })
-                            .navigationTitle(Text("Following"))
                         }
-                        
+                        .sheet(isPresented: $showingFollowersView) {
+                            NavigationView {
+                                List(otherUserInfo, id: \.username) { userInfo in
+                                    Button(action: {
+                                        selectedUser = userInfo
+                                        gotonextpage = true
+                                    }) {
+                                        HStack {
+                                            WebImage(url: URL(string: userInfo.profileImage))
+                                                .placeholder(Image(systemName: "person.circle"))
+                                                .resizable()
+                                                .frame(width: 40, height: 40)
+                                                .clipShape(Circle())
+                                                .foregroundColor(Color.black)
+                                            Text(userInfo.username)
+                                                .textCase(.lowercase)
+                                        }
+                                    }
+                                }
+                                .navigationTitle(Text("Followers"))
+                                .background(
+                                    NavigationLink(
+                                        destination:
+                                            OtherUserProfileView(
+                                                username: selectedUser?.username ?? "",
+                                                profileImage: selectedUser?.profileImage ?? "",
+                                                uid: selectedUser?.uid ?? "", bio: ""),
+                                        isActive: $gotonextpage) { EmptyView() }
+                                )
+                                .foregroundColor(Color.black)
+                            }
+                        }
+                        Spacer()
+                        Button(action: {
+                            fetchFollowing { usernames in }
+                            showingFolloweringView = true
+                        }) {
+                            HStack {
+                                VStack {
+                                    Text("Following")
+                                        .font(.caption)
+                                        .lineLimit(1)
+                                        .foregroundColor(.black)
+                                    Text("\(vm.numFollowing)")
+                                        .font(.headline)
+                                        .foregroundColor(.black)
+                                }
+                            }
+                        }
+                        .fullScreenCover(isPresented: $showingFolloweringView) {
+                            NavigationView {
+                                List(otherUserInfo, id: \.username) { userInfo in
+                                    NavigationLink(destination: OtherUserProfileView(username: userInfo.username, profileImage: userInfo.profileImage, uid: userInfo.uid, bio: "")) {
+                                        HStack {
+                                            WebImage(url: URL(string: userInfo.profileImage))
+                                                .placeholder(Image(systemName: "person.circle"))
+                                                .resizable()
+                                                .frame(width: 40, height: 40)
+                                                .clipShape(Circle())
+                                                .foregroundColor(Color.black)
+                                            
+                                            Text(userInfo.username)
+                                                .textCase(.lowercase)
+                                        }
+                                    }
+                                }
+                                .background(
+                                    NavigationLink(
+                                        destination:
+                                            OtherUserProfileView(
+                                                username: selectedUser?.username ?? "",
+                                                profileImage: selectedUser?.profileImage ?? "",
+                                                uid: selectedUser?.uid ?? "", bio: ""),
+                                        isActive: $gotonextpage) { EmptyView() }
+                                )
+                                .foregroundColor(Color.black)
+                                .navigationBarItems(leading: Button(action: {
+                                    showingFolloweringView = false
+                                }) {
+                                    Image(systemName: "chevron.left")
+                                        .foregroundColor(Color.black)
+                                })
+                                .navigationTitle(Text("Following"))
+                            }
+                            
+                        }
                     }
-//                    Spacer()
+                    Spacer()
                 }
+                .padding(.horizontal)
+                HStack {
+                    VStack {
+                        HStack {
+                            Text("\(vm.user?.name ?? "User")")
+                                .bold()
+                                .padding(.bottom, 0.5)
+                            Spacer()
+                        }
+                        HStack {
+                            Text("\(vm.user?.bio ?? "This is a bio that can only be 50 letters in length")")
+                                .font(.body)
+                            Spacer()
+                        }
+                    }
+                    NavigationLink(
+                        destination: DirectMessageView(),
+                        label: {
+                            Image(systemName: "text.bubble")
+                                .foregroundColor(Color.black)
+                                .font(.system(size:25))
+                        }
+                    ).padding(.horizontal, 0)
+                        .navigationTitle("Back")
+                        .navigationBarTitleDisplayMode(.inline)
+                        .navigationBarHidden(false)
+                    Spacer()
+                    
+                }
+                .padding(.horizontal)
                 
-                Spacer()
+                Divider().padding(.horizontal) // Horizontal divider line
                 
-            }
-            .padding(.horizontal)
-
-            HStack {
-                VStack {
-                    HStack {
-                        Text("\(name)")
+                HStack {
+                    Button(action: {
+                        withAnimation {
+                            openBetsTabisSelected = true
+                            highlightsTabisSelected = false
+                            badgesTabisSelected = false
+                        }
+                    }) {
+                        Text("Open Bets")
+                            .font(.system(size:18))
                             .bold()
-                            .padding(.bottom, 0.5)
-                        Spacer()
-                    }
-                    HStack {
-                        Text("\(vm.user?.bio ?? "This is a bio that can only be 50 letters in length")")
-                            .font(.body)
-                        Spacer()
-                    }
-                    
-                }
-
-                Button(action: {
-                }) {
-                    Image(systemName: "text.bubble")
-                        .font(.system(size:25))
-                }
-                .padding(.horizontal, 0)
-
-                Spacer()
-                
-            }
-            .padding(.horizontal)
-            
-            Divider().padding(.horizontal) // Horizontal divider line
-
-            HStack {
-                Button(action: {
-                    withAnimation {
-                        openBetsTabisSelected = true
-                        highlightsTabisSelected = false
-                        badgesTabisSelected = false
-                    }
-                }) {
-                    Text("Open Bets")
-                        .font(.system(size:18))
-                        .bold()
-                        .foregroundColor(Color.black)
-                        .underline(openBetsTabisSelected)
-                    
-                }
-                    .background(
-                        RoundedRectangle(cornerRadius: 10)
-                            .fill(Color.blue.opacity(0.0))
-                    )
-                Spacer()
-                Button(action: {
-                    withAnimation {
-                        openBetsTabisSelected = false
-                        highlightsTabisSelected = true
-                        badgesTabisSelected = false
+                            .foregroundColor(Color.black)
+                            .underline(openBetsTabisSelected)
                         
                     }
-                }) {
-                    Text("Highlights")
-                        .font(.system(size:18))
-                        .bold()
-                        .foregroundColor(Color.black)
-                        .underline(highlightsTabisSelected)
-                }
                     .background(
                         RoundedRectangle(cornerRadius: 10)
                             .fill(Color.blue.opacity(0.0))
                     )
-                Spacer()
-                Button(action: {
-                    withAnimation {
-                        openBetsTabisSelected = false
-                        highlightsTabisSelected = false
-                        badgesTabisSelected = true
+                    Spacer()
+                    Button(action: {
+                        withAnimation {
+                            openBetsTabisSelected = false
+                            highlightsTabisSelected = true
+                            badgesTabisSelected = false
+                            
+                        }
+                    }) {
+                        Text("Highlights")
+                            .font(.system(size:18))
+                            .bold()
+                            .foregroundColor(Color.black)
+                            .underline(highlightsTabisSelected)
                     }
-                }) {
-                    Text("Badges")
-                        .font(.system(size:18))
-                        .bold()
-                        .foregroundColor(Color.black)
-                        .underline(badgesTabisSelected)
-                    
-                }
                     .background(
                         RoundedRectangle(cornerRadius: 10)
                             .fill(Color.blue.opacity(0.0))
                     )
-            }.padding(.horizontal)
-                .padding(.vertical, 1)
-
-            Spacer()
+                    Spacer()
+                    Button(action: {
+                        withAnimation {
+                            openBetsTabisSelected = false
+                            highlightsTabisSelected = false
+                            badgesTabisSelected = true
+                        }
+                    }) {
+                        Text("Badges")
+                            .font(.system(size:18))
+                            .bold()
+                            .foregroundColor(Color.black)
+                            .underline(badgesTabisSelected)
+                        
+                    }
+                    .background(
+                        RoundedRectangle(cornerRadius: 10)
+                            .fill(Color.blue.opacity(0.0))
+                    )
+                }.padding(.horizontal)
+                    .padding(.vertical, 1)
+                Spacer()
+                
+                if openBetsTabisSelected {
+                    OpenBetsView()
+                } else if highlightsTabisSelected {
+                    HighlightsView()
+                } else if badgesTabisSelected {
+                    BadgesView()
+                }
+                
+                Spacer()
+            }
+            .navigationBarHidden(true)
         }
-        .onAppear {
-            fetchNumFollowers()
-            fetchNumFollowing()
-            fetchName()
-
-        }
-        .navigationBarHidden(true)
     }
     
-    func fetchName() {
-        guard let uid = FirebaseManager.shared.auth.currentUser?.uid else {
-            return
-        }
-        
-        let userRef = FirebaseManager.shared.firestore.collection("Users").document(uid)
-        
-        userRef.getDocument { document, error in
-            if let error = error {
-                print("Error fetching user document: \(error.localizedDescription)")
-                return
-            }
-            
-            guard let document = document, document.exists else {
-                print("User document does not exist.")
-                return
-            }
-            
-            guard let name = document.data()?["name"] as? String else {
-                print("Name not found in user document.")
-                return
-            }
-            
-            DispatchQueue.main.async {
-                self.name = name
-            }
-        }
-    }
 
     
-    
-    
-    func fetchNumFollowers() {
-        guard let currentUserID = FirebaseManager.shared.auth.currentUser?.uid else {
-            return
-        }
-        
-        let db = Firestore.firestore()
-        let followingCollection = db.collection("Users").document(currentUserID).collection("Followers")
-        
-        followingCollection.getDocuments { (snapshot, error) in
-            if let error = error {
-                print("Error fetching followers: \(error.localizedDescription)")
-                return
-            }
-            
-            guard let snapshot = snapshot else {
-                print("Snapshot is nil")
-                return
-            }
-            
-            let count = snapshot.documents.count
-            
-            // Update the state variable on the main queue
-            DispatchQueue.main.async {
-                self.numFollowers = count
-            }
-        }
-    }
-    
-    func fetchNumFollowing() {
-        guard let currentUserID = FirebaseManager.shared.auth.currentUser?.uid else {
-            return
-        }
-        
-        let db = Firestore.firestore()
-        let followingCollection = db.collection("Users").document(currentUserID).collection("Following")
-        
-        followingCollection.getDocuments { (snapshot, error) in
-            if let error = error {
-                print("Error fetching followers: \(error.localizedDescription)")
-                return
-            }
-            
-            guard let snapshot = snapshot else {
-                print("Snapshot is nil")
-                return
-            }
-            
-            let count = snapshot.documents.count
-            print("Number of followers: \(count)")
-            
-            // Update the state variable on the main queue
-            DispatchQueue.main.async {
-                self.numFollowing = count
-            }
-        }
-    }
-    
-    
-    // fetchAllFollowingUsernamesInfo gets all the user ID's from the documents inside
+    // fetchFollowers gets all the user ID's from the documents inside
     // Collection: 'Users' -> Collection: 'Following' -> Field: 'uid'
-    // The 'uid' field is passed into the searchOtherUsersProfileImageAndUsername function
+    // The 'uid' field is passed to fetchOtherUserInfo
     
-    func fetchAllFollowersUsernamesInfo(completion: @escaping ([String]) -> Void) {
+    func fetchFollowers(completion: @escaping ([String]) -> Void) {
         guard let currentUserID = FirebaseManager.shared.auth.currentUser?.uid else {
             completion([])
             return
@@ -401,7 +305,6 @@ struct ProfileView: View {
                 return
             }
             
-            var usernames: [String] = []
             var updatedOtherUserInfo: [(username: String, profileImage: String, uid: String)] = []
             
             let group = DispatchGroup()
@@ -410,21 +313,22 @@ struct ProfileView: View {
                 let uid = document.data()["uid"] as? String ?? ""
                 group.enter()
                 
-                searchOtherUsersProfileImagesAndUsernames(uid: uid) { fetchedUsername, fetchedProfileImage, fetchuid in
+                fetchOtherUserInfo(uid: uid) {
+                    fetchedUsername,
+                    fetchedProfileImage,
+                    fetchuid in
                     updatedOtherUserInfo.append((username: fetchedUsername, profileImage: fetchedProfileImage, uid: fetchuid))
-                    usernames.append(fetchedUsername)
                     group.leave()
                 }
             }
             
             group.notify(queue: .main) {
                 self.otherUserInfo = updatedOtherUserInfo
-                completion(usernames)
             }
         }
     }
     
-    func fetchAllFollowingUsernamesInfo(completion: @escaping ([String]) -> Void) {
+    func fetchFollowing(completion: @escaping ([String]) -> Void) {
         guard let currentUserID = FirebaseManager.shared.auth.currentUser?.uid else {
             completion([])
             return
@@ -440,7 +344,6 @@ struct ProfileView: View {
                 return
             }
             
-            var usernames: [String] = []
             var updatedOtherUserInfo: [(username: String, profileImage: String, uid: String)] = []
             
             let group = DispatchGroup()
@@ -449,23 +352,25 @@ struct ProfileView: View {
                 let uid = document.data()["uid"] as? String ?? ""
                 group.enter()
                 
-                searchOtherUsersProfileImagesAndUsernames(uid: uid) { fetchedUsername, fetchedProfileImage, fetchuid in
+                fetchOtherUserInfo(uid: uid) {
+                    fetchedUsername,
+                    fetchedProfileImage,
+                    fetchuid in
                     updatedOtherUserInfo.append((username: fetchedUsername, profileImage: fetchedProfileImage, uid: fetchuid))
-                    usernames.append(fetchedUsername)
+                    
                     group.leave()
                 }
             }
             
             group.notify(queue: .main) {
                 self.otherUserInfo = updatedOtherUserInfo
-                completion(usernames)
             }
         }
     }
     
     // searchOtherUsersProfileImageAndUsername takes in the 'uid' field as a parameter and searchs for
     // the profileImageURL, username, and uid associated with the account. These are all sent back as Strings
-    private func searchOtherUsersProfileImagesAndUsernames(uid: String, completion: @escaping (String, String, String) -> Void) {
+    private func fetchOtherUserInfo(uid: String, completion: @escaping (String, String, String) -> Void) {
         let usersRef = Firestore.firestore().collection("Users")
         
         usersRef.whereField("uid", isEqualTo: uid).getDocuments { snapshot, error in
@@ -517,10 +422,9 @@ struct UnderlineModifier: ViewModifier {
                 Rectangle()
                     .frame(height: active ? 1 : 0)
                     .foregroundColor(.black)
-                    .animation(.default)
                     .opacity(active ? 1 : 0)
-                    .animation(.default)
                     .offset(y: active ? 15 : 0)
             )
+            .animation(.default, value: active) // Apply animation with value parameter
     }
 }

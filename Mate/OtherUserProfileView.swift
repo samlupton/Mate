@@ -24,7 +24,6 @@ struct OtherUserProfileView: View {
     @State private var numFollowing: Int = 0
     @State private var otherUserInfo: [(username: String, profileImage: String, uid: String)] = []
     @State private var selectedUser: (username: String, profileImage: String, uid: String)? = nil
-//    @State private var gotonextpage = false
     @State private var openBetsTabisSelected = true
     @State private var highlightsTabisSelected = false
     @State private var badgesTabisSelected = false
@@ -576,10 +575,6 @@ struct OtherUserProfileView: View {
                 }
             }
     }
-
-
-
-    
 }
 
 struct OtherUserProfileView_Previews: PreviewProvider {

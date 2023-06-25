@@ -7,7 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		CF2F53FD2A3BB75600C41E95 /* UserProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF2F53FC2A3BB75600C41E95 /* UserProfile.swift */; };
+		CF5148FF2A46BC9C00D88708 /* OpenBetsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF5148FE2A46BC9C00D88708 /* OpenBetsView.swift */; };
+		CF5149012A46BF6E00D88708 /* HighlightsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF5149002A46BF6E00D88708 /* HighlightsView.swift */; };
+		CF5149032A46BFC300D88708 /* BadgesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF5149022A46BFC300D88708 /* BadgesView.swift */; };
+		CF5149052A46C0C900D88708 /* DirectMessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF5149042A46C0C900D88708 /* DirectMessageView.swift */; };
+		CF5149082A47544D00D88708 /* OtherUserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF5149072A47544D00D88708 /* OtherUserModel.swift */; };
+		CF51490A2A47CCA600D88708 /* CreateMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF5149092A47CCA600D88708 /* CreateMessage.swift */; };
 		CF7D58E52A23DDA80023BF9B /* MateApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF7D58E42A23DDA80023BF9B /* MateApp.swift */; };
 		CF7D58E72A23DDA80023BF9B /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF7D58E62A23DDA80023BF9B /* ContentView.swift */; };
 		CF7D58E92A23DDA80023BF9B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CF7D58E82A23DDA80023BF9B /* Assets.xcassets */; };
@@ -34,7 +39,12 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		CF2F53FC2A3BB75600C41E95 /* UserProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfile.swift; sourceTree = "<group>"; };
+		CF5148FE2A46BC9C00D88708 /* OpenBetsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenBetsView.swift; sourceTree = "<group>"; };
+		CF5149002A46BF6E00D88708 /* HighlightsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HighlightsView.swift; sourceTree = "<group>"; };
+		CF5149022A46BFC300D88708 /* BadgesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BadgesView.swift; sourceTree = "<group>"; };
+		CF5149042A46C0C900D88708 /* DirectMessageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectMessageView.swift; sourceTree = "<group>"; };
+		CF5149072A47544D00D88708 /* OtherUserModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OtherUserModel.swift; sourceTree = "<group>"; };
+		CF5149092A47CCA600D88708 /* CreateMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateMessage.swift; sourceTree = "<group>"; };
 		CF7D58E12A23DDA80023BF9B /* Mate.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Mate.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CF7D58E42A23DDA80023BF9B /* MateApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MateApp.swift; sourceTree = "<group>"; };
 		CF7D58E62A23DDA80023BF9B /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -72,6 +82,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		CF5149062A47542400D88708 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				CF7D59022A23DF5B0023BF9B /* UserModel.swift */,
+				CF5149072A47544D00D88708 /* OtherUserModel.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
 		CF7D58D82A23DDA80023BF9B = {
 			isa = PBXGroup;
 			children = (
@@ -93,15 +112,19 @@
 			children = (
 				CF7D58F42A23DE760023BF9B /* LoginView.swift */,
 				CF7D58FE2A23DF410023BF9B /* FeedView.swift */,
-				CF7D59022A23DF5B0023BF9B /* UserModel.swift */,
 				CFC964972A2E5AF80081F880 /* NewsView.swift */,
 				CF7D58F22A23DE4A0023BF9B /* ImagePicker.swift */,
-				CF2F53FC2A3BB75600C41E95 /* UserProfile.swift */,
 				CF7D59192A24FEBC0023BF9B /* AccountInfoView.swift */,
 				CF7D58F62A23DE970023BF9B /* SceneDelegate.swift */,
 				CF7D591D2A26503B0023BF9B /* OtherUserProfileView.swift */,
+				CF5149022A46BFC300D88708 /* BadgesView.swift */,
+				CF5149042A46C0C900D88708 /* DirectMessageView.swift */,
+				CF5149062A47542400D88708 /* Models */,
+				CF5148FE2A46BC9C00D88708 /* OpenBetsView.swift */,
 				CF7D591B2A257EE90023BF9B /* SearchView.swift */,
 				CF7D58E42A23DDA80023BF9B /* MateApp.swift */,
+				CF5149092A47CCA600D88708 /* CreateMessage.swift */,
+				CF5149002A46BF6E00D88708 /* HighlightsView.swift */,
 				CF7D58FC2A23DF330023BF9B /* PostView.swift */,
 				CF7D58E62A23DDA80023BF9B /* ContentView.swift */,
 				CF7D58FA2A23DEF10023BF9B /* ProfileView.swift */,
@@ -207,14 +230,19 @@
 			files = (
 				CF7D58F72A23DE970023BF9B /* SceneDelegate.swift in Sources */,
 				CF7D58FF2A23DF410023BF9B /* FeedView.swift in Sources */,
-				CF2F53FD2A3BB75600C41E95 /* UserProfile.swift in Sources */,
+				CF5149082A47544D00D88708 /* OtherUserModel.swift in Sources */,
 				CF7D58F32A23DE4A0023BF9B /* ImagePicker.swift in Sources */,
 				CFC964982A2E5AF80081F880 /* NewsView.swift in Sources */,
+				CF5149012A46BF6E00D88708 /* HighlightsView.swift in Sources */,
 				CF7D591E2A26503B0023BF9B /* OtherUserProfileView.swift in Sources */,
 				CF7D58FD2A23DF330023BF9B /* PostView.swift in Sources */,
 				CF7D591C2A257EE90023BF9B /* SearchView.swift in Sources */,
+				CF5148FF2A46BC9C00D88708 /* OpenBetsView.swift in Sources */,
+				CF51490A2A47CCA600D88708 /* CreateMessage.swift in Sources */,
+				CF5149032A46BFC300D88708 /* BadgesView.swift in Sources */,
 				CF7D58E72A23DDA80023BF9B /* ContentView.swift in Sources */,
 				CF7D58F52A23DE760023BF9B /* LoginView.swift in Sources */,
+				CF5149052A46C0C900D88708 /* DirectMessageView.swift in Sources */,
 				CF7D58FB2A23DEF10023BF9B /* ProfileView.swift in Sources */,
 				CF7D59032A23DF5B0023BF9B /* UserModel.swift in Sources */,
 				CF7D591A2A24FEBC0023BF9B /* AccountInfoView.swift in Sources */,
