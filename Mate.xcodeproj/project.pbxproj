@@ -13,6 +13,7 @@
 		CF5149052A46C0C900D88708 /* DirectMessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF5149042A46C0C900D88708 /* DirectMessageView.swift */; };
 		CF5149082A47544D00D88708 /* OtherUserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF5149072A47544D00D88708 /* OtherUserModel.swift */; };
 		CF51490A2A47CCA600D88708 /* CreateMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF5149092A47CCA600D88708 /* CreateMessage.swift */; };
+		CF51490C2A4A08A500D88708 /* MessageCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF51490B2A4A08A500D88708 /* MessageCollectionView.swift */; };
 		CF7D58E52A23DDA80023BF9B /* MateApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF7D58E42A23DDA80023BF9B /* MateApp.swift */; };
 		CF7D58E72A23DDA80023BF9B /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF7D58E62A23DDA80023BF9B /* ContentView.swift */; };
 		CF7D58E92A23DDA80023BF9B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CF7D58E82A23DDA80023BF9B /* Assets.xcassets */; };
@@ -45,6 +46,7 @@
 		CF5149042A46C0C900D88708 /* DirectMessageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectMessageView.swift; sourceTree = "<group>"; };
 		CF5149072A47544D00D88708 /* OtherUserModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OtherUserModel.swift; sourceTree = "<group>"; };
 		CF5149092A47CCA600D88708 /* CreateMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateMessage.swift; sourceTree = "<group>"; };
+		CF51490B2A4A08A500D88708 /* MessageCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageCollectionView.swift; sourceTree = "<group>"; };
 		CF7D58E12A23DDA80023BF9B /* Mate.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Mate.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CF7D58E42A23DDA80023BF9B /* MateApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MateApp.swift; sourceTree = "<group>"; };
 		CF7D58E62A23DDA80023BF9B /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -115,6 +117,7 @@
 				CFC964972A2E5AF80081F880 /* NewsView.swift */,
 				CF7D58F22A23DE4A0023BF9B /* ImagePicker.swift */,
 				CF7D59192A24FEBC0023BF9B /* AccountInfoView.swift */,
+				CF51490B2A4A08A500D88708 /* MessageCollectionView.swift */,
 				CF7D58F62A23DE970023BF9B /* SceneDelegate.swift */,
 				CF7D591D2A26503B0023BF9B /* OtherUserProfileView.swift */,
 				CF5149022A46BFC300D88708 /* BadgesView.swift */,
@@ -234,6 +237,7 @@
 				CF7D58F32A23DE4A0023BF9B /* ImagePicker.swift in Sources */,
 				CFC964982A2E5AF80081F880 /* NewsView.swift in Sources */,
 				CF5149012A46BF6E00D88708 /* HighlightsView.swift in Sources */,
+				CF51490C2A4A08A500D88708 /* MessageCollectionView.swift in Sources */,
 				CF7D591E2A26503B0023BF9B /* OtherUserProfileView.swift in Sources */,
 				CF7D58FD2A23DF330023BF9B /* PostView.swift in Sources */,
 				CF7D591C2A257EE90023BF9B /* SearchView.swift in Sources */,

@@ -111,11 +111,16 @@ struct CreateMessageView: View {
             "toUid": toUid
         ]
         
-        let MessageID: [String: Any] = [
+        let toMessageID: [String: Any] = [
             "fromUid": currentUserID,
             "toUid": toUid
         ]
         
+        let fromMessageID: [String: Any] = [
+            "fromUid": currentUserID,
+            "toUid": toUid
+        ]
+
         // Add message to the toMessagesRef collection
         toMessagesRef.addDocument(data: newMessage) { error in
             if let error = error {
@@ -124,7 +129,7 @@ struct CreateMessageView: View {
                 print("Message sent successfully!")
             }
         }
-        
+
         // Add message to the fromMessagesRef collection
         fromMessagesRef.addDocument(data: newMessage) { error in
             if let error = error {
@@ -133,24 +138,22 @@ struct CreateMessageView: View {
                 print("Message sent successfully!")
             }
         }
-//         below is code that i wrote to save the uid as a feild inside the documents in the Message collection. however, it doesnt work. it gets errors like this: Error updating document: No document to update: projects/mate-23629/databases/(default)/documents/Users/gy2xjZtaBLcXHYqYbUvKuWUHzzc2/Messages/6DgY3kctVWV6Rs3LwEATHIZu4bq2
-//        2023-06-26 10:49:07.253789-0500 Mate[83378:1755383] 10.10.0 - [FirebaseFirestore][I-FST000001] WriteStream (140e1b1e8) Stream error: 'Not found: No document to update: projects/mate-23629/databases/(default)/documents/Users/6DgY3kctVWV6Rs3LwEATHIZu4bq2/Messages/gy2xjZtaBLcXHYqYbUvKuWUHzzc2'
-//        Error updating document: No document to update: projects/mate-23629/databases/(default)/documents/Users/6DgY3kctVWV6Rs3LwEATHIZu4bq2/Messages/gy2xjZtaBLcXHYqYbUvKuWUHzzc2
+        
         let toMessagesRefID = toUserRef.document(toUid).collection("Messages").document(currentUserID)
-        
+
         let fromMessagesRefID = fromUserRef.document(currentUserID).collection("Messages").document(toUid)
-        
+
         // Add message to the toMessagesRef collection
-        toMessagesRefID.setData(MessageID, merge: true) { error in
+        toMessagesRefID.setData(toMessageID, merge: true) { error in
             if let error = error {
                 print("Error updating document: \(error.localizedDescription)")
             } else {
                 print("Document updated successfully!")
             }
         }
-        
+
         // Add message ID to the fromMessagesRef document
-        fromMessagesRefID.setData(MessageID, merge: true) { error in
+        fromMessagesRefID.setData(fromMessageID, merge: true) { error in
             if let error = error {
                 print("Error updating document: \(error.localizedDescription)")
             } else {
