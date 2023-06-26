@@ -23,7 +23,7 @@ struct CreateMessageView: View {
     
     var body: some View {
         VStack {
-            if let toUid = recipient {
+            if recipient != nil {
                 VStack {
                     HStack {
                         WebImage(url: URL(string: recipientInfo.profileImage))
@@ -50,7 +50,7 @@ struct CreateMessageView: View {
                             sendMessage(to: recipientUID, message: messageText)
                             messageToRecipient = ""
                         }) {
-                         Image(systemName: "arrow.up.circle.fill")
+                            Image(systemName: "arrow.up.circle.fill")
                                 .foregroundColor(Color.black)
                         }.padding()
                     }
@@ -94,29 +94,30 @@ struct CreateMessageView: View {
     }
     
     func sendMessage(to toUid: String, message: String) {
-        
         guard let currentUserID = FirebaseManager.shared.auth.currentUser?.uid else {
             return
         }
         
         let toUserRef = Firestore.firestore().collection("Users")
-        let toMessagesRef = toUserRef.document(toUid).collection("Messages")
+        let toMessagesRef = toUserRef.document(toUid).collection("Messages").document(currentUserID).collection("chatLog")
         
         let fromUserRef = Firestore.firestore().collection("Users")
-        let fromMessagesRef = fromUserRef.document(currentUserID).collection("Messages")
+        let fromMessagesRef = fromUserRef.document(currentUserID).collection("Messages").document(toUid).collection("chatLog")
         
-        
-        
-        let newMessageTo: [String: Any] = [
+        let newMessage: [String: Any] = [
+            "message": message,
+            "timestamp": Date(),
+            "fromUid": currentUserID,
             "toUid": toUid
         ]
         
-        let newMessageFrom: [String: Any] = [
-            "fromUid": currentUserID
+        let MessageID: [String: Any] = [
+            "fromUid": currentUserID,
+            "toUid": toUid
         ]
         
-        
-        toMessagesRef.addDocument(data: newMessageFrom) { error in
+        // Add message to the toMessagesRef collection
+        toMessagesRef.addDocument(data: newMessage) { error in
             if let error = error {
                 print("Error sending message: \(error.localizedDescription)")
             } else {
@@ -124,78 +125,39 @@ struct CreateMessageView: View {
             }
         }
         
-        fromMessagesRef.addDocument(data: newMessageTo) { error in
+        // Add message to the fromMessagesRef collection
+        fromMessagesRef.addDocument(data: newMessage) { error in
             if let error = error {
                 print("Error sending message: \(error.localizedDescription)")
             } else {
                 print("Message sent successfully!")
             }
         }
+//         below is code that i wrote to save the uid as a feild inside the documents in the Message collection. however, it doesnt work. it gets errors like this: Error updating document: No document to update: projects/mate-23629/databases/(default)/documents/Users/gy2xjZtaBLcXHYqYbUvKuWUHzzc2/Messages/6DgY3kctVWV6Rs3LwEATHIZu4bq2
+//        2023-06-26 10:49:07.253789-0500 Mate[83378:1755383] 10.10.0 - [FirebaseFirestore][I-FST000001] WriteStream (140e1b1e8) Stream error: 'Not found: No document to update: projects/mate-23629/databases/(default)/documents/Users/6DgY3kctVWV6Rs3LwEATHIZu4bq2/Messages/gy2xjZtaBLcXHYqYbUvKuWUHzzc2'
+//        Error updating document: No document to update: projects/mate-23629/databases/(default)/documents/Users/6DgY3kctVWV6Rs3LwEATHIZu4bq2/Messages/gy2xjZtaBLcXHYqYbUvKuWUHzzc2
+        let toMessagesRefID = toUserRef.document(toUid).collection("Messages").document(currentUserID)
         
-        toMessagesRef.whereField("fromUid", isEqualTo: currentUserID).getDocuments { (snapshot, error) in
-                if let error = error {
-                    print("Error searching for user: \(error.localizedDescription)")
-                    return
-                }
-
-                guard let snapshot = snapshot else {
-                    print("No matching user found.")
-                    return
-                }
-
-                if snapshot.documents.isEmpty {
-                    print("No matching user found.")
-                    return
-                }
-
-                let chatLogRef = snapshot.documents[0].reference.collection("chatLog")
-                let newMessage: [String: Any] = [
-                    "message": message,
-                    "timestamp": Date()
-                ]
-
-                chatLogRef.addDocument(data: newMessage) { error in
-                    if let error = error {
-                        print("Error sending message: \(error.localizedDescription)")
-                    } else {
-                        print("Message sent successfully!")
-                    }
-                }
-            }
+        let fromMessagesRefID = fromUserRef.document(currentUserID).collection("Messages").document(toUid)
         
-        fromMessagesRef.whereField("toUid", isEqualTo: toUid).getDocuments { (snapshot, error) in
-                if let error = error {
-                    print("Error searching for user: \(error.localizedDescription)")
-                    return
-                }
-
-                guard let snapshot = snapshot else {
-                    print("No matching user found.")
-                    return
-                }
-
-                if snapshot.documents.isEmpty {
-                    print("No matching user found.")
-                    return
-                }
-
-                let chatLogRef = snapshot.documents[0].reference.collection("chatLog")
-                let newMessage: [String: Any] = [
-                    "message": message,
-                    "timestamp": Date()
-                ]
-
-                chatLogRef.addDocument(data: newMessage) { error in
-                    if let error = error {
-                        print("Error sending message: \(error.localizedDescription)")
-                    } else {
-                        print("Message sent successfully!")
-                    }
-                }
+        // Add message to the toMessagesRef collection
+        toMessagesRefID.setData(MessageID, merge: true) { error in
+            if let error = error {
+                print("Error updating document: \(error.localizedDescription)")
+            } else {
+                print("Document updated successfully!")
             }
+        }
+        
+        // Add message ID to the fromMessagesRef document
+        fromMessagesRefID.setData(MessageID, merge: true) { error in
+            if let error = error {
+                print("Error updating document: \(error.localizedDescription)")
+            } else {
+                print("Document updated successfully!")
+            }
+        }
     }
-
-    
     
     private func searchUsers() {
         guard !searchText.isEmpty else {
