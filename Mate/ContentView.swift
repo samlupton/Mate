@@ -33,7 +33,7 @@ struct ContentView: View {
                         }
                     PostView()
                         .tabItem {
-                            Label("Post", systemImage: "plus.app")
+                            Label("Bets", systemImage: "plus.app")
                         }
                     LocalSellerView()
                         .tabItem {
@@ -47,7 +47,8 @@ struct ContentView: View {
             } else {
                 WelcomeScreen().navigationBarBackButtonHidden()
             }
-        }.onAppear(perform: {
+        }
+        .onAppear(perform: {
             getData()
         })
     }

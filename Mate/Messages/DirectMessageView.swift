@@ -140,7 +140,8 @@ struct DirectMessageView: View {
     @State private var recipient: String?
     @State private var recipientInfo: (username: String, profileImage: String, uid: String) = ("", "", "")
     @State private var messageToRecipient = ""
-    //
+    let currentUserID = FirebaseManager.shared.auth.currentUser?.uid
+
     @State private var showingCreateMessageView = false
     
     @StateObject private var viewModel = MessageListViewModel()
@@ -184,7 +185,7 @@ struct DirectMessageView: View {
             } else if searchText.isEmpty {
                 VStack {
                     List(viewModel.followingUIDs, id: \.self) { uid in
-                        NavigationLink(destination: MessageCollectionVeiw()) {
+                        NavigationLink(destination: MessageCollectionView(currentUserID: currentUserID ?? "", toUid: uid)) {
                             HStack {
                                 if let profileImageURL = viewModel.contactInfo[uid]?.profileImageURL {
                                     AsyncImage(url: URL(string: profileImageURL)) { image in
@@ -241,7 +242,7 @@ struct DirectMessageView: View {
                             .padding(.horizontal)
                         }
                         .buttonStyle(PlainButtonStyle())
-                    }
+                    } .padding(.top, 5)
                 }
             } else {
                 List {
