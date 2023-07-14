@@ -6,7 +6,7 @@
 
 <img src="Kapture 2023-07-14 at 01.29.00.gif" width=200><br>
 
-Social app with messaging, sser authentication, Cloud-based user data storage, and more.
+Social app with messaging, user authentication, Cloud-based user data storage, and more.
 
 ## License
 
