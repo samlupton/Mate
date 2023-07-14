@@ -1,16 +1,12 @@
 # *Mate*
 
-**Mate** is an app that give sports better a platform for socail interaction awhile the place bets
-
-## About
-
-.....
+**Mate** is an app that provides sports fans with a platform for socializing.
 
 ## Video Walkthrough
 
 <img src="Kapture 2023-07-14 at 01.29.00.gif" width=200><br>
 
-The user ID stored in Firebase is a lengthy combination of integers and letters, serving as a key to access various information about other users, including profile pictures and usernames.
+Social app with messaging, sser authentication, Cloud-based user data storage, and more.
 
 ## License
 
