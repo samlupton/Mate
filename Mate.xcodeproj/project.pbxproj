@@ -15,6 +15,7 @@
 		CF51490C2A4A08A500D88708 /* MessageCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF51490B2A4A08A500D88708 /* MessageCollectionView.swift */; };
 		CF5149282A4BE5C800D88708 /* TeamAbbreviationMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF5149272A4BE5C800D88708 /* TeamAbbreviationMapper.swift */; };
 		CF5DEA512A60F983005A895C /* HighlightsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF5DEA502A60F983005A895C /* HighlightsView.swift */; };
+		CF5DEA532A611A44005A895C /* Secrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF5DEA522A611A44005A895C /* Secrets.swift */; };
 		CF7D58E52A23DDA80023BF9B /* MateApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF7D58E42A23DDA80023BF9B /* MateApp.swift */; };
 		CF7D58E72A23DDA80023BF9B /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF7D58E62A23DDA80023BF9B /* ContentView.swift */; };
 		CF7D58E92A23DDA80023BF9B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CF7D58E82A23DDA80023BF9B /* Assets.xcassets */; };
@@ -50,6 +51,7 @@
 		CF51490B2A4A08A500D88708 /* MessageCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageCollectionView.swift; sourceTree = "<group>"; };
 		CF5149272A4BE5C800D88708 /* TeamAbbreviationMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamAbbreviationMapper.swift; sourceTree = "<group>"; };
 		CF5DEA502A60F983005A895C /* HighlightsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HighlightsView.swift; path = "../../../../Library/Mobile Documents/com~apple~CloudDocs/.Trash/HighlightsView.swift"; sourceTree = "<group>"; };
+		CF5DEA522A611A44005A895C /* Secrets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Secrets.swift; sourceTree = "<group>"; };
 		CF7D58E12A23DDA80023BF9B /* Mate.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Mate.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CF7D58E42A23DDA80023BF9B /* MateApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MateApp.swift; sourceTree = "<group>"; };
 		CF7D58E62A23DDA80023BF9B /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -122,6 +124,7 @@
 				CFC2F63C2A4E086200F1ECBA /* Settings */,
 				CF7D58F62A23DE970023BF9B /* SceneDelegate.swift */,
 				CF7D591D2A26503B0023BF9B /* OtherUserProfileView.swift */,
+				CF5DEA522A611A44005A895C /* Secrets.swift */,
 				CFC2F63D2A4E088100F1ECBA /* Messages */,
 				CF5149272A4BE5C800D88708 /* TeamAbbreviationMapper.swift */,
 				CF5149022A46BFC300D88708 /* BadgesView.swift */,
@@ -281,6 +284,7 @@
 				CF5149052A46C0C900D88708 /* DirectMessageView.swift in Sources */,
 				CF7D58FB2A23DEF10023BF9B /* ProfileView.swift in Sources */,
 				CF7D59032A23DF5B0023BF9B /* UserModel.swift in Sources */,
+				CF5DEA532A611A44005A895C /* Secrets.swift in Sources */,
 				CF7D591A2A24FEBC0023BF9B /* AccountInfoView.swift in Sources */,
 				CF7D58E52A23DDA80023BF9B /* MateApp.swift in Sources */,
 			);
