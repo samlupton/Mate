@@ -8,13 +8,13 @@
 
 /* Begin PBXBuildFile section */
 		CF5148FF2A46BC9C00D88708 /* OpenBetsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF5148FE2A46BC9C00D88708 /* OpenBetsView.swift */; };
-		CF5149012A46BF6E00D88708 /* HighlightsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF5149002A46BF6E00D88708 /* HighlightsView.swift */; };
 		CF5149032A46BFC300D88708 /* BadgesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF5149022A46BFC300D88708 /* BadgesView.swift */; };
 		CF5149052A46C0C900D88708 /* DirectMessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF5149042A46C0C900D88708 /* DirectMessageView.swift */; };
 		CF5149082A47544D00D88708 /* OtherUserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF5149072A47544D00D88708 /* OtherUserModel.swift */; };
 		CF51490A2A47CCA600D88708 /* CreateMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF5149092A47CCA600D88708 /* CreateMessage.swift */; };
 		CF51490C2A4A08A500D88708 /* MessageCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF51490B2A4A08A500D88708 /* MessageCollectionView.swift */; };
 		CF5149282A4BE5C800D88708 /* TeamAbbreviationMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF5149272A4BE5C800D88708 /* TeamAbbreviationMapper.swift */; };
+		CF5DEA512A60F983005A895C /* HighlightsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF5DEA502A60F983005A895C /* HighlightsView.swift */; };
 		CF7D58E52A23DDA80023BF9B /* MateApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF7D58E42A23DDA80023BF9B /* MateApp.swift */; };
 		CF7D58E72A23DDA80023BF9B /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF7D58E62A23DDA80023BF9B /* ContentView.swift */; };
 		CF7D58E92A23DDA80023BF9B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CF7D58E82A23DDA80023BF9B /* Assets.xcassets */; };
@@ -37,18 +37,19 @@
 		CF7D591A2A24FEBC0023BF9B /* AccountInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF7D59192A24FEBC0023BF9B /* AccountInfoView.swift */; };
 		CF7D591C2A257EE90023BF9B /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF7D591B2A257EE90023BF9B /* SearchView.swift */; };
 		CF7D591E2A26503B0023BF9B /* OtherUserProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF7D591D2A26503B0023BF9B /* OtherUserProfileView.swift */; };
+		CFA320A02A59189700195A20 /* NumberOfFollowers.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFA3209F2A59189700195A20 /* NumberOfFollowers.swift */; };
 		CFC964982A2E5AF80081F880 /* NewsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFC964972A2E5AF80081F880 /* NewsView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		CF5148FE2A46BC9C00D88708 /* OpenBetsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenBetsView.swift; sourceTree = "<group>"; };
-		CF5149002A46BF6E00D88708 /* HighlightsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HighlightsView.swift; sourceTree = "<group>"; };
 		CF5149022A46BFC300D88708 /* BadgesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BadgesView.swift; sourceTree = "<group>"; };
 		CF5149042A46C0C900D88708 /* DirectMessageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectMessageView.swift; sourceTree = "<group>"; };
 		CF5149072A47544D00D88708 /* OtherUserModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OtherUserModel.swift; sourceTree = "<group>"; };
 		CF5149092A47CCA600D88708 /* CreateMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateMessage.swift; sourceTree = "<group>"; };
 		CF51490B2A4A08A500D88708 /* MessageCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageCollectionView.swift; sourceTree = "<group>"; };
 		CF5149272A4BE5C800D88708 /* TeamAbbreviationMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamAbbreviationMapper.swift; sourceTree = "<group>"; };
+		CF5DEA502A60F983005A895C /* HighlightsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HighlightsView.swift; path = "../../../../Library/Mobile Documents/com~apple~CloudDocs/.Trash/HighlightsView.swift"; sourceTree = "<group>"; };
 		CF7D58E12A23DDA80023BF9B /* Mate.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Mate.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CF7D58E42A23DDA80023BF9B /* MateApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MateApp.swift; sourceTree = "<group>"; };
 		CF7D58E62A23DDA80023BF9B /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -65,6 +66,7 @@
 		CF7D59192A24FEBC0023BF9B /* AccountInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountInfoView.swift; sourceTree = "<group>"; };
 		CF7D591B2A257EE90023BF9B /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
 		CF7D591D2A26503B0023BF9B /* OtherUserProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OtherUserProfileView.swift; sourceTree = "<group>"; };
+		CFA3209F2A59189700195A20 /* NumberOfFollowers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumberOfFollowers.swift; sourceTree = "<group>"; };
 		CFC964972A2E5AF80081F880 /* NewsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -127,9 +129,10 @@
 				CF5148FE2A46BC9C00D88708 /* OpenBetsView.swift */,
 				CF7D591B2A257EE90023BF9B /* SearchView.swift */,
 				CF7D58E42A23DDA80023BF9B /* MateApp.swift */,
-				CF5149002A46BF6E00D88708 /* HighlightsView.swift */,
 				CF7D58FC2A23DF330023BF9B /* PostView.swift */,
+				CFA3209E2A5917CD00195A20 /* Classes */,
 				CF7D58E62A23DDA80023BF9B /* ContentView.swift */,
+				CF5DEA502A60F983005A895C /* HighlightsView.swift */,
 				CF7D58FA2A23DEF10023BF9B /* ProfileView.swift */,
 				CF7D59152A23E0AC0023BF9B /* GoogleService-Info.plist */,
 				CF7D58E82A23DDA80023BF9B /* Assets.xcassets */,
@@ -144,6 +147,14 @@
 				CF7D58EB2A23DDA80023BF9B /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		CFA3209E2A5917CD00195A20 /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				CFA3209F2A59189700195A20 /* NumberOfFollowers.swift */,
+			);
+			path = Classes;
 			sourceTree = "<group>";
 		};
 		CFC2F63C2A4E086200F1ECBA /* Settings */ = {
@@ -256,11 +267,12 @@
 				CF7D58F32A23DE4A0023BF9B /* ImagePicker.swift in Sources */,
 				CFC964982A2E5AF80081F880 /* NewsView.swift in Sources */,
 				CF5149282A4BE5C800D88708 /* TeamAbbreviationMapper.swift in Sources */,
-				CF5149012A46BF6E00D88708 /* HighlightsView.swift in Sources */,
 				CF51490C2A4A08A500D88708 /* MessageCollectionView.swift in Sources */,
 				CF7D591E2A26503B0023BF9B /* OtherUserProfileView.swift in Sources */,
+				CFA320A02A59189700195A20 /* NumberOfFollowers.swift in Sources */,
 				CF7D58FD2A23DF330023BF9B /* PostView.swift in Sources */,
 				CF7D591C2A257EE90023BF9B /* SearchView.swift in Sources */,
+				CF5DEA512A60F983005A895C /* HighlightsView.swift in Sources */,
 				CF5148FF2A46BC9C00D88708 /* OpenBetsView.swift in Sources */,
 				CF51490A2A47CCA600D88708 /* CreateMessage.swift in Sources */,
 				CF5149032A46BFC300D88708 /* BadgesView.swift in Sources */,

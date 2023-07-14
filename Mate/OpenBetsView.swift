@@ -11,9 +11,11 @@ import SwiftUI
 struct OpenBetsView: View {
     var body: some View {
         VStack {
+            Color.purple
+                            .ignoresSafeArea()
                     Text("Open Bets View")
                 }
-                .background(Color.white) // Optional: Add a background color
+                .foregroundColor(Color.green) // Optional: Add a background color
                 .edgesIgnoringSafeArea(.all)
     }
 }

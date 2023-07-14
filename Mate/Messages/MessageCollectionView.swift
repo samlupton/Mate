@@ -1,183 +1,10 @@
-////
-////  MessageCollectionView.swift
-////  Mate
-////
-////  Created by Samuel Lupton on 6/26/23.
-////
 //
-//import Foundation
-//import SwiftUI
-//import Firebase
-//import FirebaseFirestore
+//  MessageCollectionView.swift
+//  Mate
 //
-//import SwiftUI
-//import FirebaseFirestore
+//  Created by Samuel Lupton on 6/26/23.
 //
-//struct Message: Identifiable {
-//    let id = UUID()
-//    let fromUid: String
-//    let toUid: String
-//    let message: String
-//    let timestamp: Date
-//}
-//
-//
-//struct MessageCollectionView: View {
-//    let currentUserID: String
-//    let toUid: String
-//    @State private var messages: [Message] = []
-//    private let firestore = Firestore.firestore()
-//
-//    @State private var recipient: String?
-//    @State private var recipientInfo: (username: String, profileImage: String, uid: String) = ("", "", "")
-//    @State private var messageToRecipient = ""
-//
-//    var body: some View {
-//
-//        VStack{
-//
-//            List(messages) { message in
-//                if message.fromUid == currentUserID {
-//                    HStack {
-//                        Spacer()
-//                        Text(message.message)
-//                            .padding(.horizontal)
-//                            .padding(.vertical, 2)
-//                            .background(Color.gray.opacity(0.2))
-//                            .foregroundColor(.black)
-//                            .cornerRadius(10)
-//                    }
-//                } else {
-//                    HStack {
-//                        Text(message.message)
-//                            .padding(.horizontal)
-//                            .padding(.vertical, 2)
-//                            .background(Color.gray.opacity(0.2))
-//                            .foregroundColor(.black)
-//                            .cornerRadius(10)
-//                        Spacer()
-//                    }
-//                }
-//            }
-//            .listStyle(PlainListStyle())
-//            .onAppear {
-//                fetchMessages()
-//            }
-//            Spacer()
-//            HStack {
-//                TextField("Send a message to \(recipientInfo.username)", text: $messageToRecipient)
-//                    .padding()
-//                    .background(Color.white)
-//                Button(action: {
-//                    let messageText = messageToRecipient
-//                    let recipientUID = toUid
-//                    sendMessage(to: recipientUID, message: messageText)
-//                    messageToRecipient = ""
-//                }) {
-//                    Image(systemName: "arrow.up.circle.fill")
-//                        .foregroundColor(Color.black)
-//                }.padding()
-//            }
-//        }
-//    }
-//
-//    func sendMessage(to toUid: String, message: String) {
-//        guard let currentUserID = FirebaseManager.shared.auth.currentUser?.uid else {
-//            return
-//        }
-//
-//        let toUserRef = Firestore.firestore().collection("Users")
-//        let toMessagesRef = toUserRef.document(toUid).collection("Messages").document(currentUserID).collection("chatLog")
-//
-//        let fromUserRef = Firestore.firestore().collection("Users")
-//        let fromMessagesRef = fromUserRef.document(currentUserID).collection("Messages").document(toUid).collection("chatLog")
-//
-//        let newMessage: [String: Any] = [
-//            "message": message,
-//            "timestamp": Date(),
-//            "fromUid": currentUserID,
-//            "toUid": toUid
-//        ]
-//
-//        let toMessageID: [String: Any] = [
-//            "fromUid": currentUserID,
-//            "toUid": toUid
-//        ]
-//
-//        let fromMessageID: [String: Any] = [
-//            "fromUid": currentUserID,
-//            "toUid": toUid
-//        ]
-//
-//        // Add message to the toMessagesRef collection
-//        toMessagesRef.addDocument(data: newMessage) { error in
-//            if let error = error {
-//                print("Error sending message: \(error.localizedDescription)")
-//            } else {
-//                print("Message sent successfully!")
-//            }
-//        }
-//
-//        // Add message to the fromMessagesRef collection
-//        fromMessagesRef.addDocument(data: newMessage) { error in
-//            if let error = error {
-//                print("Error sending message: \(error.localizedDescription)")
-//            } else {
-//                print("Message sent successfully!")
-//            }
-//        }
-//
-//        let toMessagesRefID = toUserRef.document(toUid).collection("Messages").document(currentUserID)
-//
-//        let fromMessagesRefID = fromUserRef.document(currentUserID).collection("Messages").document(toUid)
-//
-//        // Add message to the toMessagesRef collection
-//        toMessagesRefID.setData(toMessageID, merge: true) { error in
-//            if let error = error {
-//                print("Error updating document: \(error.localizedDescription)")
-//            } else {
-//                print("Document updated successfully!")
-//            }
-//        }
-//
-//        // Add message ID to the fromMessagesRef document
-//        fromMessagesRefID.setData(fromMessageID, merge: true) { error in
-//            if let error = error {
-//                print("Error updating document: \(error.localizedDescription)")
-//            } else {
-//                print("Document updated successfully!")
-//            }
-//        }
-//    }
-//
-//
-//    private func fetchMessages() {
-//        firestore
-//            .collection("Users")
-//            .document(toUid)
-//            .collection("Messages")
-//            .document(currentUserID)
-//            .collection("chatLog")
-//            .order(by: "timestamp", descending: false)
-//            .addSnapshotListener { querySnapshot, error in
-//                guard let documents = querySnapshot?.documents else {
-//                    print("Error fetching messages: \(error?.localizedDescription ?? "Unknown error")")
-//                    return
-//                }
-//
-//                messages = documents.compactMap { document -> Message? in
-//                    guard
-//                        let fromUid = document["fromUid"] as? String,
-//                        let toUid = document["toUid"] as? String,
-//                        let message = document["message"] as? String,
-//                        let timestamp = document["timestamp"] as? Timestamp
-//                    else { return nil }
-//
-//                    return Message(fromUid: fromUid, toUid: toUid, message: message, timestamp: timestamp.dateValue())
-//                }
-//            }
-//    }
-//}
+
 
 import SwiftUI
 import Firebase
@@ -260,6 +87,12 @@ struct MessageCollectionView: View {
             TextField("Send a message to \(recipientInfo.username)", text: $messageToRecipient)
                 .padding()
                 .background(Color.white)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 30)
+                        .stroke(.gray.opacity(0.5), lineWidth: 2)
+                        .padding(.horizontal, 5)
+                        .padding(.vertical, 7)
+                )
             Button(action: {
                 let messageText = messageToRecipient
                 let recipientUID = toUid
@@ -278,7 +111,6 @@ struct MessageCollectionView: View {
 private func scrollToBottom(_ scrollViewProxy: ScrollViewProxy) {
         withAnimation {
             scrollViewProxy.scrollTo(messages.last?.id, anchor: .bottom)
-            print("Hey: ", messages.first?.message)
         }
     }
     

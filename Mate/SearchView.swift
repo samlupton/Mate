@@ -13,26 +13,25 @@ import SDWebImageSwiftUI
 struct SearchView: View {
     @State private var searchText = ""
     @State private var searchResults: [(username: String, profileImage: String, uid: String)] = []
-//    private let userSearchHelper = UserSearchHelper()
-
+    
     var body: some View {
         NavigationView {
             VStack {
                 if searchText.isEmpty {
-                        NewsView()
-                    .padding(.top, 5)
+                    NewsView()
                 } else {
                     List {
                         ForEach(searchResults, id: \.username) { result in
                             NavigationLink(destination: OtherUserProfileView(username: result.username, profileImage: result.profileImage, uid: result.uid, bio: "")) {
                                 HStack {
+                                    
                                     WebImage(url: URL(string: result.profileImage))
                                         .placeholder(Image(systemName: "person.circle"))
                                         .resizable()
                                         .frame(width: 40, height: 40)
                                         .clipShape(Circle())
                                         .foregroundColor(Color.black)
-
+                                    
                                     Text(result.username)
                                         .textCase(.lowercase)
                                 }
@@ -41,25 +40,45 @@ struct SearchView: View {
                     }
                 }
             }
-                .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always))
-                .disableAutocorrection(true)
-                .onChange(of: searchText) { newValue in
-                    searchUsers()
+            .padding(.top, 0)
+            .navigationBarTitleDisplayMode(.inline)
+            .navigationBarBackButtonHidden(true)
+            .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always))
+            .disableAutocorrection(true)
+            .onChange(of: searchText) { newValue in
+                searchUsers()
+            }
+            .toolbar {
+                ToolbarItem(placement: .principal) {
+                    VStack {
+                        HStack {
+                            Text("Search")
+                                .font(.title)
+                                .fontWeight(.bold)
+                            .foregroundColor(Color("PrimaryGold"))
+                            Spacer()
+                        }
+                        Spacer()
+                    }
+                    .frame(maxWidth: .infinity)
                 }
+            }
         }
+        .navigationViewStyle(StackNavigationViewStyle())
+        
     }
-
+    
     
     private func searchUsers() {
         guard !searchText.isEmpty else {
             return
         }
-
+        
         let usersRef = Firestore.firestore().collection("Users")
-
+        
         let startText = searchText
         let endText = searchText + "\u{f8ff}" // Unicode character that represents the highest possible character
-
+        
         usersRef.whereField("username", isGreaterThanOrEqualTo: startText)
             .whereField("username", isLessThan: endText)
             .getDocuments { snapshot, error in
@@ -67,12 +86,12 @@ struct SearchView: View {
                     print("Error searching for users: \(error.localizedDescription)")
                     return
                 }
-
+                
                 guard let documents = snapshot?.documents else {
                     print("No user documents found.")
                     return
                 }
-
+                
                 self.searchResults = documents.compactMap { document in
                     guard let username = document.data()["username"] as? String,
                           let uid = document.data()["uid"] as? String,
@@ -84,10 +103,6 @@ struct SearchView: View {
                 }
             }
     }
-
-    
-    
-
 }
 
 struct SearchView_Previews: PreviewProvider {

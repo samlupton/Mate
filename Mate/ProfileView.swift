@@ -25,28 +25,41 @@ struct ProfileView: View {
     @State private var otherUserInfo: [(username: String, profileImage: String, uid: String)] = []
     @Binding var isLoggedIn: Bool
     @ObservedObject private var vm = UserViewModel()
+    @State private var selectedButton: Int?
+    @State private var sizer: CGFloat = 0.0
+    @State private var selectedButtonIndex: Int = 0
     
     var body: some View {
         NavigationView {
             VStack {
                 HStack {
-                    Text("\(vm.user?.username ?? "User")")
-                        .font(.title)
-                        .bold()
-                        .textCase(.lowercase)
-                    Spacer()
-                    Button(action: {
-                        showAccountInfo = true
-                    }) {
-                        Image(systemName: "line.3.horizontal")
-                            .font(.system(size:25))
-                            .foregroundColor(Color.black)
-                    }
-                    .sheet(isPresented: $showAccountInfo) {
-                        AccountInfoView(isLoggedIn: $isLoggedIn)
-                    }
+                    HStack {
+                        HStack {
+                            Button(action: {
+                                showAccountInfo = true
+                            }) {
+                                Text("\(vm.user?.username ?? "User")")
+                                    .font(.title)
+                                    .bold()
+                                    .textCase(.lowercase)
+                                    .foregroundColor(Color.white)
+                            }
+                            .sheet(isPresented: $showAccountInfo) {
+                                AccountInfoView(isLoggedIn: $isLoggedIn)
+                            }
+                            Spacer()
+                            Button(action: {
+                            }) {
+                                Image(systemName: "plus.app")
+                                    .font(.system(size:25))
+                                    .foregroundColor(Color.white)
+                            }
+                        }
+                    }.padding(.horizontal)
+                        .padding(.vertical, 5)
+                    
                 }
-                .padding(.horizontal)
+                .background(Color("PrimaryGold"))
                 HStack {
                     WebImage(url: URL(string: vm.user?.profileImageUrl  ?? ""))
                         .placeholder(Image(systemName: "person.circle"))
@@ -62,7 +75,7 @@ struct ProfileView: View {
                         HStack {
                             VStack {
                                 Text("Winnings")
-                                    .font(.caption)
+                                    .font(.custom("Silkscreen-Regular", size: 14))
                                     .foregroundColor(.black)
                                     .lineLimit(1)
                                 Text("$137")
@@ -78,7 +91,8 @@ struct ProfileView: View {
                             HStack {
                                 VStack {
                                     Text("Followers")
-                                        .font(.caption)
+                                    //                                        .font(.caption)
+                                        .font(.custom("Silkscreen-Regular", size: 14))
                                         .foregroundColor(.black)
                                     Text("\(vm.numFollowers)")
                                         .font(.headline)
@@ -126,62 +140,69 @@ struct ProfileView: View {
                             HStack {
                                 VStack {
                                     Text("Following")
-                                        .font(.caption)
+                                        .font(.custom("Silkscreen-Regular", size: 14))
                                         .lineLimit(1)
                                         .foregroundColor(.black)
                                     Text("\(vm.numFollowing)")
                                         .font(.headline)
+                                    
                                         .foregroundColor(.black)
                                 }
                             }
                         }
                         .fullScreenCover(isPresented: $showingFolloweringView) {
                             NavigationView {
-                                List(otherUserInfo, id: \.username) { userInfo in
-                                    NavigationLink(destination: OtherUserProfileView(username: userInfo.username, profileImage: userInfo.profileImage, uid: userInfo.uid, bio: "")) {
-                                        HStack {
-                                            WebImage(url: URL(string: userInfo.profileImage))
-                                                .placeholder(Image(systemName: "person.circle"))
-                                                .resizable()
-                                                .frame(width: 40, height: 40)
-                                                .clipShape(Circle())
-                                                .foregroundColor(Color.black)
-                                            
-                                            Text(userInfo.username)
-                                                .textCase(.lowercase)
+                                if otherUserInfo.isEmpty {
+                                    ProgressView()
+                                        .progressViewStyle(CircularProgressViewStyle(tint: Color.gray.opacity(0.5)))
+                                        .scaleEffect(3)
+                                } else {
+                                    List(otherUserInfo, id: \.username) { userInfo in
+                                        NavigationLink(destination: OtherUserProfileView(username: userInfo.username, profileImage: userInfo.profileImage, uid: userInfo.uid, bio: "")) {
+                                            HStack {
+                                                WebImage(url: URL(string: userInfo.profileImage))
+                                                    .placeholder(Image(systemName: "person.circle"))
+                                                    .resizable()
+                                                    .frame(width: 40, height: 40)
+                                                    .clipShape(Circle())
+                                                    .foregroundColor(Color.black)
+                                                
+                                                Text(userInfo.username)
+                                                    .textCase(.lowercase)
+                                            }
                                         }
                                     }
+                                    .background(
+                                        NavigationLink(
+                                            destination:
+                                                OtherUserProfileView(
+                                                    username: selectedUser?.username ?? "",
+                                                    profileImage: selectedUser?.profileImage ?? "",
+                                                    uid: selectedUser?.uid ?? "", bio: ""),
+                                            isActive: $gotonextpage) { EmptyView() }
+                                    )
+                                    .foregroundColor(Color.black)
+                                    .navigationBarItems(leading: Button(action: {
+                                        showingFolloweringView = false
+                                    }) {
+                                        Image(systemName: "chevron.left")
+                                            .foregroundColor(Color.black)
+                                    })
+                                    .navigationTitle(Text("Following"))
                                 }
-                                .background(
-                                    NavigationLink(
-                                        destination:
-                                            OtherUserProfileView(
-                                                username: selectedUser?.username ?? "",
-                                                profileImage: selectedUser?.profileImage ?? "",
-                                                uid: selectedUser?.uid ?? "", bio: ""),
-                                        isActive: $gotonextpage) { EmptyView() }
-                                )
-                                .foregroundColor(Color.black)
-                                .navigationBarItems(leading: Button(action: {
-                                    showingFolloweringView = false
-                                }) {
-                                    Image(systemName: "chevron.left")
-                                        .foregroundColor(Color.black)
-                                })
-                                .navigationTitle(Text("Following"))
                             }
-                            
                         }
                     }
                     Spacer()
                 }
                 .padding(.horizontal)
+                .padding(.vertical, 5)
                 HStack {
                     VStack {
                         HStack {
                             Text("\(vm.user?.name ?? "User")")
                                 .bold()
-                                .padding(.bottom, 0.5)
+                                .padding(.bottom, 0.0)
                             Spacer()
                         }
                         HStack {
@@ -189,85 +210,95 @@ struct ProfileView: View {
                                 .font(.body)
                             Spacer()
                         }
-                    }
+                    }.padding(.horizontal)
                     NavigationLink(
                         destination: DirectMessageView(),
                         label: {
-                            Image(systemName: "text.bubble")
-                                .foregroundColor(Color.black)
-                                .font(.system(size:25))
+                            Image(systemName: "message.circle.fill")
+                                .foregroundColor(Color("PrimaryGold"))
+                                .font(.system(size:35))
                         }
                     ).padding(.horizontal, 0)
                         .navigationTitle("Back")
+                        .foregroundColor(Color.gray)
                         .navigationBarTitleDisplayMode(.inline)
                         .navigationBarHidden(false)
                     Spacer()
                     
                 }
-                .padding(.horizontal)
+                .padding(.horizontal, 0)
                 
-                Divider().padding(.horizontal) // Horizontal divider line
-                
-                HStack {
-                    Button(action: {
-                        withAnimation {
-                            openBetsTabisSelected = true
-                            highlightsTabisSelected = false
-                            badgesTabisSelected = false
+                Divider().padding(.horizontal)
+//                VStack {
+                    HStack {
+                        Button(action: {
+                            selectedButton = 0
+                            withAnimation { //light.max
+                                openBetsTabisSelected = true
+                                highlightsTabisSelected = false
+                                badgesTabisSelected = false
+                                selectedButtonIndex = 0
+
+                            }
+                        }) {
+                            Text("OPEN BETS")
+                                .font(.system(size:15))
+                                .bold()
+                                .lineLimit(1)
+                                .foregroundColor(Color.black)
+                                .padding(.top, 8)
+                                .padding(.horizontal)
+
                         }
-                    }) {
-                        Text("Open Bets")
-                            .font(.system(size:18))
-                            .bold()
-                            .foregroundColor(Color.black)
-                            .underline(openBetsTabisSelected)
-                        
-                    }
-                    .background(
-                        RoundedRectangle(cornerRadius: 10)
-                            .fill(Color.blue.opacity(0.0))
-                    )
-                    Spacer()
-                    Button(action: {
-                        withAnimation {
-                            openBetsTabisSelected = false
-                            highlightsTabisSelected = true
-                            badgesTabisSelected = false
-                            
+                        Spacer()
+                        Button(action: {
+                            selectedButton = 1
+                            withAnimation {
+                                openBetsTabisSelected = false
+                                highlightsTabisSelected = true
+                                badgesTabisSelected = false
+                                selectedButtonIndex = 1
+                                
+                            }
+                        }) {
+                            Text("HIGHLIGHTS")
+                                .font(.system(size:15))
+                                .bold()
+                                .lineLimit(1)
+                                .foregroundColor(Color.black)
+                                .padding(.top, 8)
+                                .padding(.horizontal)
                         }
-                    }) {
-                        Text("Highlights")
-                            .font(.system(size:18))
-                            .bold()
-                            .foregroundColor(Color.black)
-                            .underline(highlightsTabisSelected)
-                    }
-                    .background(
-                        RoundedRectangle(cornerRadius: 10)
-                            .fill(Color.blue.opacity(0.0))
-                    )
-                    Spacer()
-                    Button(action: {
-                        withAnimation {
-                            openBetsTabisSelected = false
-                            highlightsTabisSelected = false
-                            badgesTabisSelected = true
+                        Spacer()
+                        Button(action: {
+                            selectedButton = 2
+                            withAnimation {
+                                openBetsTabisSelected = false
+                                highlightsTabisSelected = false
+                                badgesTabisSelected = true
+                                selectedButtonIndex = 2
+                            }
+                        }) {
+                            Text("BADGES")
+                                .font(.system(size:15))
+                                .bold()
+                                .lineLimit(1)
+                                .foregroundColor(Color.black)
+                                .padding(.top, 8)
+                                .padding(.horizontal)
                         }
-                    }) {
-                        Text("Badges")
-                            .font(.system(size:18))
-                            .bold()
-                            .foregroundColor(Color.black)
-                            .underline(badgesTabisSelected)
-                        
                     }
-                    .background(
-                        RoundedRectangle(cornerRadius: 10)
-                            .fill(Color.blue.opacity(0.0))
-                    )
-                }.padding(.horizontal)
-                    .padding(.vertical, 1)
-                Spacer()
+                    .padding(.horizontal)
+                    GeometryReader { geo in
+                        VStack {
+                            Rectangle()
+                                .fill(Color("PrimaryGold"))
+                                .frame(width: geo.size.width * 1 / 3, height: 1)
+                                .offset(x: CGFloat(selectedButtonIndex) * (geo.size.width / 3))
+                            .animation(.default, value: selectedButtonIndex)
+                        }.padding(.bottom, 9)
+                    }
+//                }
                 
                 if openBetsTabisSelected {
                     OpenBetsView()
@@ -276,14 +307,11 @@ struct ProfileView: View {
                 } else if badgesTabisSelected {
                     BadgesView()
                 }
-                
                 Spacer()
             }
             .navigationBarHidden(true)
         }
     }
-    
-
     
     // fetchFollowers gets all the user ID's from the documents inside
     // Collection: 'Users' -> Collection: 'Following' -> Field: 'uid'
@@ -325,6 +353,14 @@ struct ProfileView: View {
             group.notify(queue: .main) {
                 self.otherUserInfo = updatedOtherUserInfo
             }
+        }
+    }
+    
+    private func buttonBackground(index: Int) -> Color {
+        if let selectedButton = selectedButton, selectedButton == index {
+            return Color("PrimaryGold")
+        } else {
+            return Color.white
         }
     }
     

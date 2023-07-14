@@ -38,6 +38,8 @@ struct WelcomeScreen: View {
     @State private var confirmPassword: String = ""
     @State private var isLoggedIn: Bool = UserDefaults.standard.bool(forKey: "isLoggedIn")
     
+//    @State private var isLoggedIn: Bool = false
+    
     var body: some View {
         NavigationView {
             Group {
@@ -47,7 +49,7 @@ struct WelcomeScreen: View {
                 else {
                     ZStack {
                         LinearGradient(
-                            gradient: Gradient(colors: [.gray, .black]),
+                            gradient: Gradient(colors: [.white, Color("PrimaryGold")]),
                             startPoint: .topLeading,
                             endPoint: .bottomTrailing
                         )
@@ -60,14 +62,14 @@ struct WelcomeScreen: View {
                                         Text("Welcome to")
                                             .font(.largeTitle)
                                             .fontWeight(.bold)
-                                            .foregroundColor(.white)
+                                            .foregroundColor(.black)
                                         Spacer()
                                     }
                                     HStack {
-                                        Text("My App.")
+                                        Text("Mate.")
                                             .font(.largeTitle)
                                             .fontWeight(.bold)
-                                            .foregroundColor(.white)
+                                            .foregroundColor(.black)
                                         Spacer()
                                     }
                                 }

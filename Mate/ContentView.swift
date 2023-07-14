@@ -25,25 +25,28 @@ struct ContentView: View {
                 TabView {
                     FeedView()
                         .tabItem {
-                            Label("Feed", systemImage: "globe.asia.australia")
+                            Label("Feed", systemImage: "house")
+                                .foregroundColor(.black)
                         }
                     SearchView()
                         .tabItem {
                             Label("Search", systemImage: "magnifyingglass")
+                                .foregroundColor(.black)
+                               
                         }
                     PostView()
                         .tabItem {
-                            Label("Bets", systemImage: "plus.app")
-                        }
-                    LocalSellerView()
-                        .tabItem {
-                            Label("Money", systemImage: "dollarsign.circle")
+                            Label("Place", systemImage: "plus.circle")
+                                .foregroundColor(.black)
                         }
                     ProfileView(isLoggedIn: $isLoggedIn)
                         .tabItem {
-                            Label("Profile", systemImage: "person.circle")
+                            Label("Profile", systemImage: "person")
+                                .foregroundColor(.black)
                         }
-                }.accentColor(Color.gray).background(Color.white).opacity(1)
+                }
+                .accentColor(Color("PrimaryGold"))
+                .background(Color.white).opacity(1)
             } else {
                 WelcomeScreen().navigationBarBackButtonHidden()
             }
